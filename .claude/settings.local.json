@@ -2,9 +2,7 @@
   "permissions": {
     "allow": [
       "Skill(fewer-permission-prompts)",
-
       "mcp__playwright",
-
       "Bash(echo:*)",
       "Bash(cat:*)",
       "Bash(ls:*)",
@@ -18,11 +16,10 @@
       "Bash(python3:*)",
       "Bash(claude --version)",
       "Bash(npm -g config get prefix)",
-
       "Read(//Users/wclee/**)",
       "Read(//Library/Application Support/ClaudeCode/**)",
-
-      "WebFetch(domain:downloads.claude.ai)"
+      "WebFetch(domain:downloads.claude.ai)",
+      "Bash(git status *)"
     ]
   }
 }
