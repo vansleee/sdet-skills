@@ -1,0 +1,5 @@
+interface:
+  display_name: "Ask SDET"
+  short_description: "路由器:列出所有入口、何時用哪個、彼此關係。"
+policy:
+  allow_implicit_invocation: false

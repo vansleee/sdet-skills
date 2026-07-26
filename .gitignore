@@ -1,0 +1,13 @@
+node_modules/
+.env
+.env.*
+config/product-context.md
+config/sdet-config.yaml
+config/governance.yaml
+test-results/
+playwright-report/
+.pw-mcp-traces/
+evidence/
+*.zip
+.DS_Store
+.playwright-mcp/

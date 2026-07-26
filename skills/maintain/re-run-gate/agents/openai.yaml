@@ -1,0 +1,3 @@
+interface:
+  display_name: "Re-run Gate"
+  short_description: "修完重跑到綠,max retries、仍紅則 escalate。"

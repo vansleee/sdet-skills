@@ -1,0 +1,3 @@
+interface:
+  display_name: "Structured Result"
+  short_description: "把測試結果表達成超越 pass/fail 的結構化狀態(blocked/flaky/inconclusive/anomaly)+證據引用。"

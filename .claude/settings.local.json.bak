@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(fewer-permission-prompts)",
+      "Bash(python3 -)",
+      "Bash(zip:*)",
+      "Bash(unzip)",
+      "Bash(echo)",
+      "mcp__playwright",
+      "Bash(claude --version)",
+      "Read(//Users/wclee/.local/share/claude/versions/**)",
+      "Bash(npm -g config get prefix)",
+      "Bash(ls -la \"$\\(npm -g config get prefix \\)/lib/node_modules/@anthropic-ai/claude-code\")",
+      "Read(//Users/wclee/**)",
+      "Bash(env)",
+      "Bash(xargs -0 ls -t)",
+      "Bash(xargs stat -f \"%Sm %N\")",
+      "Bash(xargs -I{} sh -c 'echo ==={}===; jq -r \".hooks // empty | keys[]?\" {} 2>/dev/null')",
+      "Bash(python3 - /private/tmp/claude-501/-Users-wclee-workspace-sdet-skills/dc5d1078-3a43-46c7-bf14-a3655b277904/scratchpad/recent_transcripts.txt)",
+      "Read(//Library/Application Support/ClaudeCode/**)",
+      "Bash(python3 -c \"import datetime; print\\(datetime.datetime.fromtimestamp\\(1779589259158/1000\\).isoformat\\(\\)\\)\")",
+      "Bash(mkdir -p /Users/wclee/workspace/sdet-skills/evidence/20260726-practicesoftwaretesting-login-cart)",
+      "Bash(cat console-2026-07-26T12-21-45-591Z.log console-2026-07-26T12-22-02-194Z.log console-2026-07-26T12-23-03-117Z.log console-2026-07-26T12-23-41-798Z.log console-2026-07-26T12-24-46-902Z.log)",
+      "Bash(mv /Users/wclee/workspace/sdet-skills/nav-no-cart-icon.png /Users/wclee/workspace/sdet-skills/evidence/20260726-practicesoftwaretesting-login-cart/04-navbar-no-cart-icon-loggedin.png)",
+      "Bash(mv /Users/wclee/workspace/sdet-skills/after-add-to-cart.png /Users/wclee/workspace/sdet-skills/evidence/20260726-practicesoftwaretesting-login-cart/05-addtocart-after.png)",
+      "Bash(mv /Users/wclee/workspace/sdet-skills/cart-qty-zero-total-stale.png /Users/wclee/workspace/sdet-skills/evidence/20260726-practicesoftwaretesting-login-cart/06-checkout-qty-zero-total-stale.png)",
+      "WebFetch(domain:downloads.claude.ai)"
+    ]
+  }
+}

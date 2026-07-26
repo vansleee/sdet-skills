@@ -1,0 +1,14 @@
+# 門檻與預算(範本 — 複製成 sdet-config.yaml;真檔已 gitignore)
+confidence:
+  min_to_file: 0.7
+dedupe:
+  lookback_days: 30
+  match_on: [symptom, route, oracle]
+budget:
+  max_tokens_per_run: 200000
+  max_actions_per_explore: 40
+models:
+  cheap: <便宜模型 id>
+  strong: <強模型 id>
+risk:
+  weights: { change_frequency: 0.4, user_traffic: 0.4, past_failures: 0.2 }

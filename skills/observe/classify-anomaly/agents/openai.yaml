@@ -1,0 +1,3 @@
+interface:
+  display_name: "Classify Anomaly"
+  short_description: "看到異常先分類(環境/測試缺陷/產品 bug/已知問題/待查),不急著當 bug。"

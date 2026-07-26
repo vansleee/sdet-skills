@@ -1,0 +1,13 @@
+# 探索憲章（exploration charter）
+# 由 exploration-charter 產生、供 explore 讀取的輸入。
+# 位置慣例：charters/<slug>.yaml（committed；evidence/ 才是每次跑的輸出、被 gitignore）
+# 加 tour 只需多一行，例如：tours: [data]（見 Day 16）
+charter:
+  goal: "驗證 practicesoftwaretesting.com 的登入與加入購物車流程"
+  scope: [登入頁, 商品頁, 購物車]
+  oracles:
+    - "UI 顯示的結果要與 API 狀態碼一致"
+    - "正常操作不應出現 console error"
+  out_of_bounds: [註冊, 付款, production 寫入]
+  test_account: customer@practicesoftwaretesting.com
+  max_steps: 15

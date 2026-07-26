@@ -1,0 +1,12 @@
+# 授權分級總表（被所有會產生副作用的 skill 讀）
+# 由需要副作用的 skill 沿途寫入/參照：triage 與 bug-fixer（開 issue/PR 權限）、
+# test-heal（改測試權限）、pipeline-triage 與 quality-gate（開單/放行）、route-by-risk（要不要測）。
+tiers:
+  autonomous: []          # 可自主執行、不需人審的動作
+  needs_review: []         # 需人審(如 test-heal 批次、quality-gate override、開 PR)
+  forbidden:               # 永遠禁止
+    - merge_pr
+    - reset_shared_env
+    - truncate_shared_db
+override:
+  require_reason: true     # 硬推閘門必須留痕(誰/何時/理由)

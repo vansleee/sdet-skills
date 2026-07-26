@@ -1,0 +1,2 @@
+# Test Oracle
+用一致性/規格/對照/使用者期待等 oracle 判斷「這到底是不是 bug」。

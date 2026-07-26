@@ -1,0 +1,2 @@
+# Bug Verifier
+以獨立 subagent 重現候選 bug、給 Confidence Score,不繼承 hunter 的偏見。

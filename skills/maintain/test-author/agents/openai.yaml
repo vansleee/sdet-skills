@@ -1,0 +1,5 @@
+interface:
+  display_name: "Test Author"
+  short_description: "把一次成功探索固化成可重跑的 Playwright 測試。"
+policy:
+  allow_implicit_invocation: false

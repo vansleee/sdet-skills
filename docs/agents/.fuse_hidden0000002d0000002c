@@ -1,0 +1,15 @@
+# Triage
+
+把通過分類的 product-bug 寫成可重現報告、開成 GitHub Issue。
+
+## 設計理念（為什麼這樣設計）
+- **只吃 product-bug。** 非 product-bug（環境／測資／flaky…）在 `classify-anomaly` 就被擋掉，triage 不重判——各司其職。
+- **報告寫行為、不寫實作。** agent 從外部操作產品，本來就看不到程式碼；被迫用使用者語言描述，報告天生耐久、跨得過重構。
+- **重現步驟必填。** 少了步驟其他都是廢話；湊不齊就不開單（Day 27 會升成硬閘門）。
+- **後端可替換。** 指令讀 `config/issue-tracker-github.md`，換 tracker 不動邏輯。
+- **開單先確認。** 對外副作用一律先列給人確認再呼叫 API。
+
+## 成長路徑
+- v0.1（Day 14）：一張報告、手動開一張。
+- 第四週：去重（Day 24）、品質閘（Day 27）、一人一單、委派 `bug-verifier` / `bug-fixer`、狀態機。
+

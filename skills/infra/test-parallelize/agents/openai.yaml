@@ -1,0 +1,3 @@
+interface:
+  display_name: "Test Parallelize"
+  short_description: "平行與分片,讓大量測試在時限內跑完。"

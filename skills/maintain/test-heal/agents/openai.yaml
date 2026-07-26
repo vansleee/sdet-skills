@@ -1,0 +1,3 @@
+interface:
+  display_name: "Test Heal"
+  short_description: "只改測試不改產品地修好壞掉的測試;禁止綠色作弊(刪測試/skip/放寬斷言/加 retry 蓋時序)。"

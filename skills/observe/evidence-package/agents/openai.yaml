@@ -1,0 +1,3 @@
+interface:
+  display_name: "Evidence Package"
+  short_description: "蒐集並整理測試證據(截圖 / trace / console / network)成一份可攜證據包"

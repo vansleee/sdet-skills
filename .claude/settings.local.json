@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(fewer-permission-prompts)",
+
+      "mcp__playwright",
+
+      "Bash(echo:*)",
+      "Bash(cat:*)",
+      "Bash(ls:*)",
+      "Bash(stat:*)",
+      "Bash(mkdir:*)",
+      "Bash(mv:*)",
+      "Bash(zip:*)",
+      "Bash(unzip:*)",
+      "Bash(xargs:*)",
+      "Bash(env)",
+      "Bash(python3:*)",
+      "Bash(claude --version)",
+      "Bash(npm -g config get prefix)",
+
+      "Read(//Users/wclee/**)",
+      "Read(//Library/Application Support/ClaudeCode/**)",
+
+      "WebFetch(domain:downloads.claude.ai)"
+    ]
+  }
+}

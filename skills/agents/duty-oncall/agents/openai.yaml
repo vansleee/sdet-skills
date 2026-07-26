@@ -1,0 +1,5 @@
+interface:
+  display_name: "Duty Oncall"
+  short_description: "排程下把整條 pipeline 跑完一輪的「獨立值班」總編排。"
+policy:
+  allow_implicit_invocation: false

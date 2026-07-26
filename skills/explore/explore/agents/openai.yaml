@@ -1,0 +1,3 @@
+interface:
+  display_name: "Explore"
+  short_description: "自主探索迴圈:action selection、狀態與路徑記憶、挑戰產品假設,產出候選 finding。"

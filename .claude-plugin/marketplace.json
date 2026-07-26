@@ -1,0 +1,6 @@
+{
+  "name": "sdet-skills",
+  "plugins": [
+    { "name": "sdet-skills", "source": "." }
+  ]
+}

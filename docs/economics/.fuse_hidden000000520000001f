@@ -1,0 +1,2 @@
+# SDET Economics
+成本紀律 reference:省 token、重用 context、模型分級、預算與停止條件、ROI、績效。

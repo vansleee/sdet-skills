@@ -1,0 +1,5 @@
+# Pipeline Read
+
+從 GitHub Actions run 拉失敗、artifact、annotation(用 gh)。
+
+（設計理念待補；對應文章見 book-outline-60.md）

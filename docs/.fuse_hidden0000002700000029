@@ -1,0 +1,13 @@
+# 全書狀態 / 資料檔（跨 skill 讀寫，非 SKILL.md）
+| 檔案 | 產生於 | 用途 |
+|---|---|---|
+| charters/<slug>.yaml | W3 D15 | 探索目標與邊界 |
+| sessions/…/findings/F-*.yaml | W3 | 候選發現(含 oracle) |
+| verdicts/V-*.yaml | W4 D26 | 獨立重現 + confidence |
+| calibration.yaml | W4 D22 | confidence 校準 |
+| known-false-positives.yaml | W4 D23 | 已知誤報 |
+| issues-index.yaml | W4 D24 | bug fingerprint 去重索引 |
+| gate.yaml | W4 D27 | 品質閘結果 |
+| governance.yaml | W4 D29 起 | 授權分級(見 config/governance.example.yaml) |
+| tests/*.spec.ts | W5 | 固化的回歸資產 |
+| runs/<date>.yaml | W4 D30 起 | 每次值班計量(tokens/duration/model/findings/gate/issues/confirmed)→ W7 ROI |
