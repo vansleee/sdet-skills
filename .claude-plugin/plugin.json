@@ -1,6 +1,6 @@
 {
   "name": "sdet-skills",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Agentic SDET skills for GitHub Actions + Playwright (TypeScript)",
   "skills": [
     "skills/foundation/setup-sdet",
@@ -33,6 +33,10 @@
     "skills/infra/pipeline-observability",
     "skills/economics/route-by-risk",
     "skills/economics/sdet-economics",
+    "skills/project/test-planning",
+    "skills/project/traceability",
+    "skills/project/status-report",
+    "skills/project/release-signoff",
     "skills/meta/ask-sdet"
   ]
 }

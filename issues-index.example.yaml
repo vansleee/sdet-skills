@@ -1,0 +1,28 @@
+# Bug 指紋去重索引（範本 — 複製成 issues-index.yaml；真檔已 gitignore）
+#
+# 指紋算法見 references/bug-fingerprint.md。
+# 寫它的 skill：triage（開單後登錄）。讀它的：bug-hunter、issue-quality-gate。
+#
+# 流程：算指紋 → 查這份 index
+#   完全相同           → 不開新單，occurrences += 1、append evidence
+#   area+signature 相同、trigger 不同 → 標 related，交人判，不自動合併
+#   找不到             → 開新單，寫回這裡
+
+- fingerprint: "checkout|typeerror:cart_items-undefined|enter-checkout"
+  issue: "<issue url 或 #編號>"
+  occurrences: 4
+  first_seen: 2026-07-24
+  last_seen: 2026-07-27
+  confidence: high
+  evidence:
+    - evidence/<run-1>/console.log
+    - evidence/<run-2>/console.log
+    - evidence/<run-3>/console.log
+    - evidence/<run-4>/console.log
+
+- fingerprint: "cart|http-404-on-stale-cart-id|use-expired-local-cart-id"
+  issue: "<issue url 或 #編號>"
+  occurrences: 2            # 匿名 + 已登入 = 同一指紋，併成一張
+  confidence: med
+  note: "前端靜默重建、終態正確；是否開單待人判"
+  evidence: []

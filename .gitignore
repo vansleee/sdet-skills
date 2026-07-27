@@ -11,3 +11,18 @@ evidence/
 *.zip
 .DS_Store
 .playwright-mcp/
+
+# product knowledge: 只 commit 範本(*.example.md)與 README,真實產品事實留本地
+knowledge/**
+!knowledge/**/
+!knowledge/README.md
+!knowledge/**/*.example.md
+
+# 狀態檔:只 commit *.example.yaml 範本,真檔(含實際判斷結果)留本地
+/calibration.yaml
+/known-false-positives.yaml
+/issues-index.yaml
+/gate.yaml
+/runs/
+/sessions/
+/verdicts/

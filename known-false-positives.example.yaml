@@ -1,0 +1,28 @@
+# 已知誤報清單（範本 — 複製成 known-false-positives.yaml；真檔已 gitignore）
+#
+# 用途：開單前比對每個候選 finding，命中就壓下、不報，並記一筆「為什麼壓」。
+# 讀它的 skill：bug-hunter（獵完先濾）、issue-quality-gate（開單前最後一道）。
+#
+# 兩條紀律（違反了這份清單會反過來害你）：
+#   1. needs-spec ≠ known-FP。沒有人拍板之前不准放進來——
+#      否則你會用一個「還沒確認」的猜測，永久性地把一類問題消音。
+#      進這份清單的門檻是「已經有人拍板」，且要留下 decided_by。
+#   2. pattern 要窄，不要貪。「任何 401 都壓」會把「登入後不該出現的 401」也吃掉。
+#      寧可漏擋、下次再補，也不要寬到蓋掉真問題。
+
+- pattern: "GET /users/me 回 401，且發生在未登入頁面"
+  scope: "anonymous-only"          # 登入後仍出現 401 → 不適用此條，照常回報
+  reason: "未登入本就無 session，前端把它記成 error，非產品缺陷"
+  decided_by: "<誰拍板的>"
+  decided_at: 2026-07-27
+
+- pattern: "POST /users/login 回 423 Account locked（共享測試帳號）"
+  scope: "test-account only"
+  reason: "共享 demo 帳號被鎖，屬 test-data 問題，非產品缺陷；鎖定為暫時性"
+  decided_by: "<誰拍板的>"
+  decided_at: 2026-07-27
+
+# 反例——**不要**這樣寫（留著當警惕，勿取消註解）：
+# - pattern: "空車時 navbar 無 cart icon"
+#   reason: "應該是設計吧"        # ← PO 還沒確認就壓下 = 永久消音一類問題
+#   decided_by: ""                # ← 沒有人拍板 → 這筆只能是 needs-spec

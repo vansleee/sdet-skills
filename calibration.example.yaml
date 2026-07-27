@@ -1,0 +1,24 @@
+# Confidence 校準紀錄（範本 — 複製成 calibration.yaml；真檔已 gitignore）
+#
+# 計分規則見 references/confidence.md。
+# 寫它的：bug-hunter（打分當下記 predicted）、bug-verifier / 人複核（回填 human_verdict）。
+#
+# 讀法：
+#   打 high 卻常被打槍          → 系統性過度自信，調高門檻或降低單次複現的配分
+#   後來確認的真 bug 常被壓 low → 太保守，漏報成本高
+
+- finding: "checkout 進入時 console 噴 TypeError: cart_items undefined"
+  fingerprint: "checkout|typeerror:cart_items-undefined|enter-checkout"
+  predicted: high
+  score: 1.00
+  predicted_at: 2026-07-27
+  human_verdict: null        # confirmed | not-reproduced | not-a-bug | (待回填)
+  verdict_at: null
+
+- finding: "過期 cart id 造成 404，前端靜默重建"
+  fingerprint: "cart|http-404-on-stale-cart-id|use-expired-local-cart-id"
+  predicted: med
+  score: 0.50                # 0.15+0.25+0.20+0.10 −0.20（自動回復、終態正確）
+  predicted_at: 2026-07-27
+  human_verdict: null
+  verdict_at: null
