@@ -5,12 +5,71 @@ description: 把近期探索 / 測試 / 開單活動整理成 standup 更新、�
 
 # Status Report
 
-> 狀態：骨架（預留，TODO 待實作）
+輸入一段期間，輸出**對人的摘要**：測了什麼、發現什麼、卡在哪、風險在哪。設計理念見 `docs/workflow/status-report.md`。
 
-讀近期的 runs / findings / issues，產出對人的摘要：今天測了什麼、發現什麼、還卡什麼、風險在哪。輸出格式依對象（standup / 測試報告 / release-readiness）。
+> **只彙整，不重算。** 每個數字都引用既有狀態檔並附出處。這裡重算一次 flaky rate，團隊就有兩個版本的真相。
 
-## TODO
-- [ ] 定義輸入（runs、findings、issues 一段期間）/ 輸出（三種格式的摘要）
-- [ ] 寫執行步驟：彙整 → 分「進度 / 發現 / 阻塞 / 風險」→ 依對象挑格式
-- [ ] 讀 `runs/`、`issues-index.yaml`（見 `docs/state-files.md`），不重算已有數據
-- [ ] 補 `agents/openai.yaml` 與 `docs/workflow/status-report.md`
+## 輸入 / 輸出
+- **輸入**：期間（預設「上次報告以來」；查不到就用近 7 天）＋ 對象（`standup` / `test-report` / `release-readiness`）＋ 資料來源（下表）。
+- **輸出**：對應格式的摘要，存 `reports/status-<date>.md`。
+
+## 資料來源（**一律引用，不重算**）
+
+| 要講的事 | 引用哪裡 | 誰維護 |
+|---|---|---|
+| 執行了什麼、花多少 | `runs/<date>.yaml` | `duty-oncall` / `re-run-gate` |
+| 發現了什麼 | `sessions/**/findings/F-*.yaml`、`verdicts/V-*.yaml` | `explore` / `bug-verifier` |
+| 開了哪些單 | `issues-index.yaml`、`gh issue list` | `triage` |
+| CI 健康度 | `reports/health-<date>.md` | `pipeline-observability` |
+| 放行狀態 | `pipeline-gate.yaml` | `quality-gate` |
+| 覆蓋與 gap | `traceability.yaml` | `traceability` |
+| 一片紅的處理 | `triage-reports/` | `pipeline-triage` |
+| 隔離中的測試 | `flaky-registry.yaml` | `flaky-manager` |
+
+## 步驟
+1. **定期間**：找上一份 `reports/status-*.md` 的日期當起點；沒有就近 7 天。
+2. **收資料**：只讀上表來源。來源不存在 → 該段寫「無資料（未跑 `<skill>`）」，**不現場發明數字**。
+3. **分四類**：進度（做了什麼）／發現（找到什麼）／阻塞（卡在誰身上）／風險（可能出事的）。
+4. **挑格式**（見下）。
+5. **附出處**：每個結論後面掛狀態檔路徑或 URL。
+6. **存檔**：寫 `reports/status-<date>.md`。
+7. **要發到外部才確認**：貼 Slack / 留言到 issue 屬副作用，**先問過再送**。
+
+## 三種格式
+
+| 對象 | 長度 | 內容重點 |
+|---|---|---|
+| `standup` | 3–5 行 | 做了 / 發現 / 卡住。**只講需要別人知道的**，不列數字表 |
+| `test-report` | 一頁 | 範圍、結果分佈（照 `structured-result` 六態）、重點 finding（附證據連結）、風險、隔離中的覆蓋 |
+| `release-readiness` | 半頁 | 給 `release-signoff` 當素材：覆蓋現況、未解 blocker、gate 狀態、已知風險。**只陳述，不下 go/no-go** |
+
+## 鐵則
+- **不重算已有數據。** flaky rate 引 `pipeline-observability`、gate 引 `pipeline-gate.yaml`、覆蓋引 `traceability.yaml`。
+- **缺資料就寫「無資料」。** 用 0 或估計值填補，會讓「沒量」長得像「沒問題」。
+- **每個結論附出處。** 對齊 `structured-result` 的證據習慣——沒有出處的結論在追問時站不住。
+- **`release-readiness` 不下裁決。** 它是 `release-signoff` 的輸入，不是它的替代品。
+- **隔離中的測試一定要提。** 「這期有 3 支測試是關掉的」屬於讀者必須知道的事，不能因為它不好看就省略。
+- 對外發送前先確認。
+
+## 輸出（格式，非某次執行結果）
+```markdown
+## Standup — 2026-07-29
+- 跑了 checkout 折扣碼探索（charter: checkout-coupon），14 個檢查點，2 fail 1 blocked。
+- 找到 1 個確認 bug：過期折扣碼仍可套用 → 已開 #488（`issues-index.yaml`）。
+- 卡住：折扣碼與點數能否併用，PRD 未定義，等 PM 回覆（`plans/checkout-coupon.md#open_questions`）。
+- 風險：CI flaky rate 0.12 → 0.31，隔離中 9 支（2 支逾期）→ `reports/health-2026-07-29.md`。
+```
+
+```yaml
+# release-readiness 的骨架（只陳述，不裁決）
+coverage:   { source: traceability.yaml, covered: 41, gap: 3, uncertain: 2 }
+blockers:   { source: "gh issue list --label blocker", open: 1, ids: ["#471"] }
+gate:       { source: pipeline-gate.yaml, latest: FAIL, blocked_on: "blocker #471" }
+quarantine: { source: flaky-registry.yaml, count: 9, expired: 2 }
+known_risks:
+  - "REQ-CHECKOUT-006（折扣碼 × 點數）無任何覆蓋,risk_score 0.71"
+note: "本節僅陳述現況;go/no-go 由 release-signoff 裁決。"
+```
+
+## 上下游
+上游：所有會寫狀態檔的 skill（見上表）。下游：`release-signoff`（吃 `release-readiness` 當素材）、人（standup / 測試報告）。

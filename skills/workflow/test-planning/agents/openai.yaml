@@ -1,0 +1,3 @@
+interface:
+  display_name: "Test Planning"
+  short_description: "把 ticket/PRD 轉成測試範圍 + 風險排序 + 每項怎麼測;風險評分委給 route-by-risk,out-of-scope 一律留理由。"

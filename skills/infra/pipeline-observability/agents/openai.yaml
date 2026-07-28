@@ -1,3 +1,3 @@
 interface:
   display_name: "Pipeline Observability"
-  short_description: "測試健康觀測與指標(MTTR、flaky rate、首次通過率、派工延遲)。"
+  short_description: "測試健康指標(MTTR、flaky rate、首次通過率、派工延遲、duration)與趨勢,每個超標指標路由到該處理的 skill。"

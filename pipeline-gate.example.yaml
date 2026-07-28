@@ -1,0 +1,42 @@
+# Pipeline 放行裁決留痕（範本 — 複製成 pipeline-gate.yaml；真檔已 gitignore）
+#
+# 寫它的 skill：infra/quality-gate。讀它的：release-signoff（當放行證據）、
+# pipeline-observability（gate 通過率 / override 次數）、status-report（引用裁決）。
+#
+# ⚠️ 與 agents/issue-quality-gate 的 gate.yaml 是**不同檔案**：
+#    gate.yaml          = 一張 issue 能不能開
+#    pipeline-gate.yaml = 這個 build 能不能放行
+#
+# 準則門檻（required_suites / max_quarantined）放 config/sdet-config.yaml 的 gate 區塊。
+# 裁決規則：AND——全 pass 才 PASS；任一 fail 或 inconclusive → FAIL。
+
+- candidate: "PR #482 @ abc1234"
+  evaluated_at: 2026-07-29T10:12:00Z
+  run: "https://github.com/<owner>/<repo>/actions/runs/1234567890"
+  checks:
+    required_suites_green:    { result: pass, basis: "e2e 318/318 綠(run 1234567890)" }
+    no_count_mismatch:        { result: pass, basis: "318 = 314+0+4" }
+    no_open_blocker:          { result: fail, basis: "#471 blocker，結帳金額錯誤，open" }
+    quarantine_within_budget: { result: pass, basis: "隔離 3 支 ≤ max 5" }
+    no_expired_quarantine:    { result: pass, basis: "registry 無 escalated" }
+  verdict: FAIL                 # PASS | FAIL | OVERRIDE
+  blocked_on: "先處理 blocker #471"
+  quarantined_note: "本版有 3 支測試被隔離，該區覆蓋為關閉狀態：checkout/coupon, cart/remove, login/sso"
+  override: null
+
+# override 範例：硬推必留痕，沒有 reason 就不算 override
+- candidate: "PR #479 @ def5678"
+  evaluated_at: 2026-07-28T16:40:00Z
+  run: "https://github.com/<owner>/<repo>/actions/runs/1234500000"
+  checks:
+    required_suites_green:    { result: fail, basis: "e2e 2 筆紅，皆判為 environment（staging 5xx）" }
+    no_count_mismatch:        { result: pass, basis: "318 = 312+2+4" }
+    no_open_blocker:          { result: pass, basis: "無 open blocker" }
+    quarantine_within_budget: { result: pass, basis: "隔離 2 支 ≤ max 5" }
+    no_expired_quarantine:    { result: pass, basis: "registry 無 escalated" }
+  verdict: OVERRIDE
+  override:
+    by: "<who>"
+    at: 2026-07-28T16:55:00Z
+    reason: "兩筆紅經 failure-analysis 判為 staging 基礎設施 5xx，非產品問題；hotfix 需今日上線"
+    forced: [required_suites_green]

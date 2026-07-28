@@ -1,3 +1,3 @@
 interface:
   display_name: "Flaky Manager"
-  short_description: "跨 run flaky 健康度與 quarantine 政策。"
+  short_description: "跨 run flaky 名單與 quarantine 政策:隔離、解除、到期未修強制升級;維護 flaky-registry.yaml。"

@@ -1,0 +1,59 @@
+# 需求 ↔ 測試 ↔ finding 覆蓋對照（範本 — 複製成 traceability.yaml；真檔已 gitignore）
+#
+# 寫它的 skill：traceability。讀它的：test-planning（gap 排下輪）、
+# release-signoff（放行證據）、pipeline-observability（coverage_gap 指標）。
+#
+# 對應規則（req_id 命名、測試怎麼宣告覆蓋、信心判定）見 references/traceability-mapping.md，
+# 不放這裡——狀態檔只存資料，不存演算法。
+#
+# 限制：本表只回答「有沒有東西在守」，不回答「守得夠不夠」。
+#      uncertain 一律不計入 covered。刻意不算單一覆蓋率百分比。
+
+generated_at: 2026-07-29
+
+requirements:
+  - req_id: REQ-CHECKOUT-005
+    source: "knowledge/domains/checkout.md#折扣碼"
+    statement: "過期折扣碼不得套用，並顯示明確錯誤"
+    covered_by:
+      tests:    ["tests/checkout-coupon.spec.ts > rejects expired coupon"]
+      findings: ["F-2026-07-24-003"]
+    confidence: high           # high（測試自己宣告）| low（檔名語意推測 → uncertain）
+    status: covered            # covered | gap | uncertain | retired
+
+  - req_id: REQ-CHECKOUT-006
+    source: "knowledge/domains/checkout.md#折扣碼"
+    statement: "折扣碼與會員點數不得同時使用"
+    covered_by: { tests: [], findings: [] }
+    status: gap
+    risk_score: 0.71           # 由 route-by-risk 給，用來排補洞順序
+
+  - req_id: REQ-AUTH-012
+    source: "knowledge/domains/auth.md#SSO"
+    statement: "SSO 登入失敗需退回本地登入並保留原始導向目標"
+    covered_by:
+      tests: ["tests/login.spec.ts > sso redirect"]
+      findings: []
+    confidence: low            # 只有檔名語意相符，非測試自己宣告
+    status: uncertain
+    note: "建議把 REQ-AUTH-012 加成 test annotation/tag，升成 high"
+
+  - req_id: REQ-CART-003
+    source: "knowledge/domains/cart.md#匿名購物車"
+    statement: "（已下線）匿名購物車保留 30 天"
+    status: retired            # id 保留供歷史追溯，不回收再利用
+
+gaps:
+  - { req_id: REQ-CHECKOUT-006, risk_score: 0.71, suggestion: "交 test-planning 排進下輪" }
+
+orphans:
+  tests:
+    - nodeid: "tests/legacy-promo.spec.ts > applies promo banner"
+      note: "對不到任何 req；先確認 knowledge/ 是否漏寫此需求，再談 test-prune"
+      route: test-prune
+  findings:
+    - id: "F-2026-07-26-011"
+      note: "折扣碼大小寫不敏感——knowledge/ 未記載，可能是隱性需求"
+      route: "補 knowledge/"
+
+caveat: "只回答『有沒有東西在守』，不回答『守得夠不夠』；uncertain 1 筆未計入 covered。"

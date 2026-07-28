@@ -1,0 +1,42 @@
+# Flaky 名單與隔離狀態（範本 — 複製成 flaky-registry.yaml；真檔已 gitignore）
+#
+# 寫它的 skill：flaky-manager。讀它的：quality-gate（放行時列出被隔離的覆蓋）、
+# pipeline-observability（算 flaky rate）、re-run-gate（解除隔離的驗證目標）。
+#
+# 政策門檻（quarantine_threshold / max_quarantine_days / lookback_runs / quarantine_mechanism）
+# 放 config/sdet-config.yaml，不放這裡——狀態檔只存資料，不存演算法。
+#
+# 狀態機：watch → quarantined → (修好) resolved
+#                            └→ (到期未修) escalated → test-heal 或 test-prune
+
+- nodeid: "checkout.spec.ts > applies coupon"
+  status: quarantined          # watch | quarantined | escalated | resolved
+  flake_rate: 0.35             # 近 lookback_runs 個 run：7/20
+  runs_observed: 20
+  first_seen: 2026-07-10
+  last_seen: 2026-07-28
+  suspected_root_cause: wait-condition    # 沿用 flaky-detect 的分類
+  quarantined_at: 2026-07-18
+  expires_at: 2026-08-01       # quarantined_at + max_quarantine_days，到期必須處置
+  owner: "<github handle>"
+  issue: "<issue url 或 #編號>"
+
+- nodeid: "cart.spec.ts > removes item"
+  status: watch                # 低於隔離門檻，只觀察不隔離
+  flake_rate: 0.10
+  runs_observed: 20
+  first_seen: 2026-07-26
+  last_seen: 2026-07-28
+  suspected_root_cause: render-timing
+  note: "近兩 run 未再出現，續觀察"
+
+- nodeid: "login.spec.ts > sso redirect"
+  status: escalated            # 隔離逾期未修，已轉出
+  flake_rate: 0.45
+  runs_observed: 20
+  quarantined_at: 2026-07-05
+  expires_at: 2026-07-19
+  escalated_at: 2026-07-20
+  escalated_to: test-heal      # 或 test-prune（評估刪除）
+  owner: "<github handle>"
+  issue: "<issue url 或 #編號>"

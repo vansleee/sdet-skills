@@ -13,8 +13,8 @@ disable-model-invocation: true
 
 ## 步驟
 
-1. **收 run**：`gh run view <id> --json jobs,conclusion`、`gh run view <id> --log-failed`；需要報告就 `gh run download <id> -n <artifact>`（Playwright report / junit）。
-2. **解析失敗**：每筆取 test id / 檔案 / error signature / 狀態。passed+failed+skipped 應等於 total，不符標 WARNING。
+1. **收 run**：交 `pipeline-read` 拉——它負責 `gh run view --json jobs,conclusion`、`--log-failed`、必要時 `gh run download`，並照「由粗到細」省 token。**不要自己重刻一套讀法。**
+2. **接結構化失敗清單**：直接吃 `pipeline-read` 的輸出（每筆已含 nodeid / 檔案 / 正規化過的 error signature / job）。它回報的 `count-mismatch` warning 要原樣帶進本次報告。
 3. **Fan-in 合併（本 skill 的核心）**：把失敗依三維度收斂成根因群——相同 error signature、共同前置步驟、同時轉紅的時間點（CI 版的 bug fingerprint）。
 4. **每群分析一次**：對每個根因群呼叫 `failure-analysis` 分類（測試/環境/產品/flaky），**一群一次**，不要逐筆。
 5. **分流**：

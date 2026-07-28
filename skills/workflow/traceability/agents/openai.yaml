@@ -1,0 +1,3 @@
+interface:
+  display_name: "Traceability"
+  short_description: "需求 ↔ 測試 ↔ finding 覆蓋對照:標 gap 與雙向孤兒,不猜對應、不算單一覆蓋率數字。"

@@ -12,3 +12,45 @@ models:
   strong: <強模型 id>
 risk:
   weights: { change_frequency: 0.4, user_traffic: 0.4, past_failures: 0.2 }
+
+# --- infra ---
+ci:                          # ci-pipeline / test-parallelize
+  artifact_retention_days: 7
+  target_duration_minutes: 10      # PR 期望時限;test-parallelize 用它反推 shard 數
+  max_shards: 8                    # 成本上限,不無限加片
+triage:                      # pipeline-read → pipeline-triage
+  batch_threshold: 5               # 失敗 ≥ 幾筆才算「一批」,轉 pipeline-triage
+rerun:                       # re-run-gate / flaky-manager 解除隔離
+  required_green: 3                # 連續綠幾次才算穩
+  max_retries: 5
+flaky:                       # flaky-detect / flaky-manager
+  reruns: 5                        # flaky-detect 單支重跑次數
+  flake_rate_threshold: 0.1        # 超過即視為 flaky
+  lookback_runs: 20                # flaky-manager 看幾個 run 的歷史
+  quarantine_threshold: 0.2        # 隔離門檻
+  max_quarantine_days: 14          # 隔離到期日;逾期強制 escalate
+  quarantine_mechanism: "tag:@flaky + CI grep 排除"   # 依專案測試框架填
+gate:                        # infra/quality-gate（build 層放行）
+  required_suites: [e2e]
+  max_quarantined: 5
+observability:               # pipeline-observability;算式見 references/test-health-metrics.md
+  window_days: 30
+  thresholds:
+    mttr: "4h"
+    flaky_rate: 0.15
+    first_pass_rate: 0.80            # 低於即 alert
+    suite_duration_p95: "20m"
+    assignment_latency: "4h"
+    quarantine_count: 5
+
+# --- workflow ---
+signoff:                     # release-signoff（release 層放行）
+  high_risk_threshold: 0.6         # risk_score ≥ 此值的需求必須 covered
+  max_expired: 3                   # 容許幾支逾期隔離
+
+# --- env ---
+env:                         # test-env;URL/帳密只放 env var 名稱,值走環境變數
+  strategy: shared-namespaced      # ephemeral | shared-namespaced
+  base_url_var: BASE_URL
+  test_user_var: TEST_USER
+  namespace_prefix: "t-"

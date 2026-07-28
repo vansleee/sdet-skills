@@ -23,6 +23,13 @@ knowledge/**
 /known-false-positives.yaml
 /issues-index.yaml
 /gate.yaml
+/flaky-registry.yaml
+/pipeline-gate.yaml
+/traceability.yaml
 /runs/
 /sessions/
 /verdicts/
+/signoffs/
+/plans/
+/reports/
+/triage-reports/
