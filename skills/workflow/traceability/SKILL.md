@@ -13,4 +13,4 @@ description: 維護「需求 ↔ 測試 ↔ finding」的覆蓋對照，指出�
 - [ ] 定義輸入（需求清單 + 測試清單 + findings）/ 輸出（覆蓋對照表 + gap 清單）
 - [ ] 寫執行步驟：建立需求 ↔ 測試 ↔ finding 的對應，標出未覆蓋
 - [ ] 讀 `knowledge/`（需求來源）；狀態檔沿用 `docs/state-files.md` 慣例
-- [ ] 補 `agents/openai.yaml` 與 `docs/project/traceability.md`
+- [ ] 補 `agents/openai.yaml` 與 `docs/workflow/traceability.md`

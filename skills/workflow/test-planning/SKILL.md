@@ -13,4 +13,4 @@ description: 把一張 ticket / PRD 轉成「這次要測什麼」的範圍 + �
 - [ ] 定義輸入（ticket/PRD 連結或內文）/ 輸出（範圍 + 風險 + 建議 charter）
 - [ ] 寫執行步驟：讀需求 → 對照 `knowledge/` → 圈範圍 → 標風險（接 `economics/route-by-risk`）
 - [ ] 讀 `knowledge/` 與 `config/`，不把產品知識寫死
-- [ ] 補 `agents/openai.yaml` 與 `docs/project/test-planning.md`
+- [ ] 補 `agents/openai.yaml` 與 `docs/workflow/test-planning.md`

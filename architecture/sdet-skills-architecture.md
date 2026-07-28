@@ -10,7 +10,7 @@
 |---|---|---|---|
 | **能力（how）** | 怎麼做一件事 | `skills/` | 產品無關、可重用 |
 | **事實（what）** | 受測產品是什麼 | `knowledge/` | 產品專屬 |
-| **流程（process）** | 怎麼接進團隊 / SDLC | `skills/project/` | 團隊/專案專屬（仍是 skill，但讀 knowledge + 專案設定） |
+| **流程（process）** | 怎麼接進團隊 / SDLC | `skills/workflow/` | 團隊/專案專屬（仍是 skill，但讀 knowledge + 專案設定） |
 | **規則與設定** | 後端、授權、參數 | `config/` | 環境專屬；祕密走 env |
 
 > 鐵則：`skills/` 保持產品無關；產品知識與專案設定是**輸入**，skill 去讀，不內嵌。一旦把產品知識塞進 skill，reuse 就死了。
@@ -26,7 +26,7 @@
 | `maintain/` | 測試維護「一支」層級 | test-author、failure-analysis、test-heal、re-run-gate… |
 | `infra/` | CI 與 Testing Infra「一批」層級 | ci-pipeline、pipeline-triage、flaky-manager、quality-gate… |
 | `economics/` | 成本治理 | route-by-risk、sdet-economics(ref) |
-| `project/` | **專案活動（預留，骨架）** | test-planning、traceability、status-report、release-signoff |
+| `workflow/` | **專案活動（預留，骨架）** | test-planning、traceability、status-report、release-signoff |
 | `meta/` | 路由 | ask-sdet |
 
 **「一筆 vs 一批」：** `maintain/` 修一支測試 / 一次失敗；`infra/` 顧整批（幾百支、一片紅、跨 run 趨勢）。同名能力在兩層不是重複，是規模升級。
@@ -41,7 +41,7 @@ skill 讀它、不內嵌。它也是 `test-oracle` 的**規格 oracle 來源**�
 
 真檔 gitignore，只 commit `*.example.md` 範本。
 
-## `project/` — 專案活動（預留中）
+## `workflow/` — 專案活動（預留中）
 
 把 SDET 從「跑測試」延伸到「參與測試生命週期」。目前為骨架，逐一實作：
 
@@ -50,7 +50,7 @@ skill 讀它、不內嵌。它也是 `test-oracle` 的**規格 oracle 來源**�
 - **status-report**：standup / 測試報告 / release-readiness 摘要
 - **release-signoff**：整個 release 能不能出的專案層級放行
 
-閘門三層，別混：`issue-quality-gate`（單張 issue）< `infra/quality-gate`（pipeline 放行）< `project/release-signoff`（整個 release 對需求/風險簽核）。
+閘門三層，別混：`issue-quality-gate`（單張 issue）< `infra/quality-gate`（pipeline 放行）< `workflow/release-signoff`（整個 release 對需求/風險簽核）。
 
 ## 資料流
 

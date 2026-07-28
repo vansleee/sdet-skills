@@ -33,10 +33,10 @@
     "skills/infra/pipeline-observability",
     "skills/economics/route-by-risk",
     "skills/economics/sdet-economics",
-    "skills/project/test-planning",
-    "skills/project/traceability",
-    "skills/project/status-report",
-    "skills/project/release-signoff",
+    "skills/workflow/test-planning",
+    "skills/workflow/traceability",
+    "skills/workflow/status-report",
+    "skills/workflow/release-signoff",
     "skills/meta/ask-sdet"
   ]
 }

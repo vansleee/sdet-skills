@@ -6,7 +6,7 @@ Agentic SDET 技能組:GitHub Actions · Playwright (TypeScript) · GitHub Issue
 ## 四層心智模型（把「能力」和「產品/專案」分乾淨）
 - **能力(how)** → `skills/`,產品無關、可重用。
 - **事實(what)** → `knowledge/`,受測產品專屬。
-- **流程(process)** → `skills/project/`,團隊/SDLC 專屬(仍是 skill,但讀 knowledge + 專案設定)。
+- **流程(process)** → `skills/workflow/`,團隊/SDLC 專屬(仍是 skill,但讀 knowledge + 專案設定)。
 - **規則與設定** → `config/`,環境專屬,祕密走 env。
 - 鐵則:**產品知識與專案設定是「輸入」,skill 讀它、不內嵌**,否則 reuse 就死了。詳見 `architecture/sdet-skills-architecture.md`。
 
@@ -18,7 +18,7 @@ Agentic SDET 技能組:GitHub Actions · Playwright (TypeScript) · GitHub Issue
 - `maintain/`   — 測試維護「一支」層級:寫測試、根因分析、修測試、重跑到綠、減法
 - `infra/`      — CI Pipeline 與 Testing Infra「一批」層級:建 pipeline、平行、環境、讀 run、批次 triage、flaky 治理、放行閘、觀測
 - `economics/`  — 成本治理(風險路由 + 成本 reference)
-- `project/`    — 專案活動(**預留,骨架**):測試規劃、覆蓋追溯、狀態回報、release 放行——把 SDET 接進團隊/SDLC
+- `workflow/`   — 專案活動(**預留,骨架**):測試規劃、覆蓋追溯、狀態回報、release 放行——把 SDET 接進團隊/SDLC
 - `meta/`       — 路由(ask-sdet)
 
 **「一筆 vs 一批」原則:** `maintain/` 處理一支測試/一次失敗;`infra/` 處理整批(幾百支、一片紅、跨 run 趨勢)。同名能力(如 failure-analysis vs pipeline-triage、flaky-detect vs flaky-manager)在兩層不是重複,是規模升級——一批必須先 fan-in 合併根因再分析。

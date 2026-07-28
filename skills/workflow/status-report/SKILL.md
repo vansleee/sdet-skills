@@ -13,4 +13,4 @@ description: 把近期探索 / 測試 / 開單活動整理成 standup 更新、�
 - [ ] 定義輸入（runs、findings、issues 一段期間）/ 輸出（三種格式的摘要）
 - [ ] 寫執行步驟：彙整 → 分「進度 / 發現 / 阻塞 / 風險」→ 依對象挑格式
 - [ ] 讀 `runs/`、`issues-index.yaml`（見 `docs/state-files.md`），不重算已有數據
-- [ ] 補 `agents/openai.yaml` 與 `docs/project/status-report.md`
+- [ ] 補 `agents/openai.yaml` 與 `docs/workflow/status-report.md`

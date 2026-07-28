@@ -15,4 +15,4 @@ release 前的專案層級品質閘：彙整覆蓋（traceability）、未解 is
 - [ ] 定義輸入（traceability 覆蓋 + 未解 issue + 風險）/ 輸出（go / no-go + 理由 + 待辦）
 - [ ] 寫執行步驟；放行/擋下都要留痕（誰、何時、理由），受 `config/governance.yaml` 分級管制
 - [ ] 讀 `knowledge/`（風險基準）與 `traceability` 產物
-- [ ] 補 `agents/openai.yaml` 與 `docs/project/release-signoff.md`
+- [ ] 補 `agents/openai.yaml` 與 `docs/workflow/release-signoff.md`

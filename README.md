@@ -22,13 +22,13 @@ bash scripts/link-skills.sh      # 把 skill link 進 ~/.claude/skills
 **maintain/**(顧好每一支測試) test-author(user) · test-design(ref) · test-data · failure-analysis · flaky-detect · test-heal · re-run-gate · test-prune
 **infra/**(顧好整條生產線) ci-pipeline · test-parallelize · test-env · pipeline-read · pipeline-triage(user) · flaky-manager · quality-gate · pipeline-observability · governance(config)
 **economics/** route-by-risk · sdet-economics(ref)
-**project/**(把 SDET 接進團隊/SDLC;**預留,骨架**) test-planning · traceability · status-report · release-signoff
+**workflow/**(把 SDET 接進團隊/SDLC;**預留,骨架**) test-planning · traceability · status-report · release-signoff
 **meta/** ask-sdet(user)
 
 ## 四層：能力 / 事實 / 流程 / 設定
 - `skills/` — **能力**（產品無關、可重用）
 - `knowledge/` — **產品事實**（產品專屬,是 test-oracle 的規格判準;真檔 gitignore,只留 `*.example.md`）
-- `skills/project/` — **專案流程**（讀 knowledge + 專案設定）
+- `skills/workflow/` — **專案流程**（讀 knowledge + 專案設定）
 - `config/` — **設定**（後端/授權,祕密走 env）
 
 完整說明見 `architecture/sdet-skills-architecture.md`。
