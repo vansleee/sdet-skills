@@ -1,5 +1,5 @@
 interface:
   display_name: "Triage"
-  short_description: "把通過閘門的 finding 開成 GitHub Issue、貼 label、寫可重現報告(從 jenkins-failure-triage 搬來改)。"
+  short_description: "把過了 issue-quality-gate 的 product-bug finding 寫成可重現 Bug Report、開 GitHub Issue、指紋寫回 index。"
 policy:
   allow_implicit_invocation: false

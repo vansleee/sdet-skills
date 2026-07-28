@@ -1,3 +1,5 @@
 interface:
   display_name: "Issue Quality Gate"
-  short_description: "建單前硬閘門:可重現?去重?非已知 false positive?confidence≥門檻?"
+  short_description: "開單前硬閘門:六條 AND(可重現/證據齊/過 oracle/confidence 達標/非 FP/非重複)全過才放行,輸出 gate.yaml 分流 pass/hold/block。"
+policy:
+  allow_implicit_invocation: false

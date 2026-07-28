@@ -1,3 +1,5 @@
 interface:
   display_name: "Bug Verifier"
-  short_description: "以獨立 subagent 重現候選 bug、給 Confidence Score,不繼承 hunter 的偏見。"
+  short_description: "獨立 subagent 只吃 Evidence Package、從零重現候選 bug,輸出 confirmed/not-reproduced/inconclusive 與獨立證據。"
+policy:
+  allow_implicit_invocation: false

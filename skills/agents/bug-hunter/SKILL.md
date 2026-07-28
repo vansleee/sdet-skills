@@ -25,7 +25,7 @@ disable-model-invocation: true
 4. **判定** — 對 `product-bug` 與未定案的 anomaly 交 `test-oracle`，取得 `verdict` / `oracle_used` / `basis`。
    **沒有 oracle 命中，不得判 bug**——只能 `needs-spec` / `inconclusive`。
 5. **打分** — 依 `references/confidence.md` 算 confidence，寫下用了哪幾個因子與分數，並在 `calibration.yaml` 記一列 `predicted`。
-6. **去重** — 依 `references/bug-fingerprint.md` 算指紋，查 `issues-index.yaml`：已存在 → 併入（`occurrences += 1`、append evidence），不列為新候選；`area+signature` 相同但 `trigger` 不同 → 標 `related` 交人判。
+6. **去重** — 依 `references/bug-fingerprint.md` 算指紋、查 `issues-index.yaml`，照該文「比對與合併」四規則分流（併入 / related / 新候選）。
 7. **濾誤報** — 比對 `known-false-positives.yaml`，命中的移到 `suppressed`，並記下命中哪一條。
 8. **封裝與交付** — 剩下的候選交 `evidence-package` 封裝（**可攜、自帶脈絡**，不得寫「如上一步所說」——下游 `bug-verifier` 是沒有本次記憶的獨立 subagent），依 confidence 排序輸出。
 
