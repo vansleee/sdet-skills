@@ -8,16 +8,14 @@ disable-model-invocation: true
 
 說出你想做的事，我幫你對到正確的 skill 或流程。設計理念見 `docs/meta/ask-sdet.md`。
 
-> 只列「你要自己打」的 user-invoked 入口。其餘 model-invoked skill（evidence-package、explore、bug-verifier、failure-analysis…）agent 遇到對的任務會自己觸發，不用你記。
+> 只列「你要自己打」的 user-invoked 入口。其餘 model-invoked skill（evidence-package、explore、bug-hunter、triage、failure-analysis…）agent 遇到對的任務會自己觸發，不用你記；你想手動指定時照樣可以直接打名字。
 
 ## 你想做什麼 → 用哪支
 | 你的情境 | 打這個 |
 |---|---|
 | 新 repo 還沒設定 / 要換工具、改門檻 | `/setup-sdet` |
 | 要讓同事自主探索找 bug：先定目標與邊界 | `/exploration-charter` |
-| 發動一次自主找 bug（在選定範圍打獵） | `/bug-hunter` |
-| 有個確定的 product-bug，要開成 GitHub Issue | `/triage` |
-| 要牠排程獨立值班，把整條 pipeline 跑一輪 | `/duty-oncall` |
+| 要牠排程獨立值班（獵→驗→閘→開單→開 PR 跑一輪） | `/duty-oncall` |
 | 把一次成功探索固化成自動化測試 | `/test-author` |
 | CI 一片紅，要收斂根因、分組派工開單 | `/pipeline-triage` |
 | 要把測試接進 GitHub Actions、改觸發時機或 artifact | `/ci-pipeline` |
@@ -26,7 +24,7 @@ disable-model-invocation: true
 | 不知道用哪個 | `/ask-sdet`（就是我） |
 
 ## 主要流程（誰接誰）
-**找新 bug**：`/exploration-charter` 定目標 → `/bug-hunter` 打獵（自動用 explore／evidence-package／test-oracle）→ bug-verifier 獨立重現 → issue-quality-gate 把關 → `/triage` 開單 → bug-fixer 開 PR（人 merge）
+**找新 bug**：`/exploration-charter` 定目標 → bug-hunter 打獵（自動用 explore／evidence-package／test-oracle）→ bug-verifier 獨立重現 → issue-quality-gate 把關 → triage 開單 → bug-fixer 開 PR（人 merge）。整條要一次跑完，打 `/duty-oncall`。
 
 **顧測試**：`/test-author` 寫測試 → 進 CI 跑 → 紅了 failure-analysis 分析 → test-heal 修測試 → re-run-gate 重跑到綠
 

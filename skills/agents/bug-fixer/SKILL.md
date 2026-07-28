@@ -1,10 +1,9 @@
 ---
 name: bug-fixer
-description: 只修可重現的 issue：先自己重現、先寫會紅的回歸測試、再改最小幅度產品碼讓它轉綠，最後開 PR——只開、絕不 merge。使用者說「修這張」「開 PR」「fix it」時使用。關鍵詞：修 bug、fixer、PR、先紅後綠、最小修改。
-disable-model-invocation: true
+description: 只修可重現的 issue：先重現、用先紅後綠的回歸測試釘住行為、最小幅度改產品碼，最後開 PR——只開、絕不 merge。使用者要修 bug、開修復 PR 時使用；`issue-quality-gate` 放行且範圍可修時由它接手。
 ---
 
-# Bug Fixer (v0.1)
+# Bug Fixer
 
 輸入一張過了 `issue-quality-gate` 的 Issue（含 Evidence Package、產品 repo 可存取），輸出一個待 review 的 PR。後端指令讀 `config/issue-tracker-github.md`，token 走 env。設計理念見 `docs/agents/bug-fixer.md`。
 

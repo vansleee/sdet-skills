@@ -1,5 +1,3 @@
 interface:
   display_name: "Bug Fixer"
   short_description: "只修過閘門且可重現的 issue:先重現→寫會紅的回歸測試→最小修改轉綠→開 PR,絕不自行 merge。"
-policy:
-  allow_implicit_invocation: false

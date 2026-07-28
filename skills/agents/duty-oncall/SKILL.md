@@ -1,17 +1,17 @@
 ---
 name: duty-oncall
-description: 排程或使用者觸發的「獨立值班」總編排：bug-hunter 找 → bug-verifier 獨立重現 → issue-quality-gate 把關 → 過關的交 triage 開單、可修的交 bug-fixer 開 PR（不 merge），全程受 governance 與預算管制，最後寫 runs/<date>.yaml 與五分鐘可複核的摘要。使用者說「值一班」「跑一輪完整流程」「oncall」時使用。關鍵詞：值班、oncall、排班、流水線、獨立值勤。
+description: 排一次獨立值班——獵 → 驗 → 閘 → 開單／開 PR（不 merge）跑完一輪，受 governance 與預算管制，留下 runs/<date>.yaml 與五分鐘可複核的摘要。
 disable-model-invocation: true
 ---
 
-# Duty Oncall (v0.1)
+# Duty Oncall
 
 輸入一份 charter（`charters/<slug>.yaml`），輸出一輪完整值勤 ＋ `runs/<date>.yaml` ＋ 值班摘要。設計理念見 `docs/agents/duty-oncall.md`。
 
-> **它不發明能力，它把第四週所有代理人排成一次可重複、可稽核的值班。** 授權不是放手：發起交給排程，**不可逆的最後一下（merge、拍板）永遠留給人**。
+> **它不發明能力，它把 `agents/` 的代理人排成一次可重複、可稽核的值班。** 授權不是放手：發起交給排程，**不可逆的最後一下（merge、拍板）永遠留給人**。
 
 ## 前置（缺了就停手回報，不硬跑）
-- 第四週全套就緒：`bug-hunter` / `bug-verifier` / `issue-quality-gate` / `triage` / `bug-fixer`。
+- 五站全數就緒：`bug-hunter` / `bug-verifier` / `issue-quality-gate` / `triage` / `bug-fixer`。
 - `config/governance.yaml`、`config/sdet-config.yaml`（預算與門檻）、charter 檔可讀。
 - `gh auth status` 已登入（triage / fixer 會用到）。
 

@@ -1,14 +1,13 @@
 ---
 name: triage
-description: 把一個 product-bug finding（連同 Evidence Package）寫成可重現的 Bug Report，開一張 GitHub Issue。使用者要開單、把發現變成 issue、寫 bug report 時使用。關鍵詞：開單、bug report、issue、triage、可重現。
-disable-model-invocation: true
+description: 把過閘門的 product-bug finding 寫成可重現 Bug Report、開一張 GitHub Issue、指紋寫回 issues-index。使用者要開單時使用；`issue-quality-gate` 放行後由它接手。
 ---
 
-# Triage (v0.1)
+# Triage
 
 輸入一個 `product-bug` finding（來自 `classify-anomaly`）＋它的 Evidence Package，輸出一份可重現 Bug Report 並開一張 GitHub Issue。後端指令讀 `config/issue-tracker-github.md`，token 走 env。設計理念見 `docs/agents/triage.md`。
 
-> **v0.1 只做「一張報告、開一張單」。** 更完整的去重、品質閘、委派驗證/修復，由 `issue-quality-gate`、`bug-verifier`、`bug-fixer` 搭配；CI 級的批次開單見 `pipeline-triage`。
+> **它只做「一張報告、開一張單」。** 資格由 `issue-quality-gate` 判（見前置，強制）、修復由 `bug-fixer` 接；CI 級的批次開單見 `pipeline-triage`。
 
 ## 前置
 - finding 的 `category` 必須是 `product-bug` 且附 Evidence Package；其餘一律不開單（擋在這）。
@@ -16,12 +15,11 @@ disable-model-invocation: true
 - `gh auth status` 已登入；否則停手回報。
 
 ## 步驟
-1. 讀 finding 與它引用的證據。
-2. 依範本寫成 `report.md`（四要件：可重現／有證據／耐久／精簡；每條宣稱指向證據檔）。
-3. **開單前先把 title + 摘要列給使用者確認**（對外副作用）。
-4. 確認後開單：`gh issue create --title "..." --body-file report.md --label bug,sdet-auto`。
-5. **把指紋寫回 `issues-index.yaml`**（`fingerprint` / `issue: #<n>` / `occurrences` / `confidence`）——不寫，下一輪 hunter 的去重就看不到這張單。
-6. 回報**完整 Issue URL**（非只給編號）。
+1. 依範本寫成 `report.md`（四要件：可重現／有證據／耐久／精簡；每條宣稱指向證據檔）。
+2. **開單前先把 title + 摘要列給使用者確認**（對外副作用）。
+3. 確認後開單：`gh issue create --title "..." --body-file report.md --label bug,sdet-auto`。
+4. **把指紋寫回 `issues-index.yaml`**（`fingerprint` / `issue: #<n>` / `occurrences` / `confidence`）——不寫，下一輪 hunter 的去重就看不到這張單。
+5. 回報**完整 Issue URL**（非只給編號）。
 
 ## Bug Report 範本
 ```

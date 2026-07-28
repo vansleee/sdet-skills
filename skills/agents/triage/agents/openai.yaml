@@ -1,5 +1,3 @@
 interface:
   display_name: "Triage"
   short_description: "把過了 issue-quality-gate 的 product-bug finding 寫成可重現 Bug Report、開 GitHub Issue、指紋寫回 index。"
-policy:
-  allow_implicit_invocation: false

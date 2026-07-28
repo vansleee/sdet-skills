@@ -1,10 +1,9 @@
 ---
 name: issue-quality-gate
-description: 開單前的硬閘門：六條 AND 條件（可獨立重現、證據齊、過 oracle、confidence 達標、非 known-FP、非重複）全過才放行，輸出 gate.yaml 分流 pass / hold / block。使用者說「過閘門」「能不能開單」「quality gate」時使用。關鍵詞：閘門、gate、放行、開單資格、把關。
-disable-model-invocation: true
+description: 開單前的硬閘門：六條 AND 全過才放行，輸出 gate.yaml 分流 pass / hold / block。使用者問「這能不能開單」時使用；任何 skill 要把候選變成 issue 或 PR 前，都得先過它。
 ---
 
-# Issue Quality Gate (v0.1)
+# Issue Quality Gate
 
 輸入一批候選（含 verdict、confidence、evidence），輸出 `gate.yaml`。設計理念見 `docs/agents/issue-quality-gate.md`。
 
