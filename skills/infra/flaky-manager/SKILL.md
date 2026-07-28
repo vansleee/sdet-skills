@@ -8,7 +8,7 @@ description: 跨 run 的 flaky 治理：維護 flaky 名單、決定隔離（qua
 輸入跨 run 的失敗歷史，輸出 flaky 名單 + 隔離決策 + 到期升級。設計理念見 `docs/infra/flaky-manager.md`。
 
 > 一筆 vs 一批：`flaky-detect` 對**一支**測試重跑 N 次定性；本 skill 管**一批**的名單、政策與退場。
-> 狀態檔：`flaky-registry.yaml`（範本 `flaky-registry.example.yaml`，見 `docs/state-files.md`）。
+> 狀態檔：`flaky-registry.yaml`（範本 `state-templates/flaky-registry.example.yaml`，見 `docs/state-files.md`）。
 
 ## 輸入 / 輸出
 - **輸入**：`pipeline-triage` 判為 flaky 的群、`flaky-detect` 的定性結果、跨 run 歷史（`pipeline-read` 拉近 N 個 run，N 讀 `config/sdet-config.yaml` 的 `flaky.lookback_runs`，預設 20）、現有 `flaky-registry.yaml`。

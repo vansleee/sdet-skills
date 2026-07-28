@@ -37,7 +37,7 @@ bash scripts/link-skills.sh      # 把 skill link 進 ~/.claude/skills
 - `config/` — 後端設定(CI / issue-tracker / product / governance),祕密走 env
 - `knowledge/` — 受測產品的事實(依規模:單檔 → domains/ 多檔 → RAG/MCP)
 - `references/` — test-design / tours / heuristics / confidence / bug-fingerprint / test-health-metrics / traceability-mapping 等參考文件(**演算法放這裡**)
-- 根目錄 `*.example.yaml` — 狀態檔範本(calibration / known-false-positives / issues-index / flaky-registry / pipeline-gate / traceability / signoff),複製成同名真檔使用
+- `state-templates/*.example.yaml` — 狀態檔範本(calibration / known-false-positives / issues-index / flaky-registry / pipeline-gate / traceability / signoff),複製到 repo 根成同名真檔使用
 - `docs/` — 每支 skill 的設計理念說明頁 + `state-files.md`(資料流)
 
 **「一筆 vs 一批」:** maintain/ 修一支測試,infra/ 顧整批 pipeline。
