@@ -20,7 +20,7 @@ bash scripts/link-skills.sh      # 把 skill link 進 ~/.claude/skills
 **explore/** exploration-charter(user) · explore · test-oracle
 **agents/** bug-hunter · bug-verifier · issue-quality-gate · triage · bug-fixer · duty-oncall(user)
 **maintain/**(顧好每一支測試) test-author(user) · test-design(ref) · test-data · failure-analysis · flaky-detect · test-heal · re-run-gate · test-prune
-**infra/**(顧好整條生產線) ci-pipeline(user) · test-parallelize · test-env · pipeline-read · pipeline-triage(user) · flaky-manager · quality-gate(user) · pipeline-observability · governance(config)
+**infra/**(顧好整條生產線) ci-pipeline · test-parallelize · test-env · pipeline-read · pipeline-triage · flaky-manager · quality-gate(user) · pipeline-observability · governance(config)
 **economics/** route-by-risk · sdet-economics(ref)
 **workflow/**(把 SDET 接進團隊/SDLC) test-planning · traceability · status-report · release-signoff(user)
 **meta/** ask-sdet(user)

@@ -1,5 +1,3 @@
 interface:
   display_name: "CI Pipeline"
   short_description: "用 GitHub Actions 建/改測試 pipeline,產 workflow、掛分片與環境、上傳 report/trace artifact。"
-policy:
-  allow_implicit_invocation: false

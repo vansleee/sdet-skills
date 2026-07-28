@@ -1,6 +1,6 @@
 ---
 name: pipeline-observability
-description: 算測試健康指標（MTTR、flaky rate、首次通過率、派工延遲、suite duration），比對趨勢，並把超標的指標路由到該處理它的 skill。當要看測試健康度、CI 是不是在變差、要週期性回顧時使用。關鍵詞：健康度、指標、MTTR、flaky rate、趨勢、變慢、觀測。
+description: 算測試健康指標（MTTR、flaky rate、首次通過率、派工延遲、suite duration），比對趨勢，把超標的路由到該處理它的 skill。要看測試健康度、判斷 CI 是不是在變差、做週期性回顧時使用。
 ---
 
 # Pipeline Observability
@@ -41,7 +41,7 @@ description: 算測試健康指標（MTTR、flaky rate、首次通過率、派�
 - **不重算、只引用。** 數字的單一真相在各自的狀態檔；這裡重算一次，就會出現兩個版本的 flaky rate。
 - **`no-data` 不是 0。** 沒量到不等於健康——這和 `route-by-risk`「資料源缺不等於低風險」是同一條紀律。
 - **趨勢比絕對值重要。** flaky rate 5% 不一定有問題，但從 1% 變 5% 一定有事。報告一律附上期對照。
-- 純讀無副作用：不改測試、不改 workflow、不開單、不放行。
+- **純讀無副作用——它是儀表，不是方向盤。** 指出該去哪，方向盤交給被路由到的那支。
 
 ## 輸出（格式，非某次執行結果）
 ```yaml

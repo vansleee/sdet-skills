@@ -1,6 +1,6 @@
 ---
 name: quality-gate
-description: merge/release 前的 pipeline 放行閘：彙整 run 結果、隔離名單、blocker issue，逐條評估後裁決 PASS / FAIL / OVERRIDE，並留痕。使用者說「能不能 merge」「能不能放行」「過閘門了嗎」時使用。關鍵詞：放行、閘門、gate、merge、能不能出、把關、override。
+description: merge/release 前的 pipeline 放行閘：彙整 run 結果、隔離名單、blocker issue，逐條附證據裁決 PASS / FAIL / OVERRIDE 並留痕。只裁決，不 merge。
 disable-model-invocation: true
 ---
 
@@ -62,4 +62,4 @@ disable-model-invocation: true
 ```
 
 ## 上下游
-上游：`pipeline-read`（run 證據）、`flaky-manager`（隔離名單）、`duty-oncall`（排程跑）。下游：`release-signoff`（吃本 skill 的 `pipeline-gate.yaml` 當證據）、`pipeline-observability`（gate 通過率、override 次數）、`status-report`（引用裁決）。
+上游：`pipeline-read`（run 證據）、`flaky-manager`（隔離名單）。**只由人發動**——沒有 skill 呼叫它，放行是人的決定點。下游：`release-signoff`（吃本 skill 的 `pipeline-gate.yaml` 當證據）、`pipeline-observability`（gate 通過率、override 次數）、`status-report`（引用裁決）。

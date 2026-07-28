@@ -1,6 +1,6 @@
 ---
 name: test-env
-description: 決定整套測試的環境策略：ephemeral 還是共享+namespace、怎麼 seeding、怎麼隔離狀態，並產出掛進 CI 的前置/收尾步驟。禁止重置共享環境。當要決定測試跑在哪、環境髒了、要 seeding、要判斷是不是環境壞掉時使用。關鍵詞：測試環境、環境、seeding、ephemeral、隔離、污染、staging。
+description: 決定整套測試的環境策略：ephemeral 還是共享+namespace、怎麼 seeding、怎麼隔離狀態，並產出掛進 CI 的前置/收尾步驟。禁止重置共享環境。要決定測試跑在哪、環境髒了、要判斷是不是環境壞掉時使用；`ci-pipeline` 要掛環境步驟、`test-parallelize` 要確認隔離可行時也用。
 ---
 
 # Test Env（一批）
@@ -35,8 +35,7 @@ description: 決定整套測試的環境策略：ephemeral 還是共享+namespac
 - **禁止重置共享環境。** `reset_shared_env`、`truncate_shared_db` 在 `config/governance.yaml` 的 `forbidden` 名單，**沒有任何 override 路徑**。理由：共享環境上有別人的資料與正在進行的驗證；「清乾淨比較好測」對你成立，對隔壁那位不成立。環境髒了就用唯一前綴繞開它，不是清掉它。
 - **只刪自己前綴的資料。** teardown 的刪除條件必須帶 run 前綴；沒有前綴的全域刪除等同重置，同樣禁止。
 - **seeding 走 API，不直插 DB。** 直插 DB 種出的資料常常是產品邏輯不承認的狀態，會製造假 bug。
-- **環境問題不改測試。** smoke check 不過 → 分類 `environment` → 交 infra 修環境，`failure-analysis` 也是這樣分流的；不准為了讓它綠而放寬測試。
-- 本 skill 不寫測試、不修測試、不決定平行度（那是 `test-parallelize`）。
+- **環境問題交 infra 修環境。** smoke check 不過 → 分類 `environment` → 修環境（`failure-analysis` 也是這樣分流的）；測試維持原樣，放寬它只是把壞環境藏起來。
 
 ## 輸出（格式，非某次執行結果）
 ```yaml

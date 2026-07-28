@@ -1,5 +1,3 @@
 interface:
   display_name: "Pipeline Triage"
   short_description: "一片紅時先 fan-in 合併根因,再分組派工開單(jenkins-failure-triage 後裔)。"
-policy:
-  allow_implicit_invocation: false

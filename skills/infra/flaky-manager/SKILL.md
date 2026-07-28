@@ -1,6 +1,6 @@
 ---
 name: flaky-manager
-description: 跨 run 的 flaky 治理：維護 flaky 名單、決定隔離（quarantine）與解除、追蹤到期未修者並升級。當要看 flaky 健康度、要隔離某支測試、要決定 quarantine 名單怎麼處理時使用。關鍵詞：flaky、quarantine、隔離、名單、跨 run、時好時壞、不穩定。
+description: 跨 run 的 flaky 治理：維護 flaky 名單、決定隔離（quarantine）與解除、追蹤到期未修者並升級。要看 flaky 健康度、要隔離某支測試時使用；`pipeline-triage` 分流出 flaky 群、`pipeline-observability` 的 flaky_rate 超標時路由到它。
 ---
 
 # Flaky Manager（一批）
