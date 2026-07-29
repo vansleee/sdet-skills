@@ -1,0 +1,6 @@
+1. [POST] https://with-bugs.practicesoftwaretesting.com/cdn-cgi/rum? => [204] 
+2. [GET] https://api-with-bugs.practicesoftwaretesting.com/products?between=price,1&page=1 => [200] OK
+4. [GET] https://with-bugs.practicesoftwaretesting.com/broken.png => [404] 
+13. [GET] https://api-with-bugs.practicesoftwaretesting.com/products/search?q=zzzznonexistentproduct => [200] OK
+
+Note: 9 static requests not shown, run with "static" option to see them.

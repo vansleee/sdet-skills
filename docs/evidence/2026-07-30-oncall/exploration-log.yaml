@@ -1,0 +1,56 @@
+charter: charters/toolshop-login-cart.yaml
+run: 20260730-toolshop-oncall-bughunting
+target: https://with-bugs.practicesoftwaretesting.com/#/?bug-hunting=true
+target_note: >
+  使用者要求先按首頁的「🐛 Bug Hunting」按鈕才開工。該按鈕會開新分頁導向 with-bugs 變體站
+  （刻意植入缺陷的 build），本輪所有觀察都在這個 build 上，與前幾輪（乾淨站
+  practicesoftwaretesting.com）不是同一個受測對象，因此前幾輪的 finding 不適用於本輪去重。
+prior_runs_checked:
+  - 20260728-toolshop-login-cart          # 乾淨站：cart footer total stale / checkout console TypeError
+  - 20260728-toolshop-login-cart-round2   # 乾淨站：favourites / compare 無 UI 回饋
+  - 20260729-toolshop-login-cart-round3   # 未完成（僅 2 張截圖，無 results.yaml）
+steps:
+  - n: 1
+    action: "navigate practicesoftwaretesting.com，按「🐛 Bug Hunting」→ 站台切到 with-bugs 變體"
+    reason: "使用者指定的前置動作"
+  - n: 2
+    action: "按 Start Hunting，關掉歡迎頁，只留左側 hunt 面板"
+    reason: "面板佔左半屏，不擋受測 app；不使用 Get Hint / Show Answer（會汙染獨立判斷）"
+  - n: 3
+    action: "nav Sign in → 登入 customer@practicesoftwaretesting.com"
+    reason: "charter 核心流程"
+  - n: 4
+    action: "檢查 POST /users/login 與 nav 帳號區顯示"
+    reason: "oracle：UI 與 API 狀態一致"
+  - n: 5
+    action: "product/1 商品頁：按 + 兩次、按 − 一次，讀 [data-test=quantity] 值"
+    reason: "商品頁數量控制是 charter 範圍內、前幾輪未在此 build 測過"
+  - n: 6
+    action: "手動輸入 qty=3，Add to cart"
+    reason: "非 1 的初始加購量"
+  - n: 7
+    action: "route 切到 product/2，直接 Add to cart（未動數量欄）"
+    reason: "測跨商品的欄位狀態是否重置"
+  - n: 8
+    action: "進 /checkout（cart 步驟），比對每列 Total 與頁尾 Total"
+    reason: "charter：購物車金額一致性"
+  - n: 9
+    action: "把第一列數量 3 → 5，離焦後重讀金額"
+    reason: "確認是否為靜態渲染錯誤或計算錯誤"
+  - n: 10
+    action: "以 app 自己的 auth-token 直接打 GET /users/me，比對回傳與 nav 顯示"
+    reason: "把『UI 顯示不對』釘成 API↔UI 不一致，而不是猜測"
+  - n: 11
+    action: "點 nav 的 Home"
+    reason: "snapshot 顯示 Home 的 href 是 #/contact，實地點擊確認"
+  - n: 12
+    action: "商品列表搜尋 zzzznonexistentproduct"
+    reason: "0 筆結果的 UI/API 一致性（此 build 未測過）"
+  - n: 13
+    action: "收 console.log / network.log，停手"
+    reason: "charter 三個範圍（登入頁/商品頁/購物車）都已覆蓋，未達 max_steps=15 但無新增益"
+stopped_reason: "達成 charter 目標；付款步驟為 out_of_bounds，不進 checkout 的 payment 步"
+out_of_bounds_respected: [註冊, 付款, production 寫入]
+notes:
+  - "此 build 的購物車存在 sessionStorage，不呼叫 /carts API；因此本輪購物車類觀察以 DOM + sessionStorage 為證據，而非 network。"
+  - "左側 hunt 面板的 Mission 文字（cart quantity / cart total）在畫面上可見，屬於站台自帶提示；本輪未按 Get Hint / Show Answer，判定與證據皆自行取得。"

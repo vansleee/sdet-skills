@@ -1,0 +1,86 @@
+results:
+  - id: R-01
+    check: "登入頁：正確帳密登入，UI 與 API 是否一致"
+    status: pass
+    expected: "POST /users/login 回 2xx，導向已登入頁面"
+    actual: "POST /users/login => 200 OK，導向 #/account"
+    evidence: [network.log]
+
+  - id: R-02
+    check: "登入後 nav 帳號區顯示的使用者身分，是否與 GET /users/me 一致"
+    status: fail
+    expected: "顯示登入者姓名（API 回 Jane Doe）"
+    actual: "nav 顯示「User Data not found」；以 app 自己的 auth-token 打 GET /users/me 回 200，body 為 {id:2, first_name:'Jane', last_name:'Doe', ...}。API 有資料、UI 說找不到。console 另有 3 筆 GET /users/me 401（其中 2 筆發生在已登入之後）"
+    evidence: [05-cart-totals.png, 07-home-link-goes-contact.png, console.log, network.log]
+
+  - id: R-03
+    check: "商品頁：數量 +/− 按鈕是否能調整數量"
+    status: fail
+    expected: "按 + 一次，[data-test=quantity] 由 1 變 2"
+    actual: "product/1 連按 + 兩次，值仍為 1（DOM 讀值確認）；按 − 一次亦為 1（在下限 1 為正確行為，不列為缺陷）。product/5 再測一次 +，值維持 4 未變。只有手動鍵入數字才改得動。product/4（Out of stock）的 +/− 為 disabled，屬正確行為"
+    evidence: [03-qty-plus-noop.png, 09-qty-leak-and-plus-noop-repro2.png]
+
+  - id: R-04
+    check: "商品頁：換一個商品時，數量欄位是否重置為 1"
+    status: fail
+    expected: "進入 product/2 時數量欄為預設 1；未調整就加購 => 購物車數量 1"
+    actual: >
+      三次觀察：(1) product/1 手動輸入 3 → route 切到 product/2，數量欄仍是 3；未碰欄位直接 Add to cart，
+      sessionStorage cart 內 Pliers 的 quantity=3、total=36.03，購物車 badge 由 3 跳到 6。
+      (2) product/3 輸入 4 → 點 Related products 的 Long Nose Pliers（真實使用者路徑）→ product/4 數量欄顯示 4。
+      (3) 再切到 product/5，數量欄仍是 4（跨兩次 route 切換都沒重置）。
+      對照組：從商品列表頁進 product/3 時（元件重建）數量欄為正確的 1，可見只在商品→商品的 route 切換時外洩
+    evidence: [04-product2-qty-leak.png, 09-qty-leak-and-plus-noop-repro2.png]
+
+  - id: R-05
+    check: "購物車：每列 Total 是否等於單價 × 數量，且與頁尾 Total 一致"
+    status: fail
+    expected: "Combination Pliers 3 × $14.15 = $42.45、Pliers 3 × $12.01 = $36.03，頁尾 $78.48"
+    actual: "兩列的 Total 欄都顯示 $00.00，頁尾 Total 顯示 $78.48（正確）。把第一列改成 5 之後，頁尾更新為 $106.78（仍正確），兩列 Total 依舊 $00.00 —— 同一頁面同時顯示互相矛盾的兩組金額"
+    evidence: [05-cart-totals.png, 06-cart-line-total-zero.png]
+
+  - id: R-06
+    check: "購物車：修改數量後金額是否重算"
+    status: pass
+    expected: "數量 3 → 5，頁尾 Total 由 $78.48 變 $106.78"
+    actual: "頁尾 Total 正確更新為 $106.78，sessionStorage cart 的 quantity/total 同步更新"
+    evidence: [06-cart-line-total-zero.png]
+
+  - id: R-07
+    check: "導覽列 Home 連結是否導向商品列表首頁"
+    status: fail
+    expected: "點 Home → 商品列表（#/）"
+    actual: "Home 的 href 是 #/contact（登入頁、商品頁、購物車頁的 snapshot 皆同）；實地點擊後網址變 #/contact、畫面是 Contact 表單"
+    evidence: [07-home-link-goes-contact.png, snap-01-home.yml, snap-02-product1.yml]
+
+  - id: R-08
+    check: "商品頁：搜尋不存在的關鍵字，UI 與 API 是否一致"
+    status: pass
+    expected: "API 回 200、UI 明確顯示 0 筆"
+    actual: "GET /products/search?q=zzzznonexistentproduct => 200，UI 顯示「Searched for: ...」與「0 products found」，一致"
+    evidence: [08-search-no-results.png, network.log]
+
+  - id: R-09
+    check: "正常瀏覽是否出現未預期的 console error / 破圖"
+    status: fail
+    expected: "無 404 資源、無 console error"
+    actual: "每頁都載入 https://with-bugs.practicesoftwaretesting.com/broken.png => 404，導覽列 logo 與側欄 Search 標題各出現一個破圖 icon"
+    evidence: [console.log, 08-search-no-results.png]
+
+  - id: R-10
+    check: "介面文案是否正確"
+    status: anomaly
+    detail: "多處拼字錯誤：導覽列「Contakt」、側欄「Sorth」（Sort）、搜尋鈕「Serch」（Search）、商品頁「Reltded products」（Related products）；購物車表頭出現兩個「Total」欄位標題。屬內容缺陷，不影響資料正確性，是否值得各開一單交人判"
+    evidence: [08-search-no-results.png, 05-cart-totals.png, 02-product-1-detail.png]
+
+  - id: R-11
+    check: "商品頁 accessibility snapshot 是否再度出現「空白頁」假象"
+    status: inconclusive
+    detail: "第一次 snapshot 只讀到「Reltded products」，同時 GET /products/1 為 200 且全頁截圖證實畫面完整渲染。與 20260728 R-07 同一種 tooling 觀測時機問題，非產品缺陷，記錄以防誤判"
+    evidence: [02-product-1-detail.png]
+
+  - id: R-12
+    check: "購物車按鈕與收藏按鈕的版面是否重疊"
+    status: anomaly
+    detail: "商品頁「Add to cart」按鈕右半被「Add to favourites」按鈕覆蓋，文字被切掉；按鈕仍可點擊、功能正常。純視覺缺陷，交人判是否開單"
+    evidence: [02-product-1-detail.png]
