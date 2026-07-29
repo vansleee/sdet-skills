@@ -10,20 +10,20 @@ description: 算測試健康指標（MTTR、flaky rate、首次通過率、派�
 > **指標要導向行動，不是儀表板自嗨。** 每個超標指標都必須指名「接下來交給哪支 skill」，否則這份報告只是好看的數字。
 
 ## 輸入 / 輸出
-- **輸入**：期間（預設近 30 天，讀 `config/sdet-config.yaml` 的 `observability.window_days`）＋ `pipeline-read` 的 run 歷史 ＋ `runs/<date>.yaml`（值班計量）＋ `runs/reruns-<date>.yaml`（重跑紀錄）＋ `flaky-registry.yaml` ＋ `pipeline-gate.yaml` ＋ `triage-reports/` ＋ `issues-index.yaml`。
-- **輸出**：指標報告（本期值、上期值、趨勢、是否超標、行動建議），存 `reports/health-<date>.md`。
+- **輸入**：期間（預設近 30 天，讀 `config/sdet-config.yaml` 的 `observability.window_days`）＋ `pipeline-read` 的 run 歷史 ＋ `output/runs/<date>.yaml`（值班計量）＋ `output/runs/reruns-<date>.yaml`（重跑紀錄）＋ `output/flaky-registry.yaml` ＋ `output/pipeline-gate.yaml` ＋ `output/triage-reports/` ＋ `output/issues-index.yaml`。
+- **輸出**：指標報告（本期值、上期值、趨勢、是否超標、行動建議），存 `output/reports/health-<date>.md`。
 
 ## 指標（算式與資料來源見 `references/test-health-metrics.md`）
 
 | 指標 | 一句話定義 | 主要來源 | 超標時路由到 |
 |---|---|---|---|
 | `mttr` | 主線由紅轉綠的中位時間 | run 歷史（同 branch 連續 run 的 conclusion）| `pipeline-triage`（派工太慢）/ `test-heal` |
-| `flaky_rate` | flaky 失敗數 ÷ 總失敗數 | `flaky-registry.yaml` | `flaky-manager` |
+| `flaky_rate` | flaky 失敗數 ÷ 總失敗數 | `output/flaky-registry.yaml` | `flaky-manager` |
 | `first_pass_rate` | 不靠 retry 就綠的 run 比例 | run 歷史 + retry 記錄 | `pipeline-triage`（驟降＝有新問題進來）|
 | `suite_duration_p50/p95` | 套件耗時 | run 歷史 | `test-parallelize` |
-| `assignment_latency` | 紅燈到 issue 被 assign 的中位時間 | `triage-reports/` + `issues-index.yaml` | `pipeline-triage` / 人（人力問題）|
-| `quarantine_count` | 隔離中的測試數（含逾期幾支）| `flaky-registry.yaml` | `flaky-manager`（逾期）/ `test-prune` |
-| `gate_pass_rate` / `override_count` | 放行通過率、硬推次數 | `pipeline-gate.yaml` | 人（override 變多＝閘門與現實脫節）|
+| `assignment_latency` | 紅燈到 issue 被 assign 的中位時間 | `output/triage-reports/` + `output/issues-index.yaml` | `pipeline-triage` / 人（人力問題）|
+| `quarantine_count` | 隔離中的測試數（含逾期幾支）| `output/flaky-registry.yaml` | `flaky-manager`（逾期）/ `test-prune` |
+| `gate_pass_rate` / `override_count` | 放行通過率、硬推次數 | `output/pipeline-gate.yaml` | 人（override 變多＝閘門與現實脫節）|
 
 閾值全部讀 `config/sdet-config.yaml` 的 `observability.thresholds`，**不寫死**。
 
@@ -34,7 +34,7 @@ description: 算測試健康指標（MTTR、flaky rate、首次通過率、派�
 4. **比趨勢**：與上期比，標 `improving` / `stable` / `degrading`。
 5. **對閾值**：超標的標 `alert`。
 6. **產行動**：每個 `alert` 依上表指名下一步 skill + 一句理由。沒有 alert 就明說「本期無需行動」。
-7. **存檔**：寫 `reports/health-<date>.md`。
+7. **存檔**：寫 `output/reports/health-<date>.md`。
 
 ## 鐵則
 - **每個 alert 必須綁一個行動。** 只報數字不指路，等於把判斷成本丟回給人。
@@ -54,7 +54,7 @@ metrics:
   assignment_latency: { value: "1h10m", prev: "1h30m", trend: improving, threshold: "4h",  alert: false }
   quarantine_count:   { value: 9, expired: 2, prev: 5,  trend: degrading, threshold: 5,    alert: true }
   gate_pass_rate:     { value: 0.71, override_count: 4, prev: 0.83, trend: degrading, alert: true }
-  coverage_gap:       { value: no-data, reason: "traceability.yaml 不存在,本期未跑 traceability" }
+  coverage_gap:       { value: no-data, reason: "output/traceability.yaml 不存在,本期未跑 traceability" }
 actions:
   - metric: flaky_rate
     route: flaky-manager

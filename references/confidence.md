@@ -62,11 +62,11 @@
   next_step: "自動送 bug-verifier"
 ```
 
-## 校準：`calibration.yaml`
+## 校準：`output/calibration.yaml`
 
-打完分還要知道分數**準不準**。每筆進入下游的 finding 都在 `calibration.yaml` 留一列：`predicted` vs `human_verdict`（由 `bug-verifier` 或人複核後回填）。
+打完分還要知道分數**準不準**。每筆進入下游的 finding 都在 `output/calibration.yaml` 留一列：`predicted` vs `human_verdict`（由 `bug-verifier` 或人複核後回填）。
 
 - 打 `high` 卻常被打槍 → **系統性過度自信**，調高門檻或降低「單次複現」的配分。
 - 大量後來確認的真 bug 被壓成 `low` → **太保守**，漏報成本高。
 
-**沒有 calibration，confidence 只是一個沒人驗證過的自我感覺。** 累積的數據同時餵給 `runs/<date>.yaml` 的績效計量。
+**沒有 calibration，confidence 只是一個沒人驗證過的自我感覺。** 累積的數據同時餵給 `output/runs/<date>.yaml` 的績效計量。

@@ -5,7 +5,7 @@
 - **只吃 product-bug。** 非 product-bug（環境／測資／flaky…）在 `classify-anomaly` 就被擋掉，triage 不重判。
 - **報告寫行為、不寫實作。** agent 從外部操作產品，被迫用使用者語言描述，報告天生耐久、跨得過重構。
 - **重現步驟必填。** 湊不齊就不開單（更嚴的把關見 `issue-quality-gate`）。
-- **後端可替換。** 指令讀專案裡實際存在的 `config/issue-tracker-*.md`；沒有 GitHub repo 前先用 `issue-tracker-local-md.md`（寫本地 `reports/issues/*.md`），之後補上 `issue-tracker-github.md` 即自動切換，triage 本身不用改。
+- **後端可替換。** 指令讀專案裡實際存在的 `config/issue-tracker-*.md`；沒有 GitHub repo 前先用 `issue-tracker-local-md.md`（寫本地 `output/reports/issues/*.md`），之後補上 `issue-tracker-github.md` 即自動切換，triage 本身不用改。
 - **開單先確認。** 對外副作用先列給人確認再呼叫 API。
 
 ## 成長路徑

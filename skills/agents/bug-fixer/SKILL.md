@@ -5,12 +5,12 @@ description: 只修可重現的 issue：先重現、用先紅後綠的回歸測�
 
 # Bug Fixer
 
-輸入一張過了 `issue-quality-gate` 的 Issue（含 Evidence Package、產品 repo 可存取），輸出一個待 review 的 PR。後端指令讀專案裡實際存在的 `config/issue-tracker-*.md`（本地檔案後端下，讀 `reports/issues/*.md` 取代讀 GitHub Issue），token 走 env。設計理念見 `docs/agents/bug-fixer.md`。
+輸入一張過了 `issue-quality-gate` 的 Issue（含 Evidence Package、產品 repo 可存取），輸出一個待 review 的 PR。後端指令讀專案裡實際存在的 `config/issue-tracker-*.md`（本地檔案後端下，讀 `output/reports/issues/*.md` 取代讀 GitHub Issue），token 走 env。設計理念見 `docs/agents/bug-fixer.md`。
 
 > **順序就是紀律：先重現、先寫會紅的測試、才改碼。** 測試轉綠不是目的，行為對了才是。
 
 ## 前置（缺了就停手回報）
-- Issue 已過閘門（`gate.yaml` 內 `result: pass`）且範圍清楚、根因可及。**影響面不明的（如元件狀態糾纏）→ 只報不修，交回人判。**
+- Issue 已過閘門（`output/gate.yaml` 內 `result: pass`）且範圍清楚、根因可及。**影響面不明的（如元件狀態糾纏）→ 只報不修，交回人判。**
 - 產品 repo 可存取、測試可在本地跑；`gh auth status` 已登入。
 - `config/governance.yaml`：確認 `merge_pr` 在 forbidden（它本來就該在）。
 

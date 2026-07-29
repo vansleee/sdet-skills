@@ -9,21 +9,21 @@ disable-model-invocation: true
 輸入一個候選版本，輸出 `go` / `no-go` / `conditional-go` + 逐條證據 + 可稽核的簽核紀錄。設計理念見 `docs/workflow/release-signoff.md`。
 
 > **三層閘門分工**：`issue-quality-gate`（一張單能不能開）→ `infra/quality-gate`（一個 build 能不能放行）→ **本 skill**（整個 release 對需求與風險能不能簽出去）。本層**吃下層產物當證據，不重跑下層**。
-> 狀態檔：`signoffs/<version>.yaml`（範本 `state-templates/signoff.example.yaml`）。
+> 狀態檔：`output/signoffs/<version>.yaml`（範本 `state-templates/signoff.example.yaml`）。
 
 ## 輸入 / 輸出
-- **輸入**：版本識別（tag / milestone）＋ `traceability.yaml`（覆蓋）＋ open issue（`gh issue list --milestone <m>`，分 blocker / 非 blocker）＋ `pipeline-gate.yaml`（build 層裁決）＋ `flaky-registry.yaml`（關掉的覆蓋）＋ `knowledge/`（風險基準）＋ 準則（`config/sdet-config.yaml` 的 `signoff`）。
-- **輸出**：裁決 ＋ 逐條評估表 ＋ no-go 時的最短補完清單 ＋ 寫入 `signoffs/<version>.yaml`。
+- **輸入**：版本識別（tag / milestone）＋ `output/traceability.yaml`（覆蓋）＋ open issue（`gh issue list --milestone <m>`，分 blocker / 非 blocker）＋ `output/pipeline-gate.yaml`（build 層裁決）＋ `output/flaky-registry.yaml`（關掉的覆蓋）＋ `knowledge/`（風險基準）＋ 準則（`config/sdet-config.yaml` 的 `signoff`）。
+- **輸出**：裁決 ＋ 逐條評估表 ＋ no-go 時的最短補完清單 ＋ 寫入 `output/signoffs/<version>.yaml`。
 
 ## 準則（門檻讀 config，不寫死）
 
 | # | 條件 | 判準 | 證據來源 |
 |---|---|---|---|
-| 1 | `high_risk_covered` | `risk_score ≥ signoff.high_risk_threshold` 的需求全部 `covered` | `traceability.yaml` |
-| 2 | `no_open_blocker` | 此 milestone 無 open blocker | `gh issue list` + `issues-index.yaml` |
-| 3 | `build_gate_passed` | 最新 `pipeline-gate.yaml` 為 `PASS`（`OVERRIDE` → 見下）| `quality-gate` |
-| 4 | `known_issues_registered` | 非 blocker 的已知問題全部列冊、有 owner | `issues-index.yaml` |
-| 5 | `quarantine_disclosed` | 隔離中的測試已列出，逾期數 ≤ `signoff.max_expired` | `flaky-registry.yaml` |
+| 1 | `high_risk_covered` | `risk_score ≥ signoff.high_risk_threshold` 的需求全部 `covered` | `output/traceability.yaml` |
+| 2 | `no_open_blocker` | 此 milestone 無 open blocker | `gh issue list` + `output/issues-index.yaml` |
+| 3 | `build_gate_passed` | 最新 `output/pipeline-gate.yaml` 為 `PASS`（`OVERRIDE` → 見下）| `quality-gate` |
+| 4 | `known_issues_registered` | 非 blocker 的已知問題全部列冊、有 owner | `output/issues-index.yaml` |
+| 5 | `quarantine_disclosed` | 隔離中的測試已列出，逾期數 ≤ `signoff.max_expired` | `output/flaky-registry.yaml` |
 
 **下層是 `OVERRIDE` 時，第 3 條不自動算 pass**：把 override 的理由原文抄進本層報告，標 `conditional-go` 交人判。下層硬推過的東西，不該在上層安靜地變成綠燈。
 
@@ -36,26 +36,26 @@ disable-model-invocation: true
    - 任一 `fail` → `no-go`
    - 有 `inconclusive`、或下層 `OVERRIDE`、或人願意承擔特定已知風險 → `conditional-go`（**條件要寫成可檢查的句子**，如「上線後 24h 內監控 X，超標即回滾」）
 5. **產補完清單**（`no-go` 必附）：缺什麼、誰補、預估多久——讓「不能出」變成可執行的待辦，而不是一句否決。
-6. **確認再寫**：把裁決表列給使用者，得同意才寫 `signoffs/<version>.yaml`。
+6. **確認再寫**：把裁決表列給使用者，得同意才寫 `output/signoffs/<version>.yaml`。
 7. **標記 AI 身分**：報告開頭加 `> *This assessment was compiled by AI. The sign-off decision belongs to a human.*`
 
 ## 鐵則
 - **只裁決與留痕，不執行 release。** 不打 tag、不 deploy、不 merge（`merge_pr` 在 `config/governance.yaml` 的 `forbidden` 名單）。
 - **`inconclusive` 不得當 pass**（理由同 `infra/quality-gate`）。
 - **簽核人是人。** 本 skill 產的是評估與紀錄；`signed_by` 一欄由人填，agent 不代簽。
-- **不重跑下層。** build 綠不綠問 `pipeline-gate.yaml`，不自己再跑一次測試——重跑會得到不同結果，然後沒人知道該信哪個。
+- **不重跑下層。** build 綠不綠問 `output/pipeline-gate.yaml`，不自己再跑一次測試——重跑會得到不同結果，然後沒人知道該信哪個。
 - **`conditional-go` 的條件必須可檢查。** 「小心一點」不是條件；「24h 內錯誤率 > 1% 即回滾，由 X 監控」才是。
 - **關掉的覆蓋一定要揭露。** 隔離中的測試數要出現在報告正文，不是附註。
 
 ## 輸出（格式，非某次執行結果）
 ```yaml
-# signoffs/v2.4.0.yaml
+# output/signoffs/v2.4.0.yaml
 version: v2.4.0
 evaluated_at: 2026-07-29T14:00:00Z
 checks:
-  high_risk_covered:       { result: fail, basis: "REQ-CHECKOUT-006 risk 0.71 為 gap(traceability.yaml)" }
+  high_risk_covered:       { result: fail, basis: "REQ-CHECKOUT-006 risk 0.71 為 gap(output/traceability.yaml)" }
   no_open_blocker:         { result: pass, basis: "milestone v2.4.0 無 open blocker" }
-  build_gate_passed:       { result: pass, basis: "pipeline-gate.yaml 2026-07-29 PASS @ abc1234" }
+  build_gate_passed:       { result: pass, basis: "output/pipeline-gate.yaml 2026-07-29 PASS @ abc1234" }
   known_issues_registered: { result: pass, basis: "3 筆已知問題皆列冊且有 owner" }
   quarantine_disclosed:    { result: pass, basis: "隔離 9 支,逾期 2 ≤ max 3" }
 verdict: no-go               # go | no-go | conditional-go

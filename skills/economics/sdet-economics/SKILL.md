@@ -28,7 +28,7 @@ description: 成本紀律 reference:省 token、重用 context、模型分級、
 - 沒有 `sdet-config.yaml` 或欄位缺漏時，用保守預設（寧可提早停、事後被問「怎麼停這麼快」，不要燒穿預算才發現）。
 
 ## ROI：一個確認 bug 花多少成本
-從 `runs/<date>.yaml`（`duty-oncall` 寫）取 `tokens` / `duration` / `findings` / `confirmed`（見 `docs/state-files.md`），算：
+從 `output/runs/<date>.yaml`（`duty-oncall` 寫）取 `tokens` / `duration` / `findings` / `confirmed`（見 `docs/state-files.md`），算：
 
 ```
 cost_per_confirmed_bug = Σ tokens(該輪所有 run) ÷ Σ confirmed(該輪所有 run)
@@ -36,8 +36,8 @@ cost_per_confirmed_bug = Σ tokens(該輪所有 run) ÷ Σ confirmed(該輪所�
 
 `confirmed` 只算 `bug-verifier` 蓋章或人複核為真的，候選 findings 不算——分母膨脹會讓 ROI 好看但失真。
 
-## 績效：`calibration.yaml` 算得準不準
-`calibration.yaml`（`references/confidence.md` 定義的同一份資料）記 `predicted` vs `human_verdict`：
+## 績效：`output/calibration.yaml` 算得準不準
+`output/calibration.yaml`（`references/confidence.md` 定義的同一份資料）記 `predicted` vs `human_verdict`：
 - `precision = 判 high 且 human_verdict=confirmed 的筆數 ÷ 判 high 的總筆數`
 - precision 持續偏低 → confidence 因子配分過鬆，或門檻設太低，兩者都會拉低 ROI（花力氣送驗證/開單的東西大半是假警報）。
 
@@ -50,7 +50,7 @@ tokens_total: 1_240_000
 runs: 6
 confirmed_bugs: 9
 cost_per_confirmed_bug: 137_778
-precision_high: 0.78          # calibration.yaml 算出
+precision_high: 0.78          # output/calibration.yaml 算出
 stop_events:
   - run: "20260726-checkout"
     reason: "hit max_tokens_per_run，停在 checkout 第 3 步"
@@ -58,4 +58,4 @@ recommendation: "checkout 區域 precision 偏低，檢討 confidence 因子配�
 ```
 
 ## 上下游
-上游資料：`runs/<date>.yaml`（`duty-oncall`）、`calibration.yaml`（`bug-hunter` 寫 predicted、`bug-verifier`/人回填）。與 `economics/route-by-risk` 分工：`route-by-risk` 決定「要不要測」，本文件決定「用什麼成本測、測完值不值得」。
+上游資料：`output/runs/<date>.yaml`（`duty-oncall`）、`output/calibration.yaml`（`bug-hunter` 寫 predicted、`bug-verifier`/人回填）。與 `economics/route-by-risk` 分工：`route-by-risk` 決定「要不要測」，本文件決定「用什麼成本測、測完值不值得」。

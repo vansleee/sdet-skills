@@ -11,14 +11,14 @@ description: 把過閘門的 product-bug finding 寫成可重現 Bug Report、�
 
 ## 前置
 - finding 的 `category` 必須是 `product-bug` 且附 Evidence Package；其餘一律不開單（擋在這）。
-- finding 已過 `issue-quality-gate`（`gate.yaml` 內 `result: pass`）；沒過閘門或沒跑閘門 → 停手，先送閘門。
+- finding 已過 `issue-quality-gate`（`output/gate.yaml` 內 `result: pass`）；沒過閘門或沒跑閘門 → 停手，先送閘門。
 - 後端 = GitHub（`config/issue-tracker-github.md` 存在）時，`gh auth status` 必須已登入；否則停手回報。後端 = 本地檔案（`config/issue-tracker-local-md.md`）時不需要。
 
 ## 步驟
 1. 依範本寫成 `report.md`（四要件：可重現／有證據／耐久／精簡；每條宣稱指向證據檔）。
 2. **開單前先把 title + 摘要列給使用者確認**（對外副作用）。
-3. 確認後依當前後端開單：GitHub → `gh issue create --title "..." --body-file report.md --label bug,sdet-auto`；本地檔案 → 依 `config/issue-tracker-local-md.md` 寫入 `reports/issues/<date>-<slug>.md`。
-4. **把指紋寫回 `issues-index.yaml`**（`fingerprint` / `issue: <URL、#編號或本地檔案路徑，依後端而定>` / `occurrences` / `confidence`）——不寫，下一輪 hunter 的去重就看不到這張單。
+3. 確認後依當前後端開單：GitHub → `gh issue create --title "..." --body-file report.md --label bug,sdet-auto`；本地檔案 → 依 `config/issue-tracker-local-md.md` 寫入 `output/reports/issues/<date>-<slug>.md`。
+4. **把指紋寫回 `output/issues-index.yaml`**（`fingerprint` / `issue: <URL、#編號或本地檔案路徑，依後端而定>` / `occurrences` / `confidence`）——不寫，下一輪 hunter 的去重就看不到這張單。
 5. 回報**完整 Issue URL 或本地檔案路徑**（非只給編號）。
 
 ## Bug Report 範本
@@ -55,4 +55,4 @@ product-bug，信心 <low|med|high>（判類依據）
 ## 驗收（跑完自己對一次）
 - 報告每條宣稱都指得到證據檔嗎？重現步驟齊全嗎？
 - 有先列 title + 摘要給使用者確認，才執行開單嗎？
-- 指紋寫進 `issues-index.yaml` 了嗎？回報的是完整 URL 或本地檔案路徑嗎？
+- 指紋寫進 `output/issues-index.yaml` 了嗎？回報的是完整 URL 或本地檔案路徑嗎？

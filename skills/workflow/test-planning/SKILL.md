@@ -10,8 +10,8 @@ description: 把一張 ticket / PRD 轉成「這次要測什麼」的範圍 + �
 > **規劃不是列一堆 test case。** 產出是「這輪測什麼、不測什麼、為什麼」——怎麼走留給 `explore`，逐步腳本留給 `test-author`。
 
 ## 輸入 / 輸出
-- **輸入**：ticket / PRD（連結或內文；GitHub issue 用 `gh issue view <n> --json title,body,labels`）＋ `knowledge/` 產品事實 ＋ 可選：`traceability.yaml` 上一輪的 gap 清單。
-- **輸出**：`plans/<slug>.md`——in-scope（含怎麼測）、out-of-scope（**含理由**）、風險排序、開放問題。
+- **輸入**：ticket / PRD（連結或內文；GitHub issue 用 `gh issue view <n> --json title,body,labels`）＋ `knowledge/` 產品事實 ＋ 可選：`output/traceability.yaml` 上一輪的 gap 清單。
+- **輸出**：`output/plans/<slug>.md`——in-scope（含怎麼測）、out-of-scope（**含理由**）、風險排序、開放問題。
 
 ## 步驟
 1. **讀需求**：抽出「改了什麼、影響誰、驗收條件是什麼」。驗收條件缺失就列進開放問題，不自己補一個。
@@ -22,7 +22,7 @@ description: 把一張 ticket / PRD 轉成「這次要測什麼」的範圍 + �
 4. **評風險**：把候選項整批交 `route-by-risk`，拿回 `score` / `route` / `reason`。**不自己發明第二套評分**。
 5. **決定怎麼測**：依 route 決定形式（見下表）。
 6. **寫 out-of-scope**：`route-by-risk` 判 `skip` 的、以及人為排除的，**逐項寫理由**。
-7. **輸出並確認**：把 plan 列給使用者，確認後寫 `plans/<slug>.md`。
+7. **輸出並確認**：把 plan 列給使用者，確認後寫 `output/plans/<slug>.md`。
 
 ## route → 測法
 
@@ -44,7 +44,7 @@ description: 把一張 ticket / PRD 轉成「這次要測什麼」的範圍 + �
 
 ## 輸出（格式，非某次執行結果）
 ```yaml
-# plans/<slug>.md 的結構
+# output/plans/<slug>.md 的結構
 ticket: "#312 結帳支援折扣碼"
 in_scope:
   - target: "套用折扣碼 → 金額重算"

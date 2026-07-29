@@ -10,7 +10,7 @@
 - **摘要要五分鐘能複核完**，不是要人重跑一遍。
 
 ## 上下游
-輸入：charter ＋ 排程／使用者觸發。內部依序：`bug-hunter` → `bug-verifier` → `issue-quality-gate` → `triage` / `bug-fixer`。輸出：`runs/<date>.yaml`、值班摘要、人工佇列。
+輸入：charter ＋ 排程／使用者觸發。內部依序：`bug-hunter` → `bug-verifier` → `issue-quality-gate` → `triage` / `bug-fixer`。輸出：`output/runs/<date>.yaml`、值班摘要、人工佇列。
 
 ## 成長路徑
 v0.1：單 charter 單班。之後：多 charter 排班、與 route-by-risk 決定值什麼、餵 sdet-economics 算帳。

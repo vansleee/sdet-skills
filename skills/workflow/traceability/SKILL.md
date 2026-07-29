@@ -8,11 +8,11 @@ description: 維護「需求 ↔ 測試 ↔ finding」的覆蓋對照，指出�
 輸入需求 + 測試 + findings，輸出**覆蓋對照表 + gap 清單 + 孤兒清單**。設計理念見 `docs/workflow/traceability.md`。
 
 > **覆蓋不等於測得好。** 這份表回答「有沒有東西在守」，不回答「守得夠不夠」。報告裡要明說這個限制，不要讓它變成一個好看的百分比。
-> 狀態檔：`traceability.yaml`（範本 `state-templates/traceability.example.yaml`）。對應規則見 `references/traceability-mapping.md`。
+> 狀態檔：`output/traceability.yaml`（範本 `state-templates/traceability.example.yaml`）。對應規則見 `references/traceability-mapping.md`。
 
 ## 輸入 / 輸出
-- **輸入**：需求（`knowledge/` 的業務規則 ＋ `plans/<slug>.md` 的 in-scope）＋ 測試（掃 `tests/**/*.spec.ts`）＋ findings（`sessions/**/findings/F-*.yaml`）＋ issues（`issues-index.yaml`）。
-- **輸出**：`traceability.yaml`（對照表）＋ gap 清單（依風險排序）＋ 孤兒清單（附處置建議）。
+- **輸入**：需求（`knowledge/` 的業務規則 ＋ `output/plans/<slug>.md` 的 in-scope）＋ 測試（掃 `tests/**/*.spec.ts`）＋ findings（`output/sessions/**/findings/F-*.yaml`）＋ issues（`output/issues-index.yaml`）。
+- **輸出**：`output/traceability.yaml`（對照表）＋ gap 清單（依風險排序）＋ 孤兒清單（附處置建議）。
 
 ## 步驟
 1. **收需求**：從 `knowledge/` 抽業務規則，每條給一個穩定的 `req_id`（規則見 `references/traceability-mapping.md`）。
@@ -21,7 +21,7 @@ description: 維護「需求 ↔ 測試 ↔ finding」的覆蓋對照，指出�
 4. **建對應**：產生三欄關係。對不確定的標 `uncertain`，**不猜**。
 5. **標 gap**：沒有任何測試或 finding 對到的需求 → gap。把 gap 整批交 `route-by-risk` 排序（先補高風險的洞）。
 6. **標孤兒**（雙向，見下表）。
-7. **輸出**：寫 `traceability.yaml`（先給人看）＋ 報告 gap 與孤兒。
+7. **輸出**：寫 `output/traceability.yaml`（先給人看）＋ 報告 gap 與孤兒。
 
 ## 孤兒處置
 
@@ -34,12 +34,12 @@ description: 維護「需求 ↔ 測試 ↔ finding」的覆蓋對照，指出�
 - **不猜對應，不確定就標 `uncertain`。** 灌水的覆蓋率比沒有覆蓋率危險——它會讓人以為有安全網。
 - **不算單一覆蓋率數字。** 輸出的是對照表與 gap 清單。一個「覆蓋率 82%」會立刻變成 KPI，然後有人靠寫廢測試把它衝到 95%。
 - **測試孤兒不等於該刪。** 先問「是不是需求沒寫進 `knowledge/`」，再談 prune；順序反了會把有用的測試砍掉。
-- **對應規則放 `references/traceability-mapping.md`，資料放 `traceability.yaml`。** 狀態檔只存資料、不存演算法（見 `docs/state-files.md`）。
+- **對應規則放 `references/traceability-mapping.md`，資料放 `output/traceability.yaml`。** 狀態檔只存資料、不存演算法（見 `docs/state-files.md`）。
 - **純讀分析、無副作用——它是對照表，不是執行者。** 指出哪裡有洞，補洞交下游。
 
 ## 輸出（格式，非某次執行結果）
 ```yaml
-# traceability.yaml（節錄）
+# output/traceability.yaml（節錄）
 generated_at: 2026-07-29
 requirements:
   - req_id: REQ-CHECKOUT-005

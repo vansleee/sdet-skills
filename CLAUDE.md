@@ -34,4 +34,4 @@ Agentic SDET 技能組:GitHub Actions · Playwright (TypeScript) · GitHub Issue
 
 ## 產品知識與資料
 - `knowledge/` — 受測產品的「事實」(產品專屬,是 `test-oracle` 的規格判準來源);skill 讀它、不內嵌。真檔 gitignore,只 commit 範本(`*.example.md`)。依規模分層:單檔 → `domains/` 多檔 → RAG/MCP。
-- 跨 skill 的資料流檔(charters/、findings/、verdicts/、issues-index.yaml、runs/…)見 `docs/state-files.md`。
+- 跨 skill 的資料流檔(charters/、findings/、output/verdicts/、output/issues-index.yaml、output/runs/…)見 `docs/state-files.md`。

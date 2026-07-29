@@ -8,7 +8,7 @@ description: 執行測試、操作產品、驗證功能或探索頁面時，蒐�
 Playwright 產生證據，本 skill 只負責組裝成一份可攜證據包 + manifest。設計理念見 `docs/observe/evidence-package.md`。
 
 ## 開工前
-1. 建資料夾 `evidence/<YYYYMMDD>-<任務代號>/`。
+1. 建資料夾 `output/evidence/<YYYYMMDD>-<任務代號>/`。
 2. 確認 trace：工具集有 `browser_start_tracing` → 呼叫它開錄；沒有 → 走降級規則、manifest 標「無 trace」。
 
 ## 執行中
@@ -20,12 +20,12 @@ Playwright 產生證據，本 skill 只負責組裝成一份可攜證據包 + ma
 6. UI ↔ API：API 真實狀態碼 vs 畫面結果。不一致（畫面成功、API 非 2xx）＝ finding，寫進 notes 並指向 `network.log`。
 
 ## 收工
-7. 有開 trace → `browser_stop_tracing`，再 `bash scripts/pack-trace.sh evidence/<YYYYMMDD>-<任務代號>/`。
+7. 有開 trace → `browser_stop_tracing`，再 `bash scripts/pack-trace.sh output/evidence/<YYYYMMDD>-<任務代號>/`。
 8. 寫 `manifest.md`：任務目標、環境、時間、Trace 狀態、UI↔API 對照結論、步驟↔截圖對應、各檔位置。
 9. 寫 `notes.md`：目標、步驟（每步引截圖）、觀察（只寫看到的）、結論（每條至少一項證據）。
 
 ## 產出物
-    evidence/<YYYYMMDD>-<任務代號>/
+    output/evidence/<YYYYMMDD>-<任務代號>/
     ├── manifest.md
     ├── notes.md
     ├── console.log

@@ -1,6 +1,6 @@
 # 需求 ↔ 測試 ↔ finding 的對應規則
 
-`traceability` 讀本檔建立對應。**規則在這裡，資料在 `traceability.yaml`**——狀態檔只存資料，不存演算法（見 `docs/state-files.md`）。
+`traceability` 讀本檔建立對應。**規則在這裡，資料在 `output/traceability.yaml`**——狀態檔只存資料，不存演算法（見 `docs/state-files.md`）。
 
 ## req_id 命名
 

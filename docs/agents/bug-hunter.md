@@ -19,6 +19,6 @@
 
 ## 狀態檔
 
-讀：`known-false-positives.yaml`、`issues-index.yaml`、`config/sdet-config.yaml`。
-寫：`calibration.yaml`（predicted）、evidence 目錄、候選清單。
+讀：`output/known-false-positives.yaml`、`output/issues-index.yaml`、`config/sdet-config.yaml`。
+寫：`output/calibration.yaml`（predicted）、evidence 目錄、候選清單。
 **不寫** issue tracker。

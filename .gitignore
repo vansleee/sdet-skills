@@ -7,7 +7,6 @@ config/governance.yaml
 test-results/
 playwright-report/
 .pw-mcp-traces/
-evidence/
 *.zip
 .DS_Store
 .playwright-mcp/
@@ -18,18 +17,7 @@ knowledge/**
 !knowledge/README.md
 !knowledge/**/*.example.md
 
-# 狀態檔:只 commit *.example.yaml 範本,真檔(含實際判斷結果)留本地
-/calibration.yaml
-/known-false-positives.yaml
-/issues-index.yaml
-/gate.yaml
-/flaky-registry.yaml
-/pipeline-gate.yaml
-/traceability.yaml
-/runs/
-/sessions/
-/verdicts/
-/signoffs/
-/plans/
-/reports/
-/triage-reports/
+# 所有執行期產物與狀態檔都集中在 output/(2026-07-30 起),整個 gitignore。
+# 只 commit state-templates/ 下的 *.example.yaml 範本。真檔(evidence、verdicts、issues-index、
+# calibration、gate、runs、reports…)全留本地。
+/output/

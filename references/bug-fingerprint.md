@@ -37,7 +37,7 @@
 
 ## 比對與合併
 
-1. 算出指紋 → 查 `issues-index.yaml`。
+1. 算出指紋 → 查 `output/issues-index.yaml`。
 2. **完全相同** → 不開新單：舊單 `occurrences += 1`、把新證據 append 到 `evidence`、必要時更新 `confidence`。
 3. **`area` + `signature` 相同但 `trigger` 不同** → 標 `related`，**不自動合併**，列給人判（可能是同一根因的兩個入口，也可能真是兩個 bug）。
 4. **找不到** → 才開新單，並把指紋寫進 index。
@@ -45,7 +45,7 @@
 ## 範例（取自 toolshop 四輪真跑）
 
 ```yaml
-# issues-index.yaml
+# output/issues-index.yaml
 - fingerprint: "checkout|typeerror:cart_items-undefined|enter-checkout"
   issue: "#<n>"
   occurrences: 4          # 四輪各一次,一張單

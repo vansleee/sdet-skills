@@ -50,14 +50,14 @@ claude mcp get playwright
 跑完回終端機檢查它產出的證據包：
 
 ```bash
-# 有沒有產生 evidence/<日期>-<任務>/ 資料夾
-ls -R evidence/
+# 有沒有產生 output/evidence/<日期>-<任務>/ 資料夾
+ls -R output/evidence/
 
 # manifest 有沒有寫、Trace 狀態欄有沒有填
-cat evidence/*/manifest.md
+cat output/evidence/*/manifest.md
 
 # 開啟 trace 逐步回放（截圖 / network / console 都在裡面）
-npx playwright show-trace evidence/*/trace.zip
+npx playwright show-trace output/evidence/*/trace.zip
 ```
 
 > 判準：打開這包 evidence，一個沒看過操作的人，能不能只靠裡面的證據重現你的結論。能，就算過。
