@@ -1,6 +1,6 @@
 ---
 name: traceability
-description: 維護「需求 ↔ 測試 ↔ finding」的覆蓋對照，指出哪些需求還沒被覆蓋、哪些 finding 沒對應到需求。要看覆蓋率、追溯、什麼還沒測時使用。關鍵詞：覆蓋、追溯、traceability、需求對照、gap、還沒測。
+description: 維護「需求 ↔ 測試 ↔ finding」的覆蓋對照，指出哪些需求還沒被覆蓋、哪些測試或 finding 對不到需求。要看追溯、什麼還沒測時使用；`release-signoff` 要覆蓋證據時也用。
 ---
 
 # Traceability
@@ -35,7 +35,7 @@ description: 維護「需求 ↔ 測試 ↔ finding」的覆蓋對照，指出�
 - **不算單一覆蓋率數字。** 輸出的是對照表與 gap 清單。一個「覆蓋率 82%」會立刻變成 KPI，然後有人靠寫廢測試把它衝到 95%。
 - **測試孤兒不等於該刪。** 先問「是不是需求沒寫進 `knowledge/`」，再談 prune；順序反了會把有用的測試砍掉。
 - **對應規則放 `references/traceability-mapping.md`，資料放 `traceability.yaml`。** 狀態檔只存資料、不存演算法（見 `docs/state-files.md`）。
-- 純讀分析、無副作用：不改測試、不刪測試、不開單。
+- **純讀分析、無副作用——它是對照表，不是執行者。** 指出哪裡有洞，補洞交下游。
 
 ## 輸出（格式，非某次執行結果）
 ```yaml

@@ -1,6 +1,6 @@
 ---
 name: release-signoff
-description: 彙整測試結果、未解 issue、覆蓋與風險，做「這一版能不能出」的專案層級放行判斷。要 release 前簽核 / 品質把關時使用。關鍵詞：放行、sign-off、release、能不能出、上線把關、release gate。
+description: 彙整覆蓋、blocker、build gate 與隔離現況，做「這一版能不能出」的專案層級裁決並留痕。只評估，簽核人是人。
 disable-model-invocation: true
 ---
 
@@ -41,7 +41,7 @@ disable-model-invocation: true
 
 ## 鐵則
 - **只裁決與留痕，不執行 release。** 不打 tag、不 deploy、不 merge（`merge_pr` 在 `config/governance.yaml` 的 `forbidden` 名單）。
-- **`inconclusive` 不得當 pass。** 「查不到」和「沒問題」是兩件事。
+- **`inconclusive` 不得當 pass**（理由同 `infra/quality-gate`）。
 - **簽核人是人。** 本 skill 產的是評估與紀錄；`signed_by` 一欄由人填，agent 不代簽。
 - **不重跑下層。** build 綠不綠問 `pipeline-gate.yaml`，不自己再跑一次測試——重跑會得到不同結果，然後沒人知道該信哪個。
 - **`conditional-go` 的條件必須可檢查。** 「小心一點」不是條件；「24h 內錯誤率 > 1% 即回滾，由 X 監控」才是。
@@ -64,7 +64,7 @@ completion_plan:             # no-go 必附
   - what: "補 REQ-CHECKOUT-006（折扣碼 × 點數）的測試"
     who: "<github handle>"
     eta: "2 天"
-    next: "交 test-planning → test-author"
+    next: "排進 test-planning 下一輪;測試由人發動 test-author"
 conditions: []               # conditional-go 時填,每條要可檢查
 signed_by: null              # 由人填,agent 不代簽
 note: "This assessment was compiled by AI. The sign-off decision belongs to a human."

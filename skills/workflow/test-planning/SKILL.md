@@ -1,6 +1,6 @@
 ---
 name: test-planning
-description: 把一張 ticket / PRD 轉成「這次要測什麼」的範圍 + 風險清單，可續轉成 exploration charter。規劃一個 sprint / feature 要測什麼時使用。關鍵詞：測試規劃、test plan、範圍、風險、ticket、PRD、要測什麼。
+description: 把一張 ticket / PRD 轉成「這次要測什麼」的範圍 + 風險排序 + out-of-scope 理由，寫成 plan。規劃一個 sprint / feature 要測什麼時使用；`traceability` 的 gap、`release-signoff` 的補完清單都排回這裡。
 ---
 
 # Test Planning
@@ -26,12 +26,14 @@ description: 把一張 ticket / PRD 轉成「這次要測什麼」的範圍 + �
 
 ## route → 測法
 
-| route | 怎麼測 | 交給誰 |
+本 skill **只把路線寫進 plan，不代為發動**——plan 是待辦清單，誰去做、什麼時候做是下一步的事。
+
+| route | 怎麼測 | plan 記什麼 |
 |---|---|---|
-| `must-test` + 行為未知/需求模糊 | 自主探索 | 轉 `exploration-charter` 產 `charters/<slug>.yaml` → `explore` |
-| `must-test` + 行為明確、要長期守 | 固化成自動化回歸 | `test-author` |
-| `sample` | 預算夠才做，優先度低於 must-test | 同上，但標 `optional` |
-| `skip` | 本輪不測，**寫理由留痕** | 無（但列在 out-of-scope）|
+| `must-test` + 行為未知/需求模糊 | 自主探索 | `how: explore`，`next` 指向要產的 `charters/<slug>.yaml`（由 `exploration-charter` 產）|
+| `must-test` + 行為明確、要長期守 | 固化成自動化回歸 | `how: test-author`，`next` 寫要幾支測試——**`test-author` 由人發動**（多一支測試就是多一份長期資產）|
+| `sample` | 預算夠才做，優先度低於 must-test | 同上，另標 `optional` |
+| `skip` | 本輪不測 | 不進 in_scope，列 out-of-scope **並寫理由** |
 
 ## 鐵則
 - **產品知識只從 `knowledge/` 讀，不內嵌。** 把產品事實寫進本 skill，reuse 就死了。

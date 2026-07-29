@@ -1,10 +1,10 @@
 ---
 name: test-author
-description: 把一條使用者故事／驗收條件（或一次成功探索）固化成一支可維護的 Playwright 測試：一支只驗一件事、穩定定位器、web-first 斷言、資料不硬編。當要新增回歸測試、把 AC 變成 spec 時使用。關鍵詞：寫測試、新增測試、固化、spec、locator、驗收條件。
+description: 把一條驗收條件或一次成功探索固化成一支可維護的 Playwright 測試：一支只驗一件事、穩定定位器、web-first 斷言、資料不硬編。
 disable-model-invocation: true
 ---
 
-# Test Author（一支）
+# Test Author
 
 輸入一條使用者故事／驗收條件（或一次成功的探索路徑），輸出**一支**可重跑、可維護的 Playwright 測試。設計理念見 `docs/maintain/test-author.md`，設計原則見 `references/test-design.md`。
 
@@ -39,3 +39,6 @@ locator_strategy: [test-attribute, role]
 data: fixture            # 由 test-data 提供
 verified: "改錯必紅、改回必綠"
 ```
+
+## 上下游
+上游：人（發動）、`test-planning` 的 plan（`how: test-author` 的待辦）、`explore` 的一次成功路徑、`traceability` 的 gap。下游：`test-data`（測資）、`ci-pipeline`（進 CI 跑）、`traceability`（宣告覆蓋哪些 `req_id`）、`test-prune`（將來的減法評估）。

@@ -1,9 +1,9 @@
 ---
 name: test-prune
-description: 判斷一支測試該留、該合併、還是該刪，並寫清楚刪掉之後失去的覆蓋；一律只給建議、交人核准。當套件肥大、有長期 skip／重複覆蓋／驗已下線功能的測試時使用。關鍵詞：刪測試、減法、淘汰、重複覆蓋、skip、維護成本。
+description: 判斷一支測試該留、該合併、還是該刪，並寫清楚刪掉之後失去的覆蓋；只給建議、交人核准。套件肥大或有長期 skip 時使用；`traceability` 的測試孤兒、`flaky-manager` 的到期隔離也轉這裡評估。
 ---
 
-# Test Prune（一支）
+# Test Prune
 
 輸入一支測試，輸出 `keep` / `merge` / `remove` 的**建議**與理由。設計理念見 `docs/maintain/test-prune.md`。
 
@@ -24,7 +24,7 @@ description: 判斷一支測試該留、該合併、還是該刪，並寫清楚�
 **沒寫清 `coverage_lost` 就不准建議 remove。** 要具體到「哪個使用者可見行為之後沒有任何測試在守」，並指出是否有別支接手；接不上就降級成 `keep` 或 `merge`。
 
 ## 與 test-heal 的分界（重要）
-本 skill 是 `test-heal` 的相反面，但**不准用「刪掉它」來解決一個會紅的測試**——那是綠色作弊。會紅的先走 `failure-analysis`：test-defect → `test-heal`；product-regression → 走 bug 流程；flaky → `flaky-detect`。
+本 skill 是 `test-heal` 的相反面。**會紅的測試一律先走 `failure-analysis`**：test-defect → `test-heal`；product-regression → 走 bug 流程；flaky → `flaky-detect`。用「刪掉它」解決一個會紅的測試是綠色作弊（`references/green-cheating.md` 第一列）。
 只有「這個行為已經不需要被測」才輪到本 skill。
 
 ## 輸出（格式，非某次執行結果）
@@ -36,3 +36,6 @@ coverage_lost: "<刪掉後沒人守的行為;無則寫 none>"
 merge_into: "<verdict=merge 時填>"
 needs_human_approval: true
 ```
+
+## 上下游
+上游：`traceability`（測試孤兒，**只是候選不是判死刑**）、`flaky-manager`（隔離到期 escalate 的評估刪除）、`pipeline-observability`（`quarantine_count` 超標）、人（套件肥大時發動）。下游：人核准後才動；判「還需要被測、只是壞了」的退回 `failure-analysis`。

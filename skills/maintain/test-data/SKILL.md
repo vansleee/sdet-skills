@@ -1,6 +1,6 @@
 ---
 name: test-data
-description: 讓一支測試自己準備、自己清掉它要的資料：fixture 走 API 建立、唯一標記防撞、teardown 保證清理，測試之間不共用狀態。當測試需要前置資料，或失敗根因是測資污染／依賴既有資料時使用。關鍵詞：測資、fixture、setup、teardown、清理、資料污染、平行執行。
+description: 讓一支測試自己準備、自己清掉它要的資料：fixture 走 API 建立、唯一標記防撞、teardown 保證清理。測試需要前置資料時使用；根因是測資污染或搶資源時由 `failure-analysis` / `flaky-detect` 轉過來。
 ---
 
 # Test Data（一支）
@@ -34,5 +34,8 @@ cleanup_error_policy: fail-loud
 ```
 
 ## 規則
-- 只提供資料：不改產品碼、不改斷言、不動別支測試的資料。
-- 測試碼本身要修交 `test-heal`；資料污染造成的間歇紅先交 `flaky-detect` 定性。
+- **只碰自己這支測試的資料**：產品碼、斷言、別支測試的資料都不動。
+- 隔離慣例（唯一前綴）沿用 `test-env` 那一套，不各發明各的。
+
+## 上下游
+上游：`test-author`（新測試要前置資料）、`failure-analysis`（判 `test-data`）、`flaky-detect`（`data-pollution` / `parallel-race`）、`test-env`（提供前綴慣例與環境策略）。下游：`test-heal`（測試碼本身要修）、`test-parallelize`（測資唯一是平行的前置檢查之一）。

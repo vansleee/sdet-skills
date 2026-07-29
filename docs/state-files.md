@@ -11,7 +11,8 @@
 | gate.yaml | issue-quality-gate | **一張 issue** 能不能開的閘門結果 |
 | governance.yaml | setup-sdet 建骨架、各副作用 skill 參照 | 授權分級(見 config/governance.example.yaml) |
 | tests/*.spec.ts | test-author | 固化的回歸資產 |
-| runs/<date>.yaml | duty-oncall / re-run-gate | 每次執行計量(tokens/duration/model/findings/gate/issues/confirmed)→ ROI |
+| runs/<date>.yaml | duty-oncall | 一次值班的計量(tokens/duration/model/findings/gate/issues/confirmed)→ ROI |
+| runs/reruns-<date>.yaml | re-run-gate | 逐支測試的重跑紀錄(次數/逐次結果/裁決)→ flaky 趨勢 |
 | triage-reports/<date>_<run>.md | pipeline-triage | 一片紅的根因群 → owner → issue 對照報告 |
 | flaky-registry.yaml | flaky-manager 寫;quality-gate / pipeline-observability / re-run-gate 讀 | flaky 名單與 quarantine 狀態、到期日（範本 `state-templates/flaky-registry.example.yaml`）|
 | pipeline-gate.yaml | infra/quality-gate 寫;release-signoff / pipeline-observability / status-report 讀 | **一個 build** 能不能放行 + override 留痕（範本 `state-templates/pipeline-gate.example.yaml`）|

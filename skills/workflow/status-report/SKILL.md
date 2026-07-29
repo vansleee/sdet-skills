@@ -1,6 +1,6 @@
 ---
 name: status-report
-description: 把近期探索 / 測試 / 開單活動整理成 standup 更新、測試報告或 release-readiness 摘要。要回報進度、寫測試報告、給團隊看時使用。關鍵詞：回報、standup、測試報告、進度、release readiness、摘要。
+description: 把近期活動彙整成 standup / 測試報告 / release-readiness 摘要——只引用既有狀態檔，不重算。要回報進度、給團隊看時使用；`release-signoff` 要素材時也用。
 ---
 
 # Status Report
@@ -13,11 +13,12 @@ description: 把近期探索 / 測試 / 開單活動整理成 standup 更新、�
 - **輸入**：期間（預設「上次報告以來」；查不到就用近 7 天）＋ 對象（`standup` / `test-report` / `release-readiness`）＋ 資料來源（下表）。
 - **輸出**：對應格式的摘要，存 `reports/status-<date>.md`。
 
-## 資料來源（**一律引用，不重算**）
+## 資料來源
 
 | 要講的事 | 引用哪裡 | 誰維護 |
 |---|---|---|
-| 執行了什麼、花多少 | `runs/<date>.yaml` | `duty-oncall` / `re-run-gate` |
+| 執行了什麼、花多少 | `runs/<date>.yaml` | `duty-oncall` |
+| 修完重跑了幾次 | `runs/reruns-<date>.yaml` | `re-run-gate` |
 | 發現了什麼 | `sessions/**/findings/F-*.yaml`、`verdicts/V-*.yaml` | `explore` / `bug-verifier` |
 | 開了哪些單 | `issues-index.yaml`、`gh issue list` | `triage` |
 | CI 健康度 | `reports/health-<date>.md` | `pipeline-observability` |
@@ -44,12 +45,10 @@ description: 把近期探索 / 測試 / 開單活動整理成 standup 更新、�
 | `release-readiness` | 半頁 | 給 `release-signoff` 當素材：覆蓋現況、未解 blocker、gate 狀態、已知風險。**只陳述，不下 go/no-go** |
 
 ## 鐵則
-- **不重算已有數據。** flaky rate 引 `pipeline-observability`、gate 引 `pipeline-gate.yaml`、覆蓋引 `traceability.yaml`。
 - **缺資料就寫「無資料」。** 用 0 或估計值填補，會讓「沒量」長得像「沒問題」。
 - **每個結論附出處。** 對齊 `structured-result` 的證據習慣——沒有出處的結論在追問時站不住。
-- **`release-readiness` 不下裁決。** 它是 `release-signoff` 的輸入，不是它的替代品。
+- **`release-readiness` 只陳述現況。** 它是 `release-signoff` 的輸入，go/no-go 由那支裁決。
 - **隔離中的測試一定要提。** 「這期有 3 支測試是關掉的」屬於讀者必須知道的事，不能因為它不好看就省略。
-- 對外發送前先確認。
 
 ## 輸出（格式，非某次執行結果）
 ```markdown

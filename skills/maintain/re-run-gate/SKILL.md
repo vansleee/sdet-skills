@@ -1,6 +1,6 @@
 ---
 name: re-run-gate
-description: 測試修好後重跑，確認是「穩定的綠」而不是「剛好過一次」；達標才放行，超過重試上限仍紅就 escalate。當 test-heal 修完要驗證、或要判斷一支測試是否真的穩定時使用。關鍵詞：重跑、re-run、重試、穩定綠、放行、escalate、max retries。
+description: 測試修好後重跑，確認是「穩定的綠」而不是「剛好過一次」；達標才放行，超過重試上限仍紅就 escalate。要判斷一支測試是否真的穩定時使用；`test-heal` 修完、`flaky-manager` 要解除隔離前都經它。
 ---
 
 # Re-run Gate
@@ -18,16 +18,20 @@ description: 測試修好後重跑，確認是「穩定的綠」而不是「剛�
    - **max_retries 仍紅** → `escalate`：留 issue 開著、標 `escalated: max retries reached`、交人（依 `config/governance.yaml`）。
 
 ## 鐵則
-- **1/N 不是 pass。** 嚴禁「一直重跑到剛好過一次」當通過——那是拿 re-run 蓋 flaky，綠色作弊的變形。
+- **1/N 不是 pass。** 「一直重跑到剛好過一次」是綠色作弊（`references/green-cheating.md` 最後一列）：達 green criteria 才算過。
 - **一定要有停止條件。** 到 `max_retries` 就停，不無限重試。
-- **每次都記錄**到 `runs/<date>.yaml`（重跑次數、逐次結果、最終裁決），供 ROI 與 flaky 趨勢用。
+- **每次都記錄**到 `runs/reruns-<date>.yaml`（重跑次數、逐次結果、最終裁決），供 flaky 趨勢用。**別寫進 `runs/<date>.yaml`**——那是 `duty-oncall` 的值班計量檔，一天一份 mapping，混寫會把它蓋掉。
 - 只裁決、不修：要再修回 `test-heal`，穩定性問題交 `flaky-manager`。
 
-## 輸出
+## 輸出（格式，非某次執行結果）
 ```yaml
+# runs/reruns-<date>.yaml
 nodeid: "checkout.spec.ts > applies coupon"
 reruns: 3
 results: [green, green, green]
 verdict: pass          # pass | flaky | escalate
 note: "連續 3 綠,達 green criteria"
 ```
+
+## 上下游
+上游：`test-heal`（修完要驗穩）、`flaky-manager`（解除隔離前的連續綠驗證）。下游：`flaky-detect` / `flaky-manager`（裁決 flaky）、`test-heal`（要再修）、人（escalate）。

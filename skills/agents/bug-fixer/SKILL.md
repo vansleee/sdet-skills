@@ -26,7 +26,7 @@ description: 只修可重現的 issue：先重現、用先紅後綠的回歸測�
 ## 鐵則
 - **無法重現，就不能修。** 這條和 triage 的「無法重現不開單」同源，不容例外。
 - **絕不 merge。** 開 PR 是上限；merge 是人按的（`governance.yaml` forbidden 釘死，不靠自律）。
-- **防綠色作弊**：不准弱化斷言、不准加 sleep 湊時序、不准 mock 掉真實呼叫、不准 skip 測試、不准改測試遷就錯的行為。
+- **防綠色作弊**：禁項清單見 `references/green-cheating.md`，一條都不准踩。
 - 一張 Issue 一個 PR，一個 PR 只修一件事。
 - 測試先紅後綠缺一段都不算：沒紅過的測試證明不了 bug 存在，沒轉綠的修復證明不了修好了。
 

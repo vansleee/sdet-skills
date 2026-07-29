@@ -1,6 +1,6 @@
 ---
 name: failure-analysis
-description: 一支自動化測試紅了，分析根因並分流：是選擇器/等待/測資/斷言/環境/產品迴歸/flaky？先別急著修，先歸類。當測試失敗、CI 某筆紅、要判斷「這支為什麼紅、誰該修」時使用。關鍵詞：測試失敗、紅了、根因、locator、flaky、迴歸、分析。
+description: 一支自動化測試紅了，分析根因並分流：選擇器/等待/測資/斷言/環境/產品迴歸/flaky——先歸類，別急著修。測試失敗、要判斷「這支為什麼紅、誰該修」時使用；`pipeline-triage` 對每個根因群呼叫它一次。
 ---
 
 # Failure Analysis（一筆）
@@ -32,10 +32,10 @@ expected ≠ actual 時**不要自己猜**，交給 `test-oracle` 判斷「這�
 
 ## 規則
 - 依 evidence + traceback 判類，`basis` 要指向具體證據，不憑印象。
-- 只有 `product-regression` 走 bug 流程；其餘不變成產品 Issue。
-- 不修東西：本 skill 只分類 + 分流。修測試是 `test-heal`、開產品單是 `triage`、隔離 flaky 是 `flaky-manager`。
+- 只有 `product-regression` 走 bug 流程；其餘留在測試側處理。
+- **只分類 + 分流，不動手修。** 判準是「誰該修」，動手交 `fix_target` 那一欄指到的 skill。
 
-## 輸出（附加到該筆 finding）
+## 輸出（格式，非某次執行結果；附加到該筆 finding）
 ```yaml
 nodeid: "checkout.spec.ts > applies coupon"
 classification: locator
@@ -44,3 +44,6 @@ basis: "trace 顯示 .btn-apply 不存在;DOM 已改為 [data-test=apply-coupon]
 fix_target: test-heal
 next_step: "更新 locator 為 [data-test=apply-coupon]"
 ```
+
+## 上下游
+上游：`pipeline-read`（單筆失敗）、`pipeline-triage`（每個根因群呼叫一次）、`re-run-gate`（escalate 的）。下游：依 `fix_target` 分流——`test-heal` / `test-data` / `flaky-detect` / `test-oracle`（assertion-mismatch）/ `bug-verifier` → `triage`（product-regression）。
