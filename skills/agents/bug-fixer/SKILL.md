@@ -5,7 +5,7 @@ description: 只修可重現的 issue：先重現、用先紅後綠的回歸測�
 
 # Bug Fixer
 
-輸入一張過了 `issue-quality-gate` 的 Issue（含 Evidence Package、產品 repo 可存取），輸出一個待 review 的 PR。後端指令讀 `config/issue-tracker-github.md`，token 走 env。設計理念見 `docs/agents/bug-fixer.md`。
+輸入一張過了 `issue-quality-gate` 的 Issue（含 Evidence Package、產品 repo 可存取），輸出一個待 review 的 PR。後端指令讀專案裡實際存在的 `config/issue-tracker-*.md`（本地檔案後端下，讀 `reports/issues/*.md` 取代讀 GitHub Issue），token 走 env。設計理念見 `docs/agents/bug-fixer.md`。
 
 > **順序就是紀律：先重現、先寫會紅的測試、才改碼。** 測試轉綠不是目的，行為對了才是。
 
