@@ -1,0 +1,14 @@
+name: manifest-check
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  manifest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: plugin.json 與 skills/ 是否一致
+        run: ./scripts/check-manifest.sh
