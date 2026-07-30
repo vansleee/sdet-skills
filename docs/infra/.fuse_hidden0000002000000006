@@ -1,5 +1,0 @@
-# Test Env
-
-測試環境:seeding、ephemeral env、狀態隔離;禁止重置共享環境。
-
-（設計理念待補；對應文章見 book-outline-60.md）

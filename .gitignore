@@ -10,14 +10,15 @@ playwright-report/
 *.zip
 .DS_Store
 .playwright-mcp/
+.fuse_hidden*
 
-# product knowledge: 只 commit 範本(*.example.md)與 README,真實產品事實留本地
+# 產品知識：只 commit 範本（*.example.md）與 README，真實產品事實留本地
 knowledge/**
 !knowledge/**/
 !knowledge/README.md
 !knowledge/**/*.example.md
 
-# 所有執行期產物與狀態檔都集中在 output/(2026-07-30 起),整個 gitignore。
-# 只 commit state-templates/ 下的 *.example.yaml 範本。真檔(evidence、verdicts、issues-index、
-# calibration、gate、runs、reports…)全留本地。
+# 所有執行期產物與狀態檔都集中在 output/（2026-07-30 起），整個 gitignore。
+# 只 commit state-templates/ 下的 *.example.yaml 範本。真檔（evidence、verdicts、issues-index、
+# calibration、gate、runs、reports…）全留本地。
 /output/

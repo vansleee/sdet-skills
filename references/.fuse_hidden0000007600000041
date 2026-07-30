@@ -1,3 +1,0 @@
-# 測試啟發式（reference，被 explore / test-oracle 讀）
-挑戰產品假設用的 heuristics（邊界、CRUD 反向、狀態機非法轉移、併發、權限越界…）。
-（W3 D19 對應素材，待補）
