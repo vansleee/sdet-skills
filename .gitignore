@@ -22,3 +22,6 @@ knowledge/**
 # 只 commit state-templates/ 下的 *.example.yaml 範本。真檔（evidence、verdicts、issues-index、
 # calibration、gate、runs、reports…）全留本地。
 /output/
+
+# Playwright MCP 探索留下的 trace/snapshot 暫存
+/evidence/

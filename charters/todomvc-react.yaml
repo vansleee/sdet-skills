@@ -1,0 +1,23 @@
+# 探索憲章（exploration charter）
+# 由 exploration-charter 產生、供 explore 讀取的輸入。
+charter:
+  goal: "在 TodoMVC React 官方 demo 獵一輪 bug：新增／編輯／完成／filter／localStorage 持久化／鍵盤與邊界輸入"
+  target: "https://todomvc.com/examples/react/dist/"
+  scope: [新增 todo, 編輯 todo, toggle 完成, toggle-all, 刪除, filter 路由, counter 文案, clear completed, localStorage 持久化, 邊界輸入]
+  oracles:
+    - "TodoMVC 規格（https://github.com/tastejs/todomvc/blob/master/app-spec.md）：新增前後 trim；trim 後為空不得建立；編輯 blur 要存、Esc 要取消、編輯成空要刪除該筆"
+    - "內部一致性：counter 數字 = 未完成筆數；filter 切換不得改變資料，只改顯示；toggle-all 狀態要跟隨清單"
+    - "持久化：reload 後清單、完成狀態與 filter 應與 reload 前一致"
+    - "正常操作不應出現 console error"
+    - "counter 單複數：1 item left / n items left"
+  max_steps: 40
+
+  authorization:
+    allowed:
+      - "任意新增／編輯／刪除 todo（純前端 localStorage，無後端資料）"
+      - "reload、改 hash route、清 localStorage"
+      - "XSS 只驗證『輸入是否被當成 HTML 執行』，用無害 payload（例：<img src=x onerror=...>），不做進一步利用"
+    forbidden:
+      - "不得對 todomvc.com 其他範例或網站基礎設施做掃描／壓測"
+      - "不得自動化高頻打站（單次探索、人類節奏）"
+  out_of_bounds: [壓測, 掃描, 其他網域, 非 todomvc react dist 的路徑]
