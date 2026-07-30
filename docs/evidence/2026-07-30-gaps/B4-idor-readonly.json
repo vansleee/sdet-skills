@@ -1,0 +1,18 @@
+{
+  "session": "logged in as customer@practicesoftwaretesting.com (user id=2), used that user's own bearer token",
+  "B4a_read_other_user": {
+    "request": "GET /users/1  (a different user than self)",
+    "status": 200,
+    "leaked": "user 1 full PII: first_name=John last_name=Doe email=admin@practicesoftwaretesting.com address='Test street 123' city=Utrecht country='The Netherlands' dob=1980-01-01",
+    "owasp": "API1:2023 Broken Object Level Authorization (IDOR)"
+  },
+  "B4b_invoices_over_scope": {
+    "request": "GET /invoices  (as user 2)",
+    "status": 200,
+    "count": 10,
+    "distinct_user_ids_returned": [2, 3],
+    "issue": "回傳包含 user_id=3（他人）的發票，非只有自己的",
+    "owasp": "API3/BOLA — function/object-level authorization on invoices"
+  },
+  "authorization_note": "全部唯讀（GET）。未呼叫任何 DELETE、未用 admin token、未 dump 全表。"
+}
