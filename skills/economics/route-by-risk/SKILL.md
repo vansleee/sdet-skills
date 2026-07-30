@@ -1,6 +1,6 @@
 ---
 name: route-by-risk
-description: 用風險決定要不要測、先測什麼,放在 pipeline 最前面當閘門。
+description: 用風險決定要不要測、先測什麼，放在 pipeline 最前面當閘門。
 ---
 
 # Route by Risk
@@ -30,7 +30,7 @@ description: 用風險決定要不要測、先測什麼,放在 pipeline 最前�
 | < 0.3 | `skip` | 本輪不測 |
 
 ## 規則
-- **`skip` 不是丟掉，是留痕。** 每個 `skip` 都要寫 `reason`，交回呼叫者的紀錄裡；本 skill 不做「靜默排除」——之後有人要回頭查「這塊為什麼沒測到」，要查得到。
+- **`skip` 不是丟掉，是留痕。** 每個 `skip` 都要寫 `reason`，交回呼叫者的紀錄裡；本 skill 不做「靜默排除」。之後有人要回頭查「這塊為什麼沒測到」，要查得到。
 - **資料源缺不等於低風險。** 缺資料一律用中性值 0.5，不准直接判 0（那會讓「沒人量過的風險」被錯誤地當成「沒風險」）。
 - **本 skill 只評分排序，不做「不可逆」決定。** 真的要跳過某塊完全不測，屬於會漏掉風險的決定；若專案在 `config/governance.yaml` 啟用分級，這類決定歸 `needs_review`，由人偶爾抽查，不是本 skill 自己拍板。
 - 只讀 `config/`、`knowledge/`、`output/issues-index.yaml`，不把任何專案專屬的風險判準寫死在本 skill 裡。

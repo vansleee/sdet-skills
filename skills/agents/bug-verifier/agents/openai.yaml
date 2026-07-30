@@ -1,3 +1,3 @@
 interface:
   display_name: "Bug Verifier"
-  short_description: "獨立 subagent 只吃 Evidence Package、從零重現候選 bug,輸出 confirmed/not-reproduced/inconclusive 與獨立證據。"
+  short_description: "獨立 subagent 只吃 Evidence Package、從零重現候選 bug，輸出 confirmed/not-reproduced/inconclusive 與獨立證據。"

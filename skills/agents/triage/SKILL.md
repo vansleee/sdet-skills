@@ -18,7 +18,7 @@ description: 把過閘門的 product-bug finding 寫成可重現 Bug Report、�
 1. 依範本寫成 `report.md`（四要件：可重現／有證據／耐久／精簡；每條宣稱指向證據檔）。
 2. **開單前先把 title + 摘要列給使用者確認**（對外副作用）。
 3. 確認後依當前後端開單：GitHub → `gh issue create --title "..." --body-file report.md --label bug,sdet-auto`；本地檔案 → 依 `config/issue-tracker-local-md.md` 寫入 `output/reports/issues/<date>-<slug>.md`。
-4. **把指紋寫回 `output/issues-index.yaml`**（`fingerprint` / `issue: <URL、#編號或本地檔案路徑，依後端而定>` / `occurrences` / `confidence`）——不寫，下一輪 hunter 的去重就看不到這張單。
+4. **把指紋寫回 `output/issues-index.yaml`**（`fingerprint` / `issue: <URL、#編號或本地檔案路徑，依後端而定>` / `occurrences` / `confidence`）。不寫，下一輪 hunter 的去重就看不到這張單。
 5. 回報**完整 Issue URL 或本地檔案路徑**（非只給編號）。
 
 ## Bug Report 範本

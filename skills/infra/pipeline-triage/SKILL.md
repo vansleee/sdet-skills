@@ -7,7 +7,7 @@ description: 一次 run 紅一片時，先把幾十個失敗 fan-in 合併成少
 
 輸入一個有失敗的 GitHub Actions run，輸出：合併後的根因群 + 每群的負責人 + 開好的 Issue。設計理念見 `docs/infra/pipeline-triage.md`。
 
-> 與 `failure-analysis` 的分工：那支處理**一筆**；這支處理**一批**。80 筆各自分析＝80 倍成本且結論還錯——**必須先合併根因再分析**。
+> 與 `failure-analysis` 的分工：那支處理**一筆**；這支處理**一批**。80 筆各自分析＝80 倍成本且結論還錯。**必須先合併根因再分析**。
 > 後端指令讀 `config/ci-backend-github-actions.md`（讀 run）與 `config/issue-tracker-github.md`（開單）；token 走 env。開單受 `config/governance.yaml` 管制。
 
 ## 輸入 / 輸出
@@ -16,9 +16,9 @@ description: 一次 run 紅一片時，先把幾十個失敗 fan-in 合併成少
 
 ## 步驟
 
-1. **收 run**：交 `pipeline-read` 拉——它負責 `gh run view --json jobs,conclusion`、`--log-failed`、必要時 `gh run download`，並照「由粗到細」省 token。**不要自己重刻一套讀法。**
+1. **收 run**：交 `pipeline-read` 拉。它負責 `gh run view --json jobs,conclusion`、`--log-failed`、必要時 `gh run download`，並照「由粗到細」省 token。**不要自己重刻一套讀法。**
 2. **接結構化失敗清單**：直接吃 `pipeline-read` 的輸出（每筆已含 nodeid / 檔案 / 正規化過的 error signature / job）。它回報的 `count-mismatch` warning 要原樣帶進本次報告。
-3. **Fan-in 合併（本 skill 的核心）**：把失敗依三維度收斂成根因群——相同 error signature、共同前置步驟、同時轉紅的時間點（CI 版的 bug fingerprint）。
+3. **Fan-in 合併（本 skill 的核心）**：把失敗依三維度收斂成根因群：相同 error signature、共同前置步驟、同時轉紅的時間點（CI 版的 bug fingerprint）。
 4. **每群分析一次**：對每個根因群呼叫 `failure-analysis` 分類（測試/環境/產品/flaky），**一群一次**，不要逐筆。
 5. **分流**：
    - `environment` / stack-wide → **合併成單一 infra issue**，不分派給各 owner。

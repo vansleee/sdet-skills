@@ -17,7 +17,7 @@ description: 決定整套測試的環境策略：ephemeral 還是共享+namespac
 1. **盤點環境**：從 `config/` 讀環境清單與各自用途；祕密只從 env var 取（`BASE_URL`、`TEST_USER` …），一律不落地。
 2. **選策略**（見下表）。
 3. **定 seeding**：走 **API**（或 CLI / factory），**不走 UI**（慢又脆）、**不直插 DB**（繞過驗證，種出產品自己不接受的資料）。seeding 失敗要讓 pipeline 直接紅，不要帶著半套資料往下跑。
-4. **定隔離慣例**：每個 run（或每個 worker）配一個唯一前綴 `t-<run_id>-<worker>-`，所有測試建立的資料都帶這個前綴——與 `test-data` 用同一套，不要各發明各的。
+4. **定隔離慣例**：每個 run（或每個 worker）配一個唯一前綴 `t-<run_id>-<worker>-`，所有測試建立的資料都帶這個前綴，與 `test-data` 用同一套，不要各發明各的。
 5. **定 teardown**：依前綴刪除自己建的資料，`if: always()` 跑。**只刪自己前綴的東西**。
 6. **產 smoke check**：跑測試前先驗環境活著（首頁 200、登入 API 200、關鍵依賴可達）。不過就直接 fail fast，標記 `environment`，別讓幾百支測試紅一片後再回頭猜。
 7. **交出去**：把 seeding / teardown / smoke 三段步驟交給 `ci-pipeline` 掛進 workflow。
@@ -32,7 +32,7 @@ description: 決定整套測試的環境策略：ephemeral 還是共享+namespac
 > 大多數專案落在 `shared-namespaced`。選它就等於接受下面那條鐵則。
 
 ## 鐵則
-- **禁止重置共享環境。** `reset_shared_env`、`truncate_shared_db` 在 `config/governance.yaml` 的 `forbidden` 名單，**沒有任何 override 路徑**。理由：共享環境上有別人的資料與正在進行的驗證；「清乾淨比較好測」對你成立，對隔壁那位不成立。環境髒了就用唯一前綴繞開它，不是清掉它。
+- **禁止重置共享環境。** `reset_shared_env`、`truncate_shared_db` 在 `config/governance.yaml` 的 `forbidden` 名單，**沒有任何 override 路徑**。理由：共享環境上有別人的資料與正在跑的驗證；「清乾淨比較好測」對你成立，對隔壁那位不成立。環境髒了就用唯一前綴繞開它，不是清掉它。
 - **只刪自己前綴的資料。** teardown 的刪除條件必須帶 run 前綴；沒有前綴的全域刪除等同重置，同樣禁止。
 - **seeding 走 API，不直插 DB。** 直插 DB 種出的資料常常是產品邏輯不承認的狀態，會製造假 bug。
 - **環境問題交 infra 修環境。** smoke check 不過 → 分類 `environment` → 修環境（`failure-analysis` 也是這樣分流的）；測試維持原樣，放寬它只是把壞環境藏起來。

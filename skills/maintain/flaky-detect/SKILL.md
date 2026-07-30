@@ -17,11 +17,11 @@ description: 判定一支測試是真的 flaky 還是穩定壞掉：同碼同環
 N（`reruns`）與 `flake_rate` 門檻讀 `config/sdet-config.yaml`，**不寫死**。
 
 ## 硬性要求：量化重現率
-**沒有重現率的 flaky 回報不算數。** 必記「幾次紅／總共幾次」，並保留每次的失敗訊息——不同次紅的原因不同，通常代表有多個問題疊在一起，要拆開報。
+**沒有重現率的 flaky 回報不算數。** 必記「幾次紅／總共幾次」，並保留每次的失敗訊息。不同次紅的原因不同，通常代表有多個問題疊在一起，要拆開報。
 
 ## 疑似根因分類
 
-交下游時**一定要帶 `classification` 那欄**——`test-heal` 的「只准這樣改」表是用 `failure-analysis` 的詞彙當 key，只給 `suspected_root_cause` 它查無此列。
+交下游時**一定要帶 `classification` 那欄**。`test-heal` 的「只准這樣改」表是用 `failure-analysis` 的詞彙當 key，只給 `suspected_root_cause` 它查無此列。
 
 | suspected_root_cause | 訊號 | 交下游用的 `classification` | 後續 |
 |---|---|---|---|
@@ -32,7 +32,7 @@ N（`reruns`）與 `flake_rate` 門檻讀 `config/sdet-config.yaml`，**不寫�
 | `render-timing` | 動畫、非同步渲染、重繪造成的時序 | `wait-timing` | `test-heal` |
 
 ## 鐵則
-- **結論要指向根因，不是「加 retry / 加 sleep」**——那兩個是綠色作弊（`references/green-cheating.md`），把 flake_rate 藏起來而非降下來。
+- **結論要指向根因，不是「加 retry / 加 sleep」**。那兩個是綠色作弊（`references/green-cheating.md`），把 flake_rate 藏起來而非降下來。
 - 本 skill 只定性、不動手：修法交 `test-heal`，驗穩交 `re-run-gate`。
 - 重跑有上限（config），到了就停。寫下「未達成定性」也比亂猜一個根因好。
 

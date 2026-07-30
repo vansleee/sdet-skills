@@ -35,6 +35,6 @@ charter:
 ```
 
 ## 鐵則
-- **一定要有 `oracles` 與 `out_of_bounds`**——缺了，explore 放手就不安全。
-- `scope` 只說「去哪」，不寫「怎麼走」——留白給 explore。
+- **一定要有 `oracles` 與 `out_of_bounds`**。缺了，explore 放手就不安全。
+- `scope` 只說「去哪」，不寫「怎麼走」。留白給 explore。
 - 一個探索任務一份，存進 `charters/`。

@@ -1,6 +1,6 @@
 ---
 name: bug-hunter
-description: 依一份 charter 獵一輪 bug，交回已判定、已去重、標好 confidence 的候選清單——只找、不開單。使用者要找 bug、巡一輪、跑 hunter 時使用；`duty-oncall` 或任何 skill 需要候選清單時也用。
+description: 依一份 charter 獵一輪 bug，交回已判定、已去重、標好 confidence 的候選清單。只找、不開單。使用者要找 bug、巡一輪、跑 hunter 時使用；`duty-oncall` 或任何 skill 需要候選清單時也用。
 ---
 
 # Bug Hunter
@@ -19,14 +19,14 @@ description: 依一份 charter 獵一輪 bug，交回已判定、已去重、標
 
 1. **探索** — 交給 `explore`：讀 charter、自主選步、記路徑不重做、順手留證。
    先讀同一 charter 過去幾輪的 evidence／`exploration-log.yaml`，**已驗證的不重跑**，把力氣放在還沒測的維度。
-2. **標狀態** — 每個觀察交 `structured-result`，標六態之一（pass / fail / blocked / flaky / anomaly / inconclusive）——**六態封閉，只從這六個裡挑**。
+2. **標狀態** — 每個觀察交 `structured-result`，標六態之一（pass / fail / blocked / flaky / anomaly / inconclusive）。**六態封閉，只從這六個裡挑**。
 3. **初篩分類** — 交 `classify-anomaly`：product-bug / environment / test-data / operation-artifact / flaky / known-issue / needs-investigation。
 4. **判定** — 對 `product-bug` 與未定案的 anomaly 交 `test-oracle`，取得 `verdict` / `oracle_used` / `basis`。
-   **沒有 oracle 命中，不得判 bug**——只能 `needs-spec` / `inconclusive`。
+   **沒有 oracle 命中，不得判 bug**，只能 `needs-spec` / `inconclusive`。
 5. **打分** — 依 `references/confidence.md` 算 confidence，寫下用了哪幾個因子與分數，並在 `output/calibration.yaml` 記一列 `predicted`。
 6. **去重** — 依 `references/bug-fingerprint.md` 算指紋、查 `output/issues-index.yaml`，照該文「比對與合併」四規則分流（併入 / related / 新候選）。
 7. **濾誤報** — 比對 `output/known-false-positives.yaml`，命中的移到 `suppressed`，並記下命中哪一條。
-8. **封裝與交付** — 剩下的候選交 `evidence-package` 封裝（**可攜、自帶脈絡**，不得寫「如上一步所說」——下游 `bug-verifier` 是沒有本次記憶的獨立 subagent），依 confidence 排序輸出。
+8. **封裝與交付** — 剩下的候選交 `evidence-package` 封裝（**可攜、自帶脈絡**，不得寫「如上一步所說」，下游 `bug-verifier` 是沒有本次記憶的獨立 subagent），依 confidence 排序輸出。
 
 步驟 4–7 就是**四道守門**（oracle / confidence / dedup / known-FP），少一道就不算跑完；判準本身以 `issue-quality-gate` 的六條表與 `references/` 為準，這裡不重述。
 

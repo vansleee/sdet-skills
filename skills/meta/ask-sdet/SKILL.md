@@ -35,4 +35,4 @@ disable-model-invocation: true
 **串起來**：`/duty-oncall` 在授權（`config/governance.yaml`）內把上面整條排程跑完。
 
 ## 維護規則
-新增／改名／移除任一 user-invoked skill，或改了它在流程裡的位置，就要回來更新這張表——過時的路由器會騙人。
+新增／改名／移除任一 user-invoked skill，或改了它在流程裡的位置，就要回來更新這張表。過時的路由器會騙人。

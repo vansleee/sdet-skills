@@ -25,21 +25,21 @@ disable-model-invocation: true
 | 4 | `quarantine_within_budget` | 隔離中的測試數 ≤ `gate.max_quarantined` | `output/flaky-registry.yaml` |
 | 5 | `no_expired_quarantine` | 無逾期未處置的隔離（`status: escalated`） | `output/flaky-registry.yaml` |
 
-**隔離中的測試紅了不算 fail**（否則隔離沒意義），但**一律列進報告**——放行的人必須看到「這版有幾支測試是關掉的」。
+**隔離中的測試紅了不算 fail**（否則隔離沒意義），但**一律列進報告**。放行的人必須看到「這版有幾支測試是關掉的」。
 
 ## 步驟
 1. **收證據**：呼叫 `pipeline-read` 取最新 run；讀 registry、blocker issue、config 準則。
 2. **逐條評估**：每條標 `pass` / `fail` / `inconclusive`，並寫 `basis` 指向具體證據（run URL、issue URL、registry 條目）。
 3. **缺證據不當 PASS**：拿不到 run、artifact 過期、指令失敗 → 該條標 `inconclusive`，整體裁決 `FAIL`，`blocked_on` 寫「缺什麼證據、去哪拿」。
 4. **裁決**：全 `pass` → `PASS`；任一 `fail` / `inconclusive` → `FAIL`。
-5. **Override（僅限人主動要求）**：依 `config/governance.yaml` 的 `override.require_reason: true` **強制留痕**——誰、何時、理由、硬推了哪幾條。沒有理由就不寫、不放行。
+5. **Override（僅限人主動要求）**：依 `config/governance.yaml` 的 `override.require_reason: true` **強制留痕**：誰、何時、理由、硬推了哪幾條。沒有理由就不寫、不放行。
 6. **留痕**：寫 `output/pipeline-gate.yaml`（先給人看再寫）。
 7. **報告**：輸出逐條表 + 一行摘要（`PASS/FAIL`、幾條不過、隔離中幾支）。
 
 ## 鐵則
 - **AND，不是加權平均。** 四條滿分救不了一條 fail。
 - **`inconclusive` 不得當 PASS。** 「查不到」和「沒問題」是兩件事，混為一談就是拿假的綠燈換過關。
-- **只裁決、不執行。** 本 skill **不 merge、不 tag、不 deploy**——`merge_pr` 在 `config/governance.yaml` 的 `forbidden` 名單。放行動作（貼 label、留言）也要先確認才做。
+- **只裁決、不執行。** 本 skill **不 merge、不 tag、不 deploy**。`merge_pr` 在 `config/governance.yaml` 的 `forbidden` 名單。放行動作（貼 label、留言）也要先確認才做。
 - **override 必留痕，且不可事後補。** 沒有理由的硬推＝沒有 override。
 - 本 skill 不分析失敗（`failure-analysis` / `pipeline-triage`）、不決定 flaky 政策（`flaky-manager`）、不做需求層放行（`release-signoff`）。
 
@@ -62,4 +62,4 @@ disable-model-invocation: true
 ```
 
 ## 上下游
-上游：`pipeline-read`（run 證據）、`flaky-manager`（隔離名單）。**只由人發動**——沒有 skill 呼叫它，放行是人的決定點。下游：`release-signoff`（吃本 skill 的 `output/pipeline-gate.yaml` 當證據）、`pipeline-observability`（gate 通過率、override 次數）、`status-report`（引用裁決）。
+上游：`pipeline-read`（run 證據）、`flaky-manager`（隔離名單）。**只由人發動**，沒有 skill 呼叫它，放行是人的決定點。下游：`release-signoff`（吃本 skill 的 `output/pipeline-gate.yaml` 當證據）、`pipeline-observability`（gate 通過率、override 次數）、`status-report`（引用裁決）。

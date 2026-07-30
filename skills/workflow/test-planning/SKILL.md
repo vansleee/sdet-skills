@@ -7,11 +7,11 @@ description: 把一張 ticket / PRD 轉成「這次要測什麼」的範圍 + �
 
 輸入一張 ticket / PRD，輸出**測試範圍 + 風險排序 + 每項怎麼測**。workflow 迴圈的入口。設計理念見 `docs/workflow/test-planning.md`。
 
-> **規劃不是列一堆 test case。** 產出是「這輪測什麼、不測什麼、為什麼」——怎麼走留給 `explore`，逐步腳本留給 `test-author`。
+> **規劃不是列一堆 test case。** 產出是「這輪測什麼、不測什麼、為什麼」。怎麼走留給 `explore`，逐步腳本留給 `test-author`。
 
 ## 輸入 / 輸出
 - **輸入**：ticket / PRD（連結或內文；GitHub issue 用 `gh issue view <n> --json title,body,labels`）＋ `knowledge/` 產品事實 ＋ 可選：`output/traceability.yaml` 上一輪的 gap 清單。
-- **輸出**：`output/plans/<slug>.md`——in-scope（含怎麼測）、out-of-scope（**含理由**）、風險排序、開放問題。
+- **輸出**：`output/plans/<slug>.md`，包含 in-scope（含怎麼測）、out-of-scope（**含理由**）、風險排序、開放問題。
 
 ## 步驟
 1. **讀需求**：抽出「改了什麼、影響誰、驗收條件是什麼」。驗收條件缺失就列進開放問題，不自己補一個。
@@ -26,12 +26,12 @@ description: 把一張 ticket / PRD 轉成「這次要測什麼」的範圍 + �
 
 ## route → 測法
 
-本 skill **只把路線寫進 plan，不代為發動**——plan 是待辦清單，誰去做、什麼時候做是下一步的事。
+本 skill **只把路線寫進 plan，不代為發動**。plan 是待辦清單，誰去做、什麼時候做是下一步的事。
 
 | route | 怎麼測 | plan 記什麼 |
 |---|---|---|
 | `must-test` + 行為未知/需求模糊 | 自主探索 | `how: explore`，`next` 指向要產的 `charters/<slug>.yaml`（由 `exploration-charter` 產）|
-| `must-test` + 行為明確、要長期守 | 固化成自動化回歸 | `how: test-author`，`next` 寫要幾支測試——**`test-author` 由人發動**（多一支測試就是多一份長期資產）|
+| `must-test` + 行為明確、要長期守 | 固化成自動化回歸 | `how: test-author`，`next` 寫要幾支測試。**`test-author` 由人發動**（多一支測試就是多一份長期資產）|
 | `sample` | 預算夠才做，優先度低於 must-test | 同上，另標 `optional` |
 | `skip` | 本輪不測 | 不進 in_scope，列 out-of-scope **並寫理由** |
 

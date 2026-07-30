@@ -30,7 +30,7 @@ description: 算測試健康指標（MTTR、flaky rate、首次通過率、派�
 ## 步驟
 1. **定期間**：本期 vs 上一期（同長度）。
 2. **收資料**：從上表來源讀；**不重跑任何測試、不重算下游已算過的值**（flaky rate 直接引 registry，不自己重算重現率）。
-3. **算指標**：照 `references/test-health-metrics.md`。資料不足以算的，標 `no-data` 並寫缺什麼——**不用 0 或猜測值填補**。
+3. **算指標**：照 `references/test-health-metrics.md`。資料不足以算的，標 `no-data` 並寫缺什麼，**不用 0 或猜測值填補**。
 4. **比趨勢**：與上期比，標 `improving` / `stable` / `degrading`。
 5. **對閾值**：超標的標 `alert`。
 6. **產行動**：每個 `alert` 依上表指名下一步 skill + 一句理由。沒有 alert 就明說「本期無需行動」。
@@ -39,9 +39,9 @@ description: 算測試健康指標（MTTR、flaky rate、首次通過率、派�
 ## 鐵則
 - **每個 alert 必須綁一個行動。** 只報數字不指路，等於把判斷成本丟回給人。
 - **不重算、只引用。** 數字的單一真相在各自的狀態檔；這裡重算一次，就會出現兩個版本的 flaky rate。
-- **`no-data` 不是 0。** 沒量到不等於健康——這和 `route-by-risk`「資料源缺不等於低風險」是同一條紀律。
+- **`no-data` 不是 0。** 沒量到不等於健康。這和 `route-by-risk`「資料源缺不等於低風險」是同一條紀律。
 - **趨勢比絕對值重要。** flaky rate 5% 不一定有問題，但從 1% 變 5% 一定有事。報告一律附上期對照。
-- **純讀無副作用——它是儀表，不是方向盤。** 指出該去哪，方向盤交給被路由到的那支。
+- **純讀無副作用：它是儀表，不是方向盤。** 指出該去哪，方向盤交給被路由到的那支。
 
 ## 輸出（格式，非某次執行結果）
 ```yaml
@@ -68,4 +68,4 @@ actions:
 ```
 
 ## 上下游
-上游：`pipeline-read`（run 歷史）、`flaky-manager` / `quality-gate` / `pipeline-triage`（各自的狀態檔）。下游：依 alert 路由回 `flaky-manager` / `test-parallelize` / `pipeline-triage` / `test-prune`——**這就是 infra 迴圈的回饋邊**；`status-report` 直接引用本報告的數字，不自己重算。
+上游：`pipeline-read`（run 歷史）、`flaky-manager` / `quality-gate` / `pipeline-triage`（各自的狀態檔）。下游：依 alert 路由回 `flaky-manager` / `test-parallelize` / `pipeline-triage` / `test-prune`，**這就是 infra 迴圈的回饋邊**；`status-report` 直接引用本報告的數字，不自己重算。

@@ -1,6 +1,6 @@
 ---
 name: status-report
-description: 把近期活動彙整成 standup / 測試報告 / release-readiness 摘要——只引用既有狀態檔，不重算。要回報進度、給團隊看時使用；`release-signoff` 要素材時也用。
+description: 把近期活動彙整成 standup / 測試報告 / release-readiness 摘要。只引用既有狀態檔，不重算。要回報進度、給團隊看時使用；`release-signoff` 要素材時也用。
 ---
 
 # Status Report
@@ -46,7 +46,7 @@ description: 把近期活動彙整成 standup / 測試報告 / release-readiness
 
 ## 鐵則
 - **缺資料就寫「無資料」。** 用 0 或估計值填補，會讓「沒量」長得像「沒問題」。
-- **每個結論附出處。** 對齊 `structured-result` 的證據習慣——沒有出處的結論在追問時站不住。
+- **每個結論附出處。** 沿用 `structured-result` 的證據習慣。沒有出處的結論在追問時站不住。
 - **`release-readiness` 只陳述現況。** 它是 `release-signoff` 的輸入，go/no-go 由那支裁決。
 - **隔離中的測試一定要提。** 「這期有 3 支測試是關掉的」屬於讀者必須知道的事，不能因為它不好看就省略。
 

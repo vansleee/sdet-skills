@@ -20,7 +20,7 @@ description: 跨 run 的 flaky 治理：維護 flaky 名單、決定隔離（qua
 3. **比對 registry**：已在名單的更新 `last_seen`、`flake_rate`；新出現的加入。
 4. **套政策**（下表），產決策。
 5. **檢到期**：quarantine 超過 `flaky.max_quarantine_days`（預設 14）仍未修 → **escalate**：交 `test-heal` 修，或 `test-prune` 評估刪除，並回報給人。
-6. **確認再寫**：quarantine / de-quarantine 會改測試標記，屬副作用——**先把清單列給使用者確認**，得同意才動，並受 `config/governance.yaml` 管制。
+6. **確認再寫**：quarantine / de-quarantine 會改測試標記，屬副作用，**先把清單列給使用者確認**，得同意才動，並受 `config/governance.yaml` 管制。
 7. **輸出**：更新 registry、回報決策表、把 flaky rate 交 `pipeline-observability`、把名單交 `quality-gate`。
 
 ## 政策
@@ -32,13 +32,13 @@ description: 跨 run 的 flaky 治理：維護 flaky 名單、決定隔離（qua
 | → `active`（解除隔離）| 修完後交 `re-run-gate` **連續綠 N 次**（讀 `config` 的 `rerun.required_green`）| 解除標記、registry 標 `resolved` |
 | → `escalated` | 隔離超過 `max_quarantine_days` 未修 | 轉 `test-heal`（修）或 `test-prune`（評估刪）+ 回報人 |
 
-隔離的**實作方式**讀 `config/sdet-config.yaml` 的 `flaky.quarantine_mechanism`（如 Playwright 的 `test.fixme` / `@flaky` tag + grep 排除），**不寫死在本 skill**——不同專案的測試框架與 CI 設定不同。
+隔離的**實作方式**讀 `config/sdet-config.yaml` 的 `flaky.quarantine_mechanism`（如 Playwright 的 `test.fixme` / `@flaky` tag + grep 排除），**不寫死在本 skill**。不同專案的測試框架與 CI 設定不同。
 
 ## 鐵則
 - **quarantine 一定要有到期日。** 沒有退場機制的隔離＝安靜地刪掉覆蓋率：測試還在 repo 裡、看起來有測，實際永遠不跑。到期就必須 escalate，不准無限展延。
 - **隔離不是修好。** registry 裡 `quarantined` 是「欠債中」，不是結案；只有 `resolved` 才算完。
 - **不自己修測試、不自己判單筆根因。** 定性交 `flaky-detect`、修交 `test-heal`、驗穩交 `re-run-gate`。
-- **禁止用「加 retry」當治理手段**——那是把 flake_rate 藏起來，不是降下來。
+- **禁止用「加 retry」當治理手段**。那是把 flake_rate 藏起來，不是降下來。
 - 隔離中的測試紅了**不擋 `quality-gate`**（否則隔離沒意義），但**必須在放行報告裡列出來**，讓人知道這版有多少覆蓋是關掉的。
 
 ## 輸出（格式，非某次執行結果）

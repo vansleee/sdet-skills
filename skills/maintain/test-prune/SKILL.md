@@ -7,7 +7,7 @@ description: 判斷一支測試該留、該合併、還是該刪，並寫清楚�
 
 輸入一支測試，輸出 `keep` / `merge` / `remove` 的**建議**與理由。設計理念見 `docs/maintain/test-prune.md`。
 
-> **只給建議。** 刪除不可逆，本 skill 不自行刪檔、不加 `.skip`；輸出一律帶 `needs_human_approval: true`（對齊 `config/governance.yaml` 的 needs_review 精神）。
+> **只給建議。** 刪除不可逆，本 skill 不自行刪檔、不加 `.skip`；輸出一律帶 `needs_human_approval: true`（比照 `config/governance.yaml` 的 needs_review 精神）。
 
 ## 三個提問
 1. 它驗的**行為還存在嗎**？（功能已下線／規格已改 → remove 候選）

@@ -7,7 +7,7 @@ description: 開單前的硬閘門：六條 AND 全過才放行，輸出 output/
 
 輸入一批候選（含 verdict、confidence、evidence），輸出 `output/gate.yaml`。設計理念見 `docs/agents/issue-quality-gate.md`。
 
-> **好習慣會被跳過，硬閘門不會。** 前面立的規矩——證據、oracle、信心、誤報、去重、獨立重現——在這裡從「最好有」變成「沒有就開不了」。這是一個 **AND**：全過才放行。
+> **好習慣會被跳過，硬閘門不會。** 前面立的規矩——證據、oracle、信心、誤報、去重、獨立重現——在這裡從「最好有」變成「沒有就開不了」。這是 **AND**：全過才放行。
 
 ## 前置
 - 候選已過 `bug-verifier`（有 `output/verdicts/V-<slug>.yaml`）；沒驗過的不進閘門，先送驗。
@@ -44,7 +44,7 @@ description: 開單前的硬閘門：六條 AND 全過才放行，輸出 output/
 - 不放行 ≠ 丟掉：每筆 hold / block 都要寫 `blocked_on`，讓「要人來判」變成看得到的佇列，不是默默消失。
 - 閘門本身**不開單、不修、不改候選內容**；它只做決定、留紀錄。
 - override 走 `config/governance.yaml`：`require_reason: true`，硬推要留痕（誰／何時／理由）。
-- 擋下的紀錄與後續人判回填 `output/calibration.yaml`——閘門越透明，越知道該調鬆或調緊。
+- 擋下的紀錄與後續人判回填 `output/calibration.yaml`。閘門越透明，越知道該調鬆或調緊。
 
 ## 驗收（跑完自己對一次）
 - 每個候選**六條都跑完**、逐條有 pass/fail 嗎？

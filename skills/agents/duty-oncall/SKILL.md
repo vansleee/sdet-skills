@@ -1,6 +1,6 @@
 ---
 name: duty-oncall
-description: 排一次獨立值班——獵 → 驗 → 閘 → 開單／開 PR（不 merge）跑完一輪，受 governance 與預算管制，留下 output/runs/<date>.yaml 與五分鐘可複核的摘要。
+description: 排一次獨立值班：獵 → 驗 → 閘 → 開單／開 PR（不 merge）跑完一輪，受 governance 與預算管制，留下 output/runs/<date>.yaml 與五分鐘可複核的摘要。
 disable-model-invocation: true
 ---
 

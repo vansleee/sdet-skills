@@ -29,7 +29,7 @@ description: 用分片與平行讓一大包測試在時限內跑完：先驗獨�
 
 ### 2. 算 shard 數
 `shards = ceil(baseline_duration / target_duration)`，再加 1 當緩衝。上限讀 config 的 `ci.max_shards`。
-每個 shard 內部再開 `workers`（Playwright 預設 CPU/2）——**先加 workers（同一台機器、免錢）再加 shard（多開 runner、要錢）**。
+每個 shard 內部再開 `workers`（Playwright 預設 CPU/2）。**先加 workers（同一台機器、免錢）再加 shard（多開 runner、要錢）**。
 
 ### 3. 產 matrix + 分片指令
 Playwright：`npx playwright test --shard=${{ matrix.shard }}/${{ strategy.job-total }}`，reporter 設 `blob`。
@@ -38,13 +38,13 @@ Playwright：`npx playwright test --shard=${{ matrix.shard }}/${{ strategy.job-t
 分片後每片各有一份報告，**不合併等於下游全瞎**。加一個 `if: always()` 的 merge job：下載所有 `blob-report-*` → `npx playwright merge-reports --reporter=html,json` → 上傳成 `playwright-report` / `test-results-json`（名字照 `references/artifact-contract.md`）。
 
 ### 5. 驗數（必做）
-合併後的 **total 必須等於分片前的 total**——分片最危險的失效模式就是**靜默失蹤**（判準見 `references/artifact-contract.md`）。不相等就標 WARNING 並擋下。
+合併後的 **total 必須等於分片前的 total**。分片最危險的失效模式就是**靜默失蹤**（判準見 `references/artifact-contract.md`）。不相等就標 WARNING 並擋下。
 
 ### 6. 分桶平衡
 預設用 Playwright 內建的平均分配。若最慢 shard 比最快多 40% 以上，改用歷史 duration 分桶（讀上幾次 run 的 JSON 報告，把測試依耗時貪婪分配）。**重算時機**：新增大量測試、或最慢/最快落差再次超過 40%。
 
 ### 7. 成本估算
-`runner 分鐘數 ≈ shards × (target_duration + 啟動 overhead ~2 分鐘)`。列出「序列 vs 分片」的分鐘數對比給人看——**快不等於免費**，多開 4 片省 20 分鐘牆鐘、但帳單乘以 4。建議上限：`ci.max_shards`，或成本超過 `sdet-economics` 認可的門檻就回報而不是硬開。
+`runner 分鐘數 ≈ shards × (target_duration + 啟動 overhead ~2 分鐘)`。列出「序列 vs 分片」的分鐘數對比給人看。**快不等於免費**，多開 4 片省 20 分鐘牆鐘、但帳單乘以 4。建議上限：`ci.max_shards`，或成本超過 `sdet-economics` 認可的門檻就回報而不是硬開。
 
 ## 鐵則
 - **獨立性沒過不給分片。** 先修再平行，不然只是量產 flaky。

@@ -5,7 +5,7 @@ description: 探索或測試時看到異常，先分類它是哪一種（產品 
 
 # Classify Anomaly
 
-輸入一個 `fail` 或 `anomaly`（來自 `structured-result`，需附證據），輸出「哪一類 + 信心 + 下一步」。**看到異常不等於找到 bug——先分類，不定罪。** 設計理念見 `docs/observe/classify-anomaly.md`。
+輸入一個 `fail` 或 `anomaly`（來自 `structured-result`，需附證據），輸出「哪一類 + 信心 + 下一步」。**看到異常不等於找到 bug，先分類，不定罪。** 設計理念見 `docs/observe/classify-anomaly.md`。
 
 ## 類別（category）
 | category | 訊號 | 是否可往下開單 |

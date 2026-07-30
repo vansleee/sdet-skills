@@ -1,6 +1,6 @@
 ---
 name: pipeline-read
-description: 從 GitHub Actions run 拉失敗、artifact、annotation（用 gh），輸出結構化失敗清單——只讀不下結論。使用者貼 run 連結或問「CI 為什麼紅」時使用；任何 skill 要 run 證據都先經它，別自己重刻讀法。
+description: 從 GitHub Actions run 拉失敗、artifact、annotation（用 gh），輸出結構化失敗清單。只讀不下結論。使用者貼 run 連結或問「CI 為什麼紅」時使用；任何 skill 要 run 證據都先經它，別自己重刻讀法。
 ---
 
 # Pipeline Read
@@ -11,7 +11,7 @@ description: 從 GitHub Actions run 拉失敗、artifact、annotation（用 gh�
 
 ## 輸入 / 輸出
 - **輸入**：run id / run URL；或「某 branch 最新一次紅的 run」（`gh run list --branch <b> --status failure --limit 1 --json databaseId`）。
-- **輸出**：`run` 摘要 ＋ `failures[]`（每筆含 nodeid / file / error signature / job / annotation / artifact 路徑）＋ `warnings[]`。狀態欄位對齊 `structured-result` 的六態。
+- **輸出**：`run` 摘要 ＋ `failures[]`（每筆含 nodeid / file / error signature / job / annotation / artifact 路徑）＋ `warnings[]`。狀態欄位沿用 `structured-result` 的六態。
 
 ## 步驟（**由粗到細，能停就停**）
 1. **摘要先行**：`gh run view <id> --json databaseId,headBranch,headSha,conclusion,createdAt,jobs`。得到哪些 job 紅、各自幾秒。**這步通常就夠回答「哪裡紅」**。
@@ -31,9 +31,9 @@ locator('[data-test=id-8f3a2]') 逾時 30000ms at line 42
 規則：UUID / 數字 id / timestamp / 絕對路徑 / 行號 → 佔位符；保留錯誤類型與 selector 骨架。
 
 ## 鐵則
-- **只讀不寫——它是感官，不是手。** 觀察到什麼就回報什麼，動作留給下游。
+- **只讀不寫：它是感官，不是手。** 觀察到什麼就回報什麼，動作留給下游。
 - **由粗到細。** 先 summary、再失敗 log、最後才 artifact。整包 log 進 context 是本 skill 最容易犯、也最貴的錯（見 `sdet-economics`）。
-- **不下結論。** 判「這是 flaky 還是壞了」不是本 skill 的事——輸出事實，讓下游判。
+- **不下結論。** 判「這是 flaky 還是壞了」不是本 skill 的事。輸出事實，讓下游判。
 - **驗數不可省**（防靜默失蹤，見 `references/artifact-contract.md`）。
 - 後端指令讀 `config/ci-backend-github-actions.md`；token 走 `GH_TOKEN` env，不落地。
 

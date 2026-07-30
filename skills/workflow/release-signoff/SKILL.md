@@ -35,7 +35,7 @@ disable-model-invocation: true
    - 全 `pass` → `go`
    - 任一 `fail` → `no-go`
    - 有 `inconclusive`、或下層 `OVERRIDE`、或人願意承擔特定已知風險 → `conditional-go`（**條件要寫成可檢查的句子**，如「上線後 24h 內監控 X，超標即回滾」）
-5. **產補完清單**（`no-go` 必附）：缺什麼、誰補、預估多久——讓「不能出」變成可執行的待辦，而不是一句否決。
+5. **產補完清單**（`no-go` 必附）：缺什麼、誰補、預估多久。讓「不能出」變成可執行的待辦，而不是一句否決。
 6. **確認再寫**：把裁決表列給使用者，得同意才寫 `output/signoffs/<version>.yaml`。
 7. **標記 AI 身分**：報告開頭加 `> *This assessment was compiled by AI. The sign-off decision belongs to a human.*`
 
@@ -43,7 +43,7 @@ disable-model-invocation: true
 - **只裁決與留痕，不執行 release。** 不打 tag、不 deploy、不 merge（`merge_pr` 在 `config/governance.yaml` 的 `forbidden` 名單）。
 - **`inconclusive` 不得當 pass**（理由同 `infra/quality-gate`）。
 - **簽核人是人。** 本 skill 產的是評估與紀錄；`signed_by` 一欄由人填，agent 不代簽。
-- **不重跑下層。** build 綠不綠問 `output/pipeline-gate.yaml`，不自己再跑一次測試——重跑會得到不同結果，然後沒人知道該信哪個。
+- **不重跑下層。** build 綠不綠問 `output/pipeline-gate.yaml`，不自己再跑一次測試。重跑會得到不同結果，然後沒人知道該信哪個。
 - **`conditional-go` 的條件必須可檢查。** 「小心一點」不是條件；「24h 內錯誤率 > 1% 即回滾，由 X 監控」才是。
 - **關掉的覆蓋一定要揭露。** 隔離中的測試數要出現在報告正文，不是附註。
 

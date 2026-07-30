@@ -1,6 +1,6 @@
 ---
 name: sdet-economics
-description: 成本紀律 reference:省 token、重用 context、模型分級、預算與停止條件、ROI、績效。
+description: 成本紀律 reference：省 token、重用 context、模型分級、預算與停止條件、ROI、績效。
 ---
 
 # SDET Economics（reference，被 bug-hunter / explore / duty-oncall 讀）
@@ -24,7 +24,7 @@ description: 成本紀律 reference:省 token、重用 context、模型分級、
 ## 預算與停止條件（讀 `config/sdet-config.yaml` 的 `budget`）
 - `budget.max_tokens_per_run`：單次執行（一次 hunt / 一次 duty-oncall 值班）的 token 上限。
 - `budget.max_actions_per_explore`：`explore` 單次探索的最大步數（呼應 `explore` 自己的 `max_steps` 停止條件，兩者取小）。
-- **超過就停手回報，不硬撐。** 停在哪一步、為什麼停、還剩什麼沒探完，要寫進交回的紀錄——這是 `explore` 停止條件的成本版本，不是另一套邏輯。
+- **超過就停手回報，不硬撐。** 停在哪一步、為什麼停、還剩什麼沒探完，要寫進交回的紀錄。這是 `explore` 停止條件的成本版本，不是另一套邏輯。
 - 沒有 `sdet-config.yaml` 或欄位缺漏時，用保守預設（寧可提早停、事後被問「怎麼停這麼快」，不要燒穿預算才發現）。
 
 ## ROI：一個確認 bug 花多少成本
@@ -34,14 +34,14 @@ description: 成本紀律 reference:省 token、重用 context、模型分級、
 cost_per_confirmed_bug = Σ tokens(該輪所有 run) ÷ Σ confirmed(該輪所有 run)
 ```
 
-`confirmed` 只算 `bug-verifier` 蓋章或人複核為真的，候選 findings 不算——分母膨脹會讓 ROI 好看但失真。
+`confirmed` 只算 `bug-verifier` 蓋章或人複核為真的，候選 findings 不算。分母膨脹會讓 ROI 好看但失真。
 
 ## 績效：`output/calibration.yaml` 算得準不準
 `output/calibration.yaml`（`references/confidence.md` 定義的同一份資料）記 `predicted` vs `human_verdict`：
 - `precision = 判 high 且 human_verdict=confirmed 的筆數 ÷ 判 high 的總筆數`
 - precision 持續偏低 → confidence 因子配分過鬆，或門檻設太低，兩者都會拉低 ROI（花力氣送驗證/開單的東西大半是假警報）。
 
-**沒有 calibration，ROI 只是一個沒人驗證過的自我感覺。**
+**沒有 calibration，ROI 只是沒人驗證過的自我感覺。**
 
 ## 輸出（格式，非某次執行結果）
 ```yaml

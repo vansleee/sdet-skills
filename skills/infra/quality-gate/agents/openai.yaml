@@ -1,5 +1,5 @@
 interface:
   display_name: "Quality Gate"
-  short_description: "pipeline 層放行閘:逐條附證據裁決 PASS/FAIL,inconclusive 不算過,override 強制留痕;只裁決不 merge。"
+  short_description: "pipeline 層放行閘：逐條附證據裁決 PASS/FAIL，inconclusive 不算過，override 強制留痕；只裁決不 merge。"
 policy:
   allow_implicit_invocation: false

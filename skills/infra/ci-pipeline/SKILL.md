@@ -14,7 +14,7 @@ description: 用 GitHub Actions 建/改測試 pipeline：產 workflow、掛分�
 ## 步驟
 1. **盤點**：讀 `playwright.config.ts` / `package.json` 取測試指令、reporter、專案矩陣；讀 `config/sdet-config.yaml` 取門檻與預算。缺什麼就問，不臆測。
 2. **決定觸發**：PR（必跑、要快）、nightly（全量）、`workflow_dispatch`（手動重跑）。三者可並存於同一檔的不同 job。
-3. **接風險閘**：把 `route-by-risk` 放在最前面當 job——它的 `must-test` / `sample` / `skip` 決定本輪跑什麼。PR 觸發預設吃 `must-test` + `sample`，nightly 跑全量。
+3. **接風險閘**：把 `route-by-risk` 放在最前面當 job。它的 `must-test` / `sample` / `skip` 決定本輪跑什麼。PR 觸發預設吃 `must-test` + `sample`，nightly 跑全量。
 4. **產 workflow**：checkout → setup-node（含 `cache: npm`）→ `npm ci` → `npx playwright install --with-deps`（快取瀏覽器）→ 跑測試 → 上傳 artifact。
 5. **掛可選層**：需要分片交 `test-parallelize`（產 matrix + merge-reports job）；需要 seeding / ephemeral env 交 `test-env`（產前置與 teardown step）。本 skill 只留掛載點，不自己發明分片或環境邏輯。
 6. **設 artifact**：照 `references/artifact-contract.md` 的名稱與上傳條件，一個都別漏。

@@ -1,5 +1,5 @@
 interface:
   display_name: "Release Sign-off"
-  short_description: "專案層級 release 放行:彙整覆蓋、blocker、build gate 與隔離現況,裁決 go/no-go/conditional-go 並留痕;只評估不執行 release,簽核人是人。"
+  short_description: "專案層級 release 放行：彙整覆蓋、blocker、build gate 與隔離現況，裁決 go/no-go/conditional-go 並留痕；只評估不執行 release，簽核人是人。"
 policy:
   allow_implicit_invocation: false

@@ -1,5 +1,5 @@
 interface:
   display_name: "Setup SDET"
-  short_description: "設定受測產品、CI、issue tracker 與門檻"
+  short_description: "設定受測產品、CI、issue tracker 與門檻。"
 policy:
   allow_implicit_invocation: false

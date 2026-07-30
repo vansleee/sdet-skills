@@ -28,8 +28,8 @@ description: 依一份 Exploration Charter 自主探索產品：觀察現況、�
 ## 鐵則（三大失敗模式的解藥）
 - **防亂點**：每一步都要有理由且引用當前畫面證據，否則不動作。
 - **防鬼打牆**：做過的操作/頁面不重複（靠 `exploration-log.yaml`）。
-- **防幻覺**：沒有證據不宣稱「已完成 / 是 bug」；只描述看到的,判定留給 oracle。
+- **防幻覺**：沒有證據不宣稱「已完成 / 是 bug」；只描述看到的，判定留給 oracle。
 
 ## 輸出
 - `findings`：候選發現清單（每筆附證據、狀態=fail/anomaly、待確認理由）→ 交 `structured-result` / `classify-anomaly`。
-- `exploration-log.yaml`：這次走過的路徑（供續跑與人審)。
+- `exploration-log.yaml`：這次走過的路徑（供續跑與人審）。

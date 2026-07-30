@@ -1,6 +1,6 @@
 ---
 name: failure-analysis
-description: 一支自動化測試紅了，分析根因並分流：選擇器/等待/測資/斷言/環境/產品迴歸/flaky——先歸類，別急著修。測試失敗、要判斷「這支為什麼紅、誰該修」時使用；`pipeline-triage` 對每個根因群呼叫它一次。
+description: 一支自動化測試紅了，分析根因並分流：選擇器/等待/測資/斷言/環境/產品迴歸/flaky。先歸類，別急著修。測試失敗、要判斷「這支為什麼紅、誰該修」時使用；`pipeline-triage` 對每個根因群呼叫它一次。
 ---
 
 # Failure Analysis（一筆）
@@ -46,4 +46,4 @@ next_step: "更新 locator 為 [data-test=apply-coupon]"
 ```
 
 ## 上下游
-上游：`pipeline-read`（單筆失敗）、`pipeline-triage`（每個根因群呼叫一次）、`re-run-gate`（escalate 的）。下游：依 `fix_target` 分流——`test-heal` / `test-data` / `flaky-detect` / `test-oracle`（assertion-mismatch）/ `bug-verifier` → `triage`（product-regression）。
+上游：`pipeline-read`（單筆失敗）、`pipeline-triage`（每個根因群呼叫一次）、`re-run-gate`（escalate 的）。下游：依 `fix_target` 分流到 `test-heal` / `test-data` / `flaky-detect` / `test-oracle`（assertion-mismatch）/ `bug-verifier` → `triage`（product-regression）。

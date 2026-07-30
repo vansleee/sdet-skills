@@ -1,3 +1,3 @@
 interface:
   display_name: "Test Parallelize"
-  short_description: "分片與平行:先驗測試獨立性,再算 shard 數、產 Actions matrix、合併報告、驗數防整片靜默失蹤。"
+  short_description: "分片與平行：先驗測試獨立性，再算 shard 數、產 Actions matrix、合併報告、驗數防整片靜默失蹤。"
