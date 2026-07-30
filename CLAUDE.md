@@ -31,6 +31,7 @@ Agentic SDET 技能組：GitHub Actions · Playwright (TypeScript) · GitHub Iss
 - 副作用動作（開 issue/PR、改測試、reset env、release 放行）一律先確認，並受 `config/governance.yaml` 授權分級管制。
 - skill 之間用「skill 名稱」互相指涉（如「交給 test-oracle」），不要用外部章節/週次。
 - 新增/改名/改行為的 skill，要同步更新 `README.md`、`.claude-plugin/plugin.json`、`meta/ask-sdet`。
+- 中文行文照 de-ai-tone：標點全形、破折號只當插入語、不用中國用語與空轉話語標記。CI 跑 `scripts/check-de-ai-tone.py` 擋，本機可先跑一次。
 
 ## 產品知識與資料
 - `knowledge/` — 受測產品的「事實」（產品專屬，是 `test-oracle` 的規格判準來源）；skill 讀它、不內嵌。真檔 gitignore，只 commit 範本（`*.example.md`）。依規模分層：單檔 → `domains/` 多檔 → RAG/MCP。

@@ -12,3 +12,6 @@ jobs:
       - uses: actions/checkout@v4
       - name: plugin.json 與 skills/ 是否一致
         run: ./scripts/check-manifest.sh
+      - name: 中文文件是否符合 de-ai-tone
+        if: always() # manifest 壞掉時也要看到文風問題，一次修完
+        run: python3 scripts/check-de-ai-tone.py
