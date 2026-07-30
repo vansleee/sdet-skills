@@ -4,7 +4,7 @@
 # release-signoff（放行證據）、pipeline-observability（coverage_gap 指標）。
 #
 # 對應規則（req_id 命名、測試怎麼宣告覆蓋、信心判定）見 references/traceability-mapping.md，
-# 不放這裡——狀態檔只存資料，不存演算法。
+# 不放這裡。狀態檔只存資料，不存演算法。
 #
 # 限制：本表只回答「有沒有東西在守」，不回答「守得夠不夠」。
 #      uncertain 一律不計入 covered。刻意不算單一覆蓋率百分比。
@@ -53,7 +53,7 @@ orphans:
       route: test-prune
   findings:
     - id: "F-2026-07-26-011"
-      note: "折扣碼大小寫不敏感——knowledge/ 未記載，可能是隱性需求"
+      note: "折扣碼大小寫不敏感，knowledge/ 未記載，可能是隱性需求"
       route: "補 knowledge/"
 
 caveat: "只回答『有沒有東西在守』，不回答『守得夠不夠』；uncertain 1 筆未計入 covered。"

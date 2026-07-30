@@ -4,10 +4,10 @@
 # pipeline-observability（算 flaky rate）、re-run-gate（解除隔離的驗證目標）。
 #
 # 政策門檻（quarantine_threshold / max_quarantine_days / lookback_runs / quarantine_mechanism）
-# 放 config/sdet-config.yaml，不放這裡——狀態檔只存資料，不存演算法。
+# 放 config/sdet-config.yaml，不放這裡。狀態檔只存資料，不存演算法。
 #
-# 狀態機：watch → quarantined → (修好) resolved
-#                            └→ (到期未修) escalated → test-heal 或 test-prune
+# 狀態機：watch → quarantined → （修好）resolved
+#                            └→ （到期未修）escalated → test-heal 或 test-prune
 
 - nodeid: "checkout.spec.ts > applies coupon"
   status: quarantined          # watch | quarantined | escalated | resolved

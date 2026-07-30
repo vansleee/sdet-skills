@@ -35,7 +35,7 @@ verdict: no-go                 # go | no-go | conditional-go
 
 quarantine_note: >
   本版有 9 支測試被隔離（含 checkout/coupon、cart/remove、login/sso），
-  該區覆蓋為關閉狀態——放行判斷需把這塊視為未測。
+  該區覆蓋為關閉狀態。放行判斷需把這塊視為未測。
 
 completion_plan:               # no-go 必附：讓「不能出」變成可執行的待辦
   - what: "補 REQ-CHECKOUT-006（折扣碼與會員點數併用）的測試"

@@ -8,13 +8,13 @@
 #    pipeline-gate.yaml = 這個 build 能不能放行
 #
 # 準則門檻（required_suites / max_quarantined）放 config/sdet-config.yaml 的 gate 區塊。
-# 裁決規則：AND——全 pass 才 PASS；任一 fail 或 inconclusive → FAIL。
+# 裁決規則：AND，全 pass 才 PASS；任一 fail 或 inconclusive → FAIL。
 
 - candidate: "PR #482 @ abc1234"
   evaluated_at: 2026-07-29T10:12:00Z
   run: "https://github.com/<owner>/<repo>/actions/runs/1234567890"
   checks:
-    required_suites_green:    { result: pass, basis: "e2e 318/318 綠(run 1234567890)" }
+    required_suites_green:    { result: pass, basis: "e2e 318/318 綠（run 1234567890）" }
     no_count_mismatch:        { result: pass, basis: "318 = 314+0+4" }
     no_open_blocker:          { result: fail, basis: "#471 blocker，結帳金額錯誤，open" }
     quarantine_within_budget: { result: pass, basis: "隔離 3 支 ≤ max 5" }

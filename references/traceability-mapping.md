@@ -1,6 +1,6 @@
 # 需求 ↔ 測試 ↔ finding 的對應規則
 
-`traceability` 讀本檔建立對應。**規則在這裡，資料在 `output/traceability.yaml`**——狀態檔只存資料，不存演算法（見 `docs/state-files.md`）。
+`traceability` 讀本檔建立對應。**規則在這裡，資料在 `output/traceability.yaml`**。狀態檔只存資料，不存演算法（見 `docs/state-files.md`）。
 
 ## req_id 命名
 
@@ -9,7 +9,7 @@ REQ-<AREA>-<NNN>
 例：REQ-CHECKOUT-005、REQ-AUTH-012
 ```
 - `AREA` 用 `knowledge/domains/<area>.md` 的檔名（大寫）；單檔 `knowledge/` 時用小節標題。
-- **`req_id` 一旦發出就不再變動。** 需求改寫內容可以，換號不行——換號會讓所有既有對應斷掉，而且斷掉時不會有錯誤訊息。
+- **`req_id` 一旦發出就不再變動。** 需求改寫內容可以，換號不行。換號會讓所有既有對應斷掉，而且斷掉時不會有錯誤訊息。
 - 需求被移除：標 `status: retired`，保留 id，不回收再利用。
 
 ## 測試怎麼宣告它覆蓋哪條需求

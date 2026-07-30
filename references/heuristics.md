@@ -14,4 +14,4 @@ Happy path = 一連串沒說出口的假設。Heuristic = 「常見隱形假設 
 | 過期 / staleness | 資料永遠新鮮 | 放久了再操作、用過期的 id / session | 用很久前的 cart id 去結帳 |
 | 中斷 / 取消 | 使用者會把流程走完 | 中途離開、reload、關頁再回來 | 填到一半 reload 結帳頁 |
 
-用法：搭配 tour——tour 給路線（error / configuration…），heuristic 給「到了那裡戳哪個假設」。不必每次全跑，用風險挑最相關的幾個（呼應 `route-by-risk`）。
+用法：搭配 tour。tour 給路線（error / configuration…），heuristic 給「到了那裡戳哪個假設」。不必每次全跑，用風險挑最相關的幾個（呼應 `route-by-risk`）。

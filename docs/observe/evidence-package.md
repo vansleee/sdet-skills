@@ -78,8 +78,8 @@ npx playwright show-trace path/to/trace.zip
 ## 設計理念（為什麼這樣設計）
 
 - **Playwright 產生、skill 只組裝。** 截圖 / trace / HAR / console 都是 Playwright 原生能力，skill 不重做，只負責「組裝成一份可攜證據包 + manifest」。舊 Jenkins 時代要逆向解析 HTML 的苦工，換成 Playwright 後直接消失。
-- **形狀固定，是為了交棒。** 每包長得一樣，下游的 `bug-verifier`、`triage` 才能不看說明直接讀——尤其 verifier 是獨立 agent，沒有你的對話記憶，只能靠這包自己站得住。
+- **形狀固定，是為了交棒。** 每包長得一樣，下游的 `bug-verifier`、`triage` 才能不看說明直接讀。尤其 verifier 是獨立 agent，沒有你的對話記憶，只能靠這包自己站得住。
 - **network 獨立存一份，不只靠 trace。** 「UI↔API 對照」需要一份能快速掃、標出非 2xx 的清單；叫人每次去 Trace Viewer 一格格翻太慢。
-- **缺 trace 的降級規則。** 煙霧測試可用截圖+console+network 頂替；要開 bug 單則 trace 為必要條件，缺就停手回報——用機制擋掉「證據不足卻硬報」。
+- **缺 trace 的降級規則。** 煙霧測試可用截圖+console+network 頂替；要開 bug 單則 trace 為必要條件，缺就停手回報。用機制擋掉「證據不足卻硬報」。
 - **UI 是最會騙人的一層。** 樂觀更新會讓畫面顯示成功、後端其實失敗，所以「畫面說成功」一律要 API 狀態碼佐證。
 

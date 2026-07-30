@@ -1,6 +1,6 @@
 # 測試健康指標：算式與資料來源
 
-`pipeline-observability` 讀本檔計算指標。**演算法放這裡，資料放狀態檔**——對齊 `docs/state-files.md` 的慣例。
+`pipeline-observability` 讀本檔計算指標。**演算法放這裡，資料放狀態檔**，沿用 `docs/state-files.md` 的慣例。
 閾值不在這裡，在 `config/sdet-config.yaml` 的 `observability.thresholds`（專案可調）。
 
 ## 通則
@@ -22,7 +22,7 @@ mttr = median(終點 - 起點)
 ```
 - 來源：`gh run list --branch main --limit N --json conclusion,createdAt`（經 `pipeline-read`）。
 - 排除：仍在紅、尚未轉綠的段（未完成，不列入；但要在報告註明「進行中 n 段」）。
-- 排除：`environment` 類的紅（若 `output/triage-reports/` 有標）——那是 infra 問題不是測試修復時間，計入會失真。
+- 排除：`environment` 類的紅（若 `output/triage-reports/` 有標）。那是 infra 問題不是測試修復時間，計入會失真。
 
 ## flaky_rate — flaky 佔失敗比
 **定義**：被判定為 flaky 的失敗數 ÷ 該期總失敗數。
@@ -32,7 +32,7 @@ flaky_rate = flaky 失敗筆數 / 總失敗筆數
 ```
 - 來源：**直接引用** `output/flaky-registry.yaml`（`flaky-manager` 維護），不自行重跑或重算重現率。
 - 另報 `flaky_rate_overall`（flaky 執行次數 ÷ 總執行次數）供跨專案比較。
-- 註：分母是「失敗數」不是「測試數」——這個指標回答的是「紅燈裡有多少是雜訊」。
+- 註：分母是「失敗數」不是「測試數」。這個指標回答的是「紅燈裡有多少是雜訊」。
 
 ## first_pass_rate — 首次通過率
 **定義**：不依靠 retry 就綠的 run 比例。
@@ -68,13 +68,13 @@ latency = issue.assigned_at - run.created_at
 **定義**：`output/flaky-registry.yaml` 中 `status: quarantined` 的筆數；另記 `expired`（`status: escalated` 或 `expires_at` 已過）。
 
 - 來源：直接數 registry。
-- **`expired > 0` 一律 alert**，不管總數多少——逾期未處置的隔離就是安靜消失的覆蓋率。
+- **`expired > 0` 一律 alert**，不管總數多少。逾期未處置的隔離就是安靜消失的覆蓋率。
 
 ## gate_pass_rate / override_count — 放行健康度
 **定義**：`output/pipeline-gate.yaml` 中 `verdict == PASS` 的比例；`override_count` 為 `verdict == OVERRIDE` 的筆數。
 
 - 來源：直接數 `output/pipeline-gate.yaml`。
-- **override 變多的解讀**：不是「人在作弊」，而是「閘門準則與現實脫節」的訊號——例如把不穩定的套件列進 `required_suites`。路由給人檢視 config，而不是路由去收緊閘門。
+- **override 變多的解讀**：不是「人在作弊」，而是「閘門準則與現實脫節」的訊號，例如把不穩定的套件列進 `required_suites`。路由給人檢視 config，而不是路由去收緊閘門。
 
 ## coverage_gap（可選）
 **定義**：`output/traceability.yaml` 中未被任何測試或 finding 覆蓋的需求數。

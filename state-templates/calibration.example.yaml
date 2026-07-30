@@ -12,7 +12,7 @@
   predicted: high
   score: 1.00
   predicted_at: 2026-07-27
-  human_verdict: null        # confirmed | not-reproduced | not-a-bug | (待回填)
+  human_verdict: null        # confirmed | not-reproduced | not-a-bug | （待回填）
   verdict_at: null
 
 - finding: "過期 cart id 造成 404，前端靜默重建"
