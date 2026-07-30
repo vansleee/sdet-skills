@@ -1,6 +1,24 @@
 {
   "name": "sdet-skills",
+  "owner": {
+    "name": "vansleee",
+    "url": "https://github.com/vansleee"
+  },
+  "description": "Agentic SDET skills: evidence-first exploration, bug triage, test maintenance, CI pipeline and cost governance.",
   "plugins": [
-    { "name": "sdet-skills", "source": "." }
+    {
+      "name": "sdet-skills",
+      "source": "./",
+      "description": "Agentic SDET skills for GitHub Actions + Playwright (TypeScript)",
+      "category": "testing",
+      "keywords": [
+        "sdet",
+        "testing",
+        "playwright",
+        "bug-triage",
+        "flaky",
+        "ci"
+      ]
+    }
   ]
 }
