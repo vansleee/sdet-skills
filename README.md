@@ -3,10 +3,25 @@
 可重用的 Agentic SDET 技能組：**GitHub Actions · Playwright (TypeScript) · GitHub Issues**。
 
 ## 安裝
-```bash
-bash scripts/link-skills.sh      # 把 skill link 進 ~/.claude/skills
+
+在 Claude Code 裡加入這個 marketplace，然後安裝外掛：
+
 ```
-或當 Claude Code 外掛安裝（見 `.claude-plugin/`）。
+/plugin marketplace add vansleee/sdet-skills
+/plugin install sdet-skills@sdet-skills
+```
+
+37 支 skill 一次到位，`git pull` 之後跟著更新。清單見 `.claude-plugin/plugin.json`。
+
+<details>
+<summary>備用：symlink 到 <code>~/.claude/skills</code></summary>
+
+不走外掛機制時用這個，效果一樣，但要自己 clone 這個 repo，而且新增 skill 之後得重跑一次。
+
+```bash
+bash scripts/link-skills.sh
+```
+</details>
 
 ## 第一步
 ```
