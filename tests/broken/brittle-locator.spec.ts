@@ -26,10 +26,11 @@ test.describe('脆弱選擇器（示範用，不要照抄）', () => {
     expect(Number(price.replace(/[^\d.]/g, ''))).toBeGreaterThan(0)
   })
 
-  test('首頁應該看得到 Combination Pliers', async ({ page }) => {
+  test('商品卡應該顯示標題', async ({ page }) => {
     await gotoHome(page)
 
-    // 反例：綁死顯示文字。切成德文、改商品名、換頁都會紅
-    await expect(page.locator('text=Combination Pliers')).toBeVisible()
+    // 反例：綁死 CSS class。前端改版換掉 class 名稱，這支就紅，
+    // 但畫面上的標題明明還在（改用 [data-test="product-name"] 就會過）。
+    await expect(page.locator('.product-card-title').first()).toBeVisible()
   })
 })
