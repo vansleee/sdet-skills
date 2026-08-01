@@ -1,6 +1,6 @@
 # Issue Quality Gate
 
-開單前的硬閘門：六條 AND 條件全過才放行，輸出 `output/gate.yaml` 分流 pass / hold / block。
+開單前的硬閘門：六條 AND 條件全過才放行，輸出 `output/sessions/<date>_<slug>/gate.yaml` 分流 pass / hold / block。
 
 ## 設計理念
 - **把好習慣變成硬條件。** 證據（Day 11）、oracle（Day 20）、confidence（Day 22）、非 FP（Day 23）、去重（Day 24）、獨立重現（Day 26）單獨看都是好習慣，但好習慣會被跳過；閘門讓「最好有」變成「沒有就開不了」。

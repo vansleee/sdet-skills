@@ -9,7 +9,7 @@ disable-model-invocation: true
 輸入一個候選（PR / commit / release build），輸出放行裁決 + 逐條證據 + 留痕。設計理念見 `docs/infra/quality-gate.md`。
 
 > **三層閘門分工**：`issue-quality-gate` 管「一張 issue 能不能開」→ **本 skill** 管「這個 build 能不能放行」→ `release-signoff` 管「整個 release 對需求能不能簽出去」。本 skill 的輸出是上層的證據，不重複做上層的判斷。
-> 狀態檔：`output/pipeline-gate.yaml`（**注意**：與 `issue-quality-gate` 的 `output/gate.yaml` 是不同檔案，別混用）。
+> 狀態檔：`output/pipeline-gate.yaml`（**注意**：與 `issue-quality-gate` 的 `output/sessions/<date>_<slug>/gate.yaml` 是不同檔案，別混用）。
 
 ## 輸入 / 輸出
 - **輸入**：候選識別（PR 編號 / sha / tag）＋ `pipeline-read` 的 run 結果 ＋ `output/flaky-registry.yaml` 隔離名單 ＋ open blocker issue（`gh issue list --label blocker`）＋ 準則（`config/sdet-config.yaml` 的 `gate`）。

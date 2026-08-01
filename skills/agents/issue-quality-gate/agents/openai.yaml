@@ -1,3 +1,3 @@
 interface:
   display_name: "Issue Quality Gate"
-  short_description: "開單前硬閘門：六條 AND（可重現/證據齊/過 oracle/confidence 達標/非 FP/非重複）全過才放行，輸出 output/gate.yaml 分流 pass/hold/block。"
+  short_description: "開單前硬閘門：六條 AND（可重現/證據齊/過 oracle/confidence 達標/非 FP/非重複）全過才放行，輸出 output/sessions/<date>_<slug>/gate.yaml 分流 pass/hold/block。"

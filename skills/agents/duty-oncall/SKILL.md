@@ -1,12 +1,12 @@
 ---
 name: duty-oncall
-description: 排一次獨立值班：獵 → 驗 → 閘 → 開單／開 PR（不 merge）跑完一輪，受 governance 與預算管制，留下 output/runs/<date>.yaml 與五分鐘可複核的摘要。
+description: 排一次獨立值班：獵 → 驗 → 閘 → 開單／開 PR（不 merge）跑完一輪，受 governance 與預算管制，留下 output/sessions/<date>_<slug>/runs/<date>.yaml 與五分鐘可複核的摘要。
 disable-model-invocation: true
 ---
 
 # Duty Oncall
 
-輸入一份 charter（`charters/<slug>.yaml`），輸出一輪完整值勤 ＋ `output/runs/<date>.yaml` ＋ 值班摘要。設計理念見 `docs/agents/duty-oncall.md`。
+輸入一份 charter（`charters/<slug>.yaml`），輸出一輪完整值勤 ＋ `output/sessions/<date>_<slug>/runs/<date>.yaml` ＋ 值班摘要。設計理念見 `docs/agents/duty-oncall.md`。
 
 > **它不發明能力，它把 `agents/` 的代理人排成一次可重複、可稽核的值班。** 授權不是放手：發起交給排程，**不可逆的最後一下（merge、拍板）永遠留給人**。
 
@@ -18,18 +18,18 @@ disable-model-invocation: true
 ## 執行順序（逐站接力，站與站之間交的是檔案，不是對話記憶）
 
 1. **獵** — `bug-hunter` 依 charter 跑一輪（四道守門在它體內），交回候選清單。
-2. **驗** — 每個候選交 `bug-verifier` 獨立重現，得 `output/verdicts/`。
-3. **把關** — 全數過 `issue-quality-gate`，得 `output/gate.yaml`（pass / hold / block）。
+2. **驗** — 每個候選交 `bug-verifier` 獨立重現，得 `output/sessions/<date>_<slug>/verdicts/`。
+3. **把關** — 全數過 `issue-quality-gate`，得 `output/sessions/<date>_<slug>/gate.yaml`（pass / hold / block）。
 4. **分派** — 只動 pass 的：
    - 一律交 `triage` 開單（開單前確認規則依 triage 自己的鐵則）。
    - **範圍清楚、可修**的再交 `bug-fixer` 開 PR（標 ready-for-review，**不 merge**）。
    - hold → 人工佇列；block → 待規格／待人判。**不替人拍板。**
-5. **記帳** — 寫 `output/runs/<date>.yaml`（格式見下）。**當下埋、不能事後補**：今天不記 tokens 與 gate_passed，之後就算不出 ROI 與校準。
+5. **記帳** — 寫 `output/sessions/<date>_<slug>/runs/<date>.yaml`（格式見下）。**當下埋、不能事後補**：今天不記 tokens 與 gate_passed，之後就算不出 ROI 與校準。
 6. **留摘要** — 一份五分鐘能複核完的值班摘要（開了什麼、待判什麼、花了多少、forbidden 動作幾次）。
 
 ## 輸出
 ```yaml
-# output/runs/<date>.yaml
+# output/sessions/<date>_<slug>/runs/<date>.yaml
 date: <date>
 charter: charters/<slug>.yaml
 tokens: { input: <n>, output: <n> }
@@ -53,5 +53,5 @@ confirmed_by_human: null     # 待回填
 
 ## 驗收（跑完自己對一次）
 - 每一道門都有生效嗎（誤報擋了、重複併了、needs-spec 沒硬開、PR 沒被 merge）？
-- `output/runs/<date>.yaml` 是**當下**寫的、量都在嗎？
+- `output/sessions/<date>_<slug>/runs/<date>.yaml` 是**當下**寫的、量都在嗎？
 - hold / block 的都進了看得到的佇列嗎？

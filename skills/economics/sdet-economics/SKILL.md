@@ -28,7 +28,7 @@ description: 成本紀律 reference：省 token、重用 context、模型分級�
 - 沒有 `sdet-config.yaml` 或欄位缺漏時，用保守預設（寧可提早停、事後被問「怎麼停這麼快」，不要燒穿預算才發現）。
 
 ## ROI：一個確認 bug 花多少成本
-從 `output/runs/<date>.yaml`（`duty-oncall` 寫）取 `tokens` / `duration` / `findings` / `confirmed`（見 `docs/state-files.md`），算：
+從各輪的 `output/sessions/**/runs/*.yaml`（`duty-oncall` 寫）取 `tokens` / `duration` / `findings` / `confirmed`（見 `docs/state-files.md`），算：
 
 ```
 cost_per_confirmed_bug = Σ tokens(該輪所有 run) ÷ Σ confirmed(該輪所有 run)
@@ -58,4 +58,4 @@ recommendation: "checkout 區域 precision 偏低，檢討 confidence 因子配�
 ```
 
 ## 上下游
-上游資料：`output/runs/<date>.yaml`（`duty-oncall`）、`output/calibration.yaml`（`bug-hunter` 寫 predicted、`bug-verifier`/人回填）。與 `economics/route-by-risk` 分工：`route-by-risk` 決定「要不要測」，本文件決定「用什麼成本測、測完值不值得」。
+上游資料：`output/sessions/**/runs/*.yaml`（`duty-oncall`）、`output/calibration.yaml`（`bug-hunter` 寫 predicted、`bug-verifier`/人回填）。與 `economics/route-by-risk` 分工：`route-by-risk` 決定「要不要測」，本文件決定「用什麼成本測、測完值不值得」。

@@ -11,7 +11,7 @@ description: 把過閘門的 product-bug finding 寫成可重現 Bug Report、�
 
 ## 前置
 - finding 的 `category` 必須是 `product-bug` 且附 Evidence Package；其餘一律不開單（擋在這）。
-- finding 已過 `issue-quality-gate`（`output/gate.yaml` 內 `result: pass`）；沒過閘門或沒跑閘門 → 停手，先送閘門。
+- finding 已過 `issue-quality-gate`（`output/sessions/<date>_<slug>/gate.yaml` 內 `result: pass`）；沒過閘門或沒跑閘門 → 停手，先送閘門。
 - 後端 = GitHub（`config/issue-tracker-github.md` 存在）時，`gh auth status` 必須已登入；否則停手回報。後端 = 本地檔案（`config/issue-tracker-local-md.md`）時不需要。
 
 ## 步驟

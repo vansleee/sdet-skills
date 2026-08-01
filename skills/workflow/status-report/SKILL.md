@@ -17,9 +17,9 @@ description: 把近期活動彙整成 standup / 測試報告 / release-readiness
 
 | 要講的事 | 引用哪裡 | 誰維護 |
 |---|---|---|
-| 執行了什麼、花多少 | `output/runs/<date>.yaml` | `duty-oncall` |
-| 修完重跑了幾次 | `output/runs/reruns-<date>.yaml` | `re-run-gate` |
-| 發現了什麼 | `output/sessions/**/findings/F-*.yaml`、`output/verdicts/V-*.yaml` | `explore` / `bug-verifier` |
+| 執行了什麼、花多少 | `output/sessions/**/runs/*.yaml` | `duty-oncall` |
+| 修完重跑了幾次 | `output/sessions/**/runs/reruns-*.yaml` | `re-run-gate` |
+| 發現了什麼 | `output/sessions/**/findings/F-*.yaml`、`output/sessions/**/verdicts/V-*.yaml` | `explore` / `bug-verifier` |
 | 開了哪些單 | `output/issues-index.yaml`、`gh issue list` | `triage` |
 | CI 健康度 | `output/reports/health-<date>.md` | `pipeline-observability` |
 | 放行狀態 | `output/pipeline-gate.yaml` | `quality-gate` |

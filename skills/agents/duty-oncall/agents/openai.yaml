@@ -1,5 +1,5 @@
 interface:
   display_name: "Duty Oncall"
-  short_description: "排程觸發的值班總編排：hunter→verifier→gate→triage/fixer 接力跑完一輪，寫 output/runs/<date>.yaml 與五分鐘可複核摘要。"
+  short_description: "排程觸發的值班總編排：hunter→verifier→gate→triage/fixer 接力跑完一輪，寫 output/sessions/<date>_<slug>/runs/<date>.yaml 與五分鐘可複核摘要。"
 policy:
   allow_implicit_invocation: false

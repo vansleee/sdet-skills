@@ -35,4 +35,4 @@ Agentic SDET 技能組：GitHub Actions · Playwright (TypeScript) · GitHub Iss
 
 ## 產品知識與資料
 - `knowledge/` — 受測產品的「事實」（產品專屬，是 `test-oracle` 的規格判準來源）；skill 讀它、不內嵌。真檔 gitignore，只 commit 範本（`*.example.md`）。依規模分層：單檔 → `domains/` 多檔 → RAG/MCP。
-- 跨 skill 的資料流檔見 `docs/state-files.md`。**除了 `charters/` 之外，所有執行期產物一律寫在 `output/` 底下**（findings 走 `output/sessions/<date>_<slug>/`、證據走 `output/evidence/<YYYYMMDD>-<slug>/`、狀態檔走 `output/*.yaml`）。不准在 repo 根目錄留 `findings/`、`evidence/`、截圖或 JSON。
+- 跨 skill 的資料流檔見 `docs/state-files.md`。**除了 `charters/` 與 `tests/` 之外，所有執行期產物一律寫在 `output/` 底下**：一輪探索自己的產物（exploration-log、findings、verdicts、gate、runs）收進 `output/sessions/<date>_<slug>/`，跨輪累積的登錄簿（issues-index、calibration、known-false-positives、flaky-registry、traceability）留在 `output/` 根，證據走 `output/evidence/<YYYYMMDD>-<slug>/`。不准在 repo 根目錄留 `findings/`、`evidence/`、截圖或 JSON。

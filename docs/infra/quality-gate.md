@@ -8,4 +8,4 @@
 - **隔離中的紅不擋，但一定要列出來。** 讓被 quarantine 的測試擋住放行，等於隔離機制失效；但不告訴放行的人「這版有 3 支測試是關掉的」，就是拿假的安全感換過關。所以列出來是硬性欄位，不是選填。
 - **只裁決，不執行。** `merge_pr` 在 governance 的 forbidden 名單。理由不是技術上做不到，而是：一個能自己判「可以放行」又能自己執行 merge 的 agent，錯誤成本沒有任何緩衝。留給人按下最後那顆按鈕。
 - **override 必須留痕，而且不能事後補。** 現實中一定會有「今天非上不可」的時刻，堵死它只會逼人繞過整個閘門。所以給出口，但出口有代價：誰、何時、硬推了哪幾條、為什麼。這份紀錄之後會變成 `pipeline-observability` 的 override 次數指標。override 變多本身就是訊號。
-- **`output/pipeline-gate.yaml` 不是 `output/gate.yaml`。** 兩支 skill、兩個層級、兩個檔案。共用檔名會讓兩邊互相覆寫，而且覆寫的當下不會有人發現。
+- **`output/pipeline-gate.yaml` 不是 `output/sessions/<date>_<slug>/gate.yaml`。** 兩支 skill、兩個層級、兩個檔案。共用檔名會讓兩邊互相覆寫，而且覆寫的當下不會有人發現。

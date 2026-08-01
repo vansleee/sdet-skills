@@ -1,16 +1,16 @@
 ---
 name: issue-quality-gate
-description: 開單前的硬閘門：六條 AND 全過才放行，輸出 output/gate.yaml 分流 pass / hold / block。使用者問「這能不能開單」時使用；任何 skill 要把候選變成 issue 或 PR 前，都得先過它。
+description: 開單前的硬閘門：六條 AND 全過才放行，輸出 output/sessions/<date>_<slug>/gate.yaml 分流 pass / hold / block。使用者問「這能不能開單」時使用；任何 skill 要把候選變成 issue 或 PR 前，都得先過它。
 ---
 
 # Issue Quality Gate
 
-輸入一批候選（含 verdict、confidence、evidence），輸出 `output/gate.yaml`。設計理念見 `docs/agents/issue-quality-gate.md`。
+輸入一批候選（含 verdict、confidence、evidence），輸出 `output/sessions/<date>_<slug>/gate.yaml`。設計理念見 `docs/agents/issue-quality-gate.md`。
 
 > **好習慣會被跳過，硬閘門不會。** 前面立的規矩——證據、oracle、信心、誤報、去重、獨立重現——在這裡從「最好有」變成「沒有就開不了」。這是 **AND**：全過才放行。
 
 ## 前置
-- 候選已過 `bug-verifier`（有 `output/verdicts/V-<slug>.yaml`）；沒驗過的不進閘門，先送驗。
+- 候選已過 `bug-verifier`（有 `output/sessions/<date>_<slug>/verdicts/V-<slug>.yaml`）；沒驗過的不進閘門，先送驗。
 - `output/known-false-positives.yaml`、`output/issues-index.yaml`、`config/sdet-config.yaml`（`confidence.min_to_file`）可讀。
 
 ## 六條檢查（順序固定，逐條記 pass/fail）
@@ -30,7 +30,7 @@ description: 開單前的硬閘門：六條 AND 全過才放行，輸出 output/
 
 ## 輸出
 ```yaml
-# output/gate.yaml
+# output/sessions/<date>_<slug>/gate.yaml
 - candidate: "<fingerprint>"
   checks: { reproducible: pass, has_evidence: pass, oracle_passed: pass,
             confidence_ok: pass, not_false_pos: pass, not_duplicate: pass }

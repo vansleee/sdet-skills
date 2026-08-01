@@ -23,12 +23,12 @@ description: 盲驗一個候選 bug：只吃 Evidence Package、拿不到 hunter
    - `confirmed`：照步驟跑、**自己觀察到同一現象**。
    - `not-reproduced`：照步驟跑完、現象未出現。
    - `inconclusive`：步驟跑不完（被擋、環境壞、資料缺），附卡在哪一步。
-4. **寫 verdict** — 存 `output/verdicts/V-<slug>.yaml`（格式見下），證據指向**自己這輪**的檔案，不複製 hunter 的。
+4. **寫 verdict** — 存 `output/sessions/<date>_<slug>/verdicts/V-<slug>.yaml`（格式見下），證據指向**自己這輪**的檔案，不複製 hunter 的。
 5. **回填校準** — 在 `output/calibration.yaml` 對應列補 `verifier_verdict`，供 confidence 校準（見 `references/confidence.md`）。
 
 ## 輸出
 ```yaml
-# output/verdicts/V-<slug>.yaml
+# output/sessions/<date>_<slug>/verdicts/V-<slug>.yaml
 candidate: "<area>|<signature>|<trigger>"
 verifier: independent-subagent        # 無 hunter 記憶
 steps_followed: [ ... ]               # 實際照做的步驟

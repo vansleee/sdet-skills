@@ -20,12 +20,12 @@ description: 測試修好後重跑，確認是「穩定的綠」而不是「剛�
 ## 鐵則
 - **1/N 不是 pass。** 「一直重跑到剛好過一次」是綠色作弊（`references/green-cheating.md` 最後一列）：達 green criteria 才算過。
 - **一定要有停止條件。** 到 `max_retries` 就停，不無限重試。
-- **每次都記錄**到 `output/runs/reruns-<date>.yaml`（重跑次數、逐次結果、最終裁決），供 flaky 趨勢用。**別寫進 `output/runs/<date>.yaml`**。那是 `duty-oncall` 的值班計量檔，一天一份 mapping，混寫會把它蓋掉。
+- **每次都記錄**到 `output/sessions/<date>_<slug>/runs/reruns-<date>.yaml`（重跑次數、逐次結果、最終裁決），供 flaky 趨勢用。**別寫進 `output/sessions/<date>_<slug>/runs/<date>.yaml`**。那是 `duty-oncall` 的值班計量檔，一天一份 mapping，混寫會把它蓋掉。
 - 只裁決、不修：要再修回 `test-heal`，穩定性問題交 `flaky-manager`。
 
 ## 輸出（格式，非某次執行結果）
 ```yaml
-# output/runs/reruns-<date>.yaml
+# output/sessions/<date>_<slug>/runs/reruns-<date>.yaml
 nodeid: "checkout.spec.ts > applies coupon"
 reruns: 3
 results: [green, green, green]

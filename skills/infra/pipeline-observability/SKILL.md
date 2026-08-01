@@ -10,7 +10,7 @@ description: 算測試健康指標（MTTR、flaky rate、首次通過率、派�
 > **指標要導向行動，不是儀表板自嗨。** 每個超標指標都必須指名「接下來交給哪支 skill」，否則這份報告只是好看的數字。
 
 ## 輸入 / 輸出
-- **輸入**：期間（預設近 30 天，讀 `config/sdet-config.yaml` 的 `observability.window_days`）＋ `pipeline-read` 的 run 歷史 ＋ `output/runs/<date>.yaml`（值班計量）＋ `output/runs/reruns-<date>.yaml`（重跑紀錄）＋ `output/flaky-registry.yaml` ＋ `output/pipeline-gate.yaml` ＋ `output/triage-reports/` ＋ `output/issues-index.yaml`。
+- **輸入**：期間（預設近 30 天，讀 `config/sdet-config.yaml` 的 `observability.window_days`）＋ `pipeline-read` 的 run 歷史 ＋ `output/sessions/**/runs/*.yaml`（值班計量）＋ `output/sessions/**/runs/reruns-*.yaml`（重跑紀錄）＋ `output/flaky-registry.yaml` ＋ `output/pipeline-gate.yaml` ＋ `output/triage-reports/` ＋ `output/issues-index.yaml`。
 - **輸出**：指標報告（本期值、上期值、趨勢、是否超標、行動建議），存 `output/reports/health-<date>.md`。
 
 ## 指標（算式與資料來源見 `references/test-health-metrics.md`）

@@ -1,67 +1,77 @@
 # sdet-skills 架構
 
-一套**可重用**的 Agentic SDET 技能組（GitHub Actions · Playwright · GitHub Issues）。核心設計原則：把「能力」和「產品／專案」分乾淨，換一個產品時 skill 不用改。
+這是一套**可以重複使用的 SDET 的技能包，**主要涵蓋（GitHub Actions · Playwright MCP/CLI · GitHub Issues）。它的核心設計原則：是讓 AI 能夠執行探索產品 Bug 和撰寫自動化測試的能力。
 
-## 四層心智模型
+## 心智模型
 
-一個真正的 SDET 同事，不是只有「能力」就夠，他還得「知道產品」和「參與專案」。所以把四種東西分開，彼此是「讀取」關係，不互相寫死：
+身為一個 SDET 的同事，除了擁有相關的技能以外，同時還需要知道產品的知識與專案流程，在這個 sdet-skilss 裡面，將其獨立分層並且能夠互相存取對方的知識。
 
-| 層 | 是什麼 | 放哪 | 特性 |
-|---|---|---|---|
-| **能力（how）** | 怎麼做一件事 | `skills/` | 產品無關、可重用 |
-| **事實（what）** | 受測產品是什麼 | `knowledge/` | 產品專屬 |
-| **流程（process）** | 怎麼接進團隊 / SDLC | `skills/workflow/` | 團隊/專案專屬（仍是 skill，但讀 knowledge + 專案設定） |
-| **規則與設定** | 後端、授權、參數 | `config/` | 環境專屬；祕密走 env |
 
-> 鐵則：`skills/` 保持產品無關；產品知識與專案設定是**輸入**，skill 去讀，不內嵌。一旦把產品知識塞進 skill，reuse 就死了。
+| 名稱                | 說明             | 檔案位置               | 備註                                       |
+| ----------------- | -------------- | ------------------ | ---------------------------------------- |
+| **技能（how）**       | 描述如何做某件事       | `skills/`          | 與產品知識無關，主要是將 SDET 的技能包裝起來，可以重複使用在不同的專案裡。 |
+| **產品知識（what）**    | 測試產品知識         | `knowledge/`       | 產品專屬的知識或流程                               |
+| **專案流程（process）** | 串接專案的流程與管理     | `skills/workflow/` | 主要是與專案有關，包含整個專案開發流程或事件                   |
+| **規範與設定**         | 後端設定、授權規範、其他參數 | `config/`          | 規定需要遵守的規範和其他需要的設定                        |
+
+
+> 原則：`skills/` 裡的設計必須與產品無關，當需要產品知識或專案設定都是由 skill 去讀 `knowledge/` 或 `config/`，並且不將資料放置在 skills，保持 skills 可以使用在其他專案的狀態。
 
 ## Skill bucket 總表
 
-| bucket | 負責 | 代表 skill |
-|---|---|---|
-| `foundation/` | 開工設定與抽象層 | setup-sdet、product-context(ref) |
-| `observe/` | 觀察與留證 | evidence-package、structured-result、classify-anomaly |
-| `explore/` | 自主探索 | exploration-charter、explore、test-oracle |
-| `agents/` | 代理人與治理 | bug-hunter、bug-verifier、issue-quality-gate、triage、bug-fixer、duty-oncall |
-| `maintain/` | 測試維護「一支」層級 | test-author、failure-analysis、test-heal、re-run-gate… |
-| `infra/` | CI 與 Testing Infra「一批」層級 | ci-pipeline、pipeline-triage、flaky-manager、quality-gate… |
-| `economics/` | 成本治理 | route-by-risk、sdet-economics(ref) |
-| `workflow/` | **專案活動（預留，骨架）** | test-planning、traceability、status-report、release-signoff |
-| `meta/` | 路由 | ask-sdet |
 
-**「一筆 vs 一批」：** `maintain/` 修一支測試 / 一次失敗；`infra/` 顧整批（幾百支、一片紅、跨 run 趨勢）。同名能力在兩層不是重複，是規模升級。
+| 資料夾           | 負責                    | 技能                                                                      |
+| ------------- | --------------------- | ----------------------------------------------------------------------- |
+| `foundation/` | 初始設定與產品背景知識           | setup-sdet、product-context(ref)                                         |
+| `observe/`    | 用來觀察測試產品與留下相關證據       | evidence-package、structured-result、classify-anomaly                     |
+| `explore/`    | 自主探索產品                | exploration-charter、explore、test-oracle                                 |
+| `agents/`     | 能夠自行探索、驗證問題、並且開立票     | bug-hunter、bug-verifier、issue-quality-gate、triage、bug-fixer、duty-oncall |
+| `maintain/`   | 用來維護測試程式碼             | test-author、failure-analysis、test-heal、re-run-gate…                     |
+| `infra/`      | 用來維護測試的 CI 與測試的 infra | ci-pipeline、pipeline-triage、flaky-manager、quality-gate…                 |
+| `economics/`  | 用來管理使用的 token         | route-by-risk、sdet-economics(ref)                                       |
+| `workflow/`   | 專案相關的流程               | test-planning、traceability、status-report、release-signoff                |
+| `meta/`       | 用來詢問如何使用 sdet-skills  | ask-sdet                                                                |
 
-## `knowledge/` — 產品知識，依規模分層
 
-skill 讀它、不內嵌。它也是 `test-oracle` 的**規格 oracle 來源**：購物 demo 靠「內部一致性 / API↔UI」這類不需規格的 oracle 就夠；公司產品很多對錯只有規格說得準，那份規格就住在這裡。
+`maintain/` 主要是維護測試程式碼的撰寫、執行、並且修復失敗的測試案例，`infra/` 則是針對 CI 上面的錯誤進行分析、執行 pipeline 和相關活動。
 
-1. **小** → 一份 `product-overview.md`
-2. **中** → `domains/<module>.md` 每模組一份，progressive disclosure
-3. **大 / 會變** → RAG 檢索或 MCP resource 指向活文件，避免過期
+## `knowledge/` — 依照規模的大小，分層產品知識
 
-真檔 gitignore，只 commit `*.example.md` 範本。
+主要是使用 skill 讀取相關知識，這也 `test-oracle` 的**規格 oracle 來源**，例如：購物網站 ，並不需規格的 oracle 說明；但如果公司的產品，就必須根據規格才能判斷是否有 Bug，我們可以把產品規格定義在 `knowledge/`，我們可以根據規格書的大小，分為下列三種：
 
-## `workflow/` — 專案活動（預留中）
+1. **小型：只需要建立** 一份 `product-overview.md`
+2. **中型**：根據模組或是功能分類在 `domains` 下面，並且每個模組一份 `domains/<module>.md` 每模組一份，根據漸進式揭露（progressive disclosure）相關的知識
+3. **大型 / 易於變動** ：使用 RAG 檢索或 MCP resource 指向活文件（live document)，避免文件過期與增加維護成本。
 
-把 SDET 從「跑測試」延伸到「參與測試生命週期」。目前為骨架，逐一實作：
+> 這些檔案不需要 commit，只需要 commit `*.example.md` 範立，記得新增對應的檔案，需要將檔案增加到 gitignore 清單中，
 
-- **test-planning**：ticket / PRD → 測試範圍 + 風險（可續轉 charter）
-- **traceability**：需求 ↔ 測試 ↔ finding 覆蓋對照，找 gap
+## `workflow/` — 專案活動
+
+主要是串接團隊或是產品開發流程的 skills，目前提供下列幾種 skills
+
+- **test-planning**：將 JIRA/Linear Ticket / PRD 轉換成測試範圍和評估測試的風險，主要支援可以轉 charter 格式使用。
+- **traceability**：分析需求並且轉換成測試需要的格式，並且根據 finding 找出可能的 gap
 - **status-report**：standup / 測試報告 / release-readiness 摘要
-- **release-signoff**：整個 release 能不能出的專案層級放行
+- **release-signoff**：檢查是否這次 release 能不能通過驗收標準
 
-閘門三層，別混：`issue-quality-gate`（單張 issue）< `infra/quality-gate`（pipeline 放行）< `workflow/release-signoff`（整個 release 對需求/風險簽核）。
+總共會有三個閘門，每個閘門都需要獨立通過：`issue-quality-gate`（單張 issue）&lt; `infra/quality-gate`（pipeline 放行）&lt; `workflow/release-signoff`（整個 release 對需求/風險驗收）。
 
 ## 資料流
 
 ```
-knowledge/               產品事實(規格 oracle 來源)
-charters/<slug>.yaml     人設定目標與邊界(可由 test-planning 產生)
-  └─> findings/F-*.yaml     explore 候選發現(含 oracle 判定)
-        └─> verdicts/V-*.yaml   bug-verifier 獨立重現 + confidence
-              └─> gate.yaml         可重現?去重?非 FP?
-                    └─> GitHub Issue → PR(人 merge)
-                          └─> tests/*.spec.ts → CI run → runs/<date>.yaml(算帳)
+knowledge/               產品知識與規格
+charters/<slug>.yaml     由人設定目標與邊界（可由 test-planning 產生）
+  └─> output/sessions/<date>_<slug>
+        └─> /findings/F-*.yaml   explore 發現可能的 bug 與問題（包含 oracle 判斷）
+        └─> /verdicts/V-*.yaml   使用 bug-verifier 能夠獨立重現並且增加信心指數
+              └─> /gate.yaml     是否可以重現？移除重複的 Bug？
+                    └─> GitHub Issue → PR（並需要由人決定是否能夠合併 PR）
+        └─> /runs/<date>.yaml
+tests/*.spec.ts          test-author 固化的回歸資產（留 repo 根、要 commit）
+  └─> 使用 CI run 或是 Local 機器執行
 ```
 
-跨 skill 的狀態檔慣例見 `docs/state-files.md`。`results.yaml`（六狀態）貫穿各週，各處不得自創狀態詞彙。
+session 資料夾一輪一個，裝的是「這一輪的判斷」；跨輪累積的登錄簿（`output/issues-index.yaml`、`output/calibration.yaml`、`output/known-false-positives.yaml`、`output/flaky-registry.yaml`）留在 `output/` 根，切進單輪就失去去重與校準的能力。完整清單見 `docs/state-files.md`。
+
+> 需要跨 skill 的狀態檔規範可以參考 `docs/state-files.md`。`results.yaml`（總過會有各自的狀態）貫穿各自的 skill，每個地方都不可以自己新創狀態相關的詞彙。
+
