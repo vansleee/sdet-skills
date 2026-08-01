@@ -35,6 +35,17 @@
 
 `maintain/` 主要是維護測試程式碼的撰寫、執行、並且修復失敗的測試案例，`infra/` 則是針對 CI 上面的錯誤進行分析、執行 pipeline 和相關活動。
 
+### 一筆 vs 一批
+
+`maintain/` 處理**一支**測試、**一次**失敗；`infra/` 處理**整批**（幾百支、一片紅、跨 run 趨勢）。同名能力在兩層出現不是重複，是規模升級：
+
+| 一筆（`maintain/`） | 一批（`infra/`） |
+| ----------------- | -------------- |
+| `failure-analysis` | `pipeline-triage` |
+| `flaky-detect`     | `flaky-manager`   |
+
+一批的處理順序有硬性要求：**先 fan-in 合併成少數根因群，再對每群分析一次**，不要逐筆跑。幾十個失敗逐筆分析，得到的是幾十份互相重複的報告，而不是一份可以派工的清單。
+
 ## 介面層：畫面與端點
 
 同一個 bucket 裡有些 skill 是成對的，差別在被測的介面層：留證有 `evidence-package`（畫面）與 `api-evidence`（端點），寫測試有 `test-author` 與 `api-test-author`。成對的理由是**手段完全不同**：一邊靠 snapshot 與截圖，一邊靠請求與回應；一邊講定位器與 web-first assertion，一邊講 schema 斷言與狀態碼語意。硬合成一支，紀律就會退化成「看情況適用」。
