@@ -25,6 +25,7 @@ disable-model-invocation: true
     issue-tracker-github.md     # 有 GitHub issue repo 時
     issue-tracker-local-md.md   # 還沒有 repo 時的本地備援
     sdet-config.yaml             # confidence / dedup / budget / models / risk
+    test-style.md                # 測試碼風格（test-author / api-test-author / test-heal 讀它）
 
 不產出 `config/governance.yaml`——這份是跨專案共用的授權分級表，放 `config/` 根目錄，由需要副作用的 skill（triage、bug-fixer、test-heal…）沿途寫入╱參照，不是一次性訪談表單。
 
@@ -37,6 +38,7 @@ disable-model-invocation: true
 5b. Trace 能力（現場探索）：問清楚現場操作用哪種工具。Playwright MCP（`--caps=devtools`）→ trace 存 `.playwright-mcp/`；`playwright-cli` → 跑 `playwright-cli --version` 確認，沒裝就提示 `npm install -g @playwright/cli@latest` 後 `playwright-cli install --skills`，trace 存 `.playwright-cli/traces/`（`PW_TRACE_DIR` 可覆寫）。挑一種記進 product-context.md 的「Trace 來源」。
 6. API：問 API base URL、認證方式與取憑證端點（憑證走 `env:VAR`）、契約來源（OpenAPI／GraphQL schema 的路徑或 URL，沒有就記「無」）、API testDir、版本策略、速率限制、不得碰的有副作用端點 → product-context.md 的「API」段。**沒有可測 API 也要明確記「無」**，讓 `api-evidence`、`api-test-author`、`test-oracle` 知道是「真的沒有」而不是「還沒問」。
 7. 門檻 → sdet-config.yaml：`confidence.min_to_file`、`dedupe`、`budget`、`models`（cheap/strong）、`risk.weights`。
+8. 測試碼風格 → test-style.md：Page Object 用不用、fixture 放哪、選擇器優先序與禁用清單、導頁方式（允不允許 `page.goto` 直達深層路由）、斷言與命名慣例、測資自備自清規則、註解與 test 標題語言。**只問需要判斷的**；縮排、引號、import 順序這類機械規則一律交 eslint／prettier，本檔不收，也不要拿去問使用者。已有 eslint／prettier 設定就只記路徑。整段都答不出來時寫「同 `references/test-design.md` 預設」，不要留空。
 
 ## 收尾
 1. 重新 `Read` 一次剛寫入的 config（不是複誦訪談答案），在摘要裡逐項覆誦讀回的值；讀不回來代表路徑或 slug 有誤，當場攔下重寫。

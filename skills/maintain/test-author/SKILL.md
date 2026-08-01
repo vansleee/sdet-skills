@@ -13,6 +13,7 @@ disable-model-invocation: true
 ## 前置（缺了就停手回報，不要自己編）
 - `config/product-context.md`：base URL、登入方式、Playwright config / testDir、**測試專屬屬性名稱**（`testIdAttribute`）。
 - 帳密／token 一律走環境變數（變數名由 product-context 指定），**不得寫進測試檔**。
+- `config/<project>/test-style.md`：這個專案的測試碼風格。**動筆前先讀**；沒有這個檔就沿用 `references/test-design.md` 的預設，不要自己另立一套。
 
 ## 五條紀律
 1. **一支只驗一件事。** 一條 AC 一支測試；要驗兩件就開兩支，不要串成長流程。

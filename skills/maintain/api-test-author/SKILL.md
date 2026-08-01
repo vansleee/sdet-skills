@@ -13,6 +13,7 @@ disable-model-invocation: true
 ## 前置（缺了就停手回報，不要自己編）
 - `config/product-context.md` 的「API」段：API base URL、認證方式與取憑證端點、契約來源、API testDir、版本策略。
 - 憑證一律走環境變數（變數名由 product-context 指定），**不得寫進測試檔**。
+- `config/<project>/test-style.md`：這個專案的測試碼風格。**動筆前先讀**；沒有這個檔就沿用 `references/test-design.md` 的預設，不要自己另立一套。
 - 契約來源填「無」時照樣可以寫，但 schema 斷言降級成逐欄位明寫，並在測試裡註明「無契約可比」。
 
 ## 先確認層級對不對
