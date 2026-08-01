@@ -11,7 +11,7 @@ description: 依一份 Exploration Charter 自主探索產品：觀察現況、�
 
 ## 探索迴圈（每一步）
 1. **讀 charter**：目標、範圍、oracles、out-of-bounds。
-2. **觀察現況**：`browser_snapshot` / `read_page` 看目前畫面與可操作元素。
+2. **觀察現況**：`playwright-cli snapshot` 看目前畫面與可操作元素，動作用它回傳的 ref（`playwright-cli click e6`）。畫面一變就重新 snapshot，別拿舊 ref 動作。
 3. **宣告下一步**：先寫「我現在看到什麼 + 為什麼選這個下一步（朝 charter 哪個目標）」，**且必須引用當前畫面的具體證據**，再動作。
 4. **記路徑**：動作前查 `output/sessions/<date>_<slug>/exploration-log.yaml`（走過的頁面 / 試過的操作），**做過的不重做**；動作後把這步寫回去。
 5. **順手留證**：關鍵操作交 `evidence-package`（截圖 / console / network）。疑似問題標成 `anomaly` /「待確認」，**不當場定罪**。

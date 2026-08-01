@@ -10,6 +10,7 @@ playwright-report/
 *.zip
 .DS_Store
 .playwright-mcp/
+.playwright-cli/
 .fuse_hidden*
 
 # 產品知識：只 commit 範本（*.example.md）與 README，真實產品事實留本地

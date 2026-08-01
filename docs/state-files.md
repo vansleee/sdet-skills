@@ -6,7 +6,7 @@
 | output/sessions/<date>_<slug>/exploration-log.yaml | explore | 這次探索走過的路徑 |
 | output/sessions/<date>_<slug>/findings/F-*.yaml | explore | 候選發現（含 oracle 判定） |
 | output/evidence/<YYYYMMDD>-<slug>/ | evidence-package | 截圖 / console / network / trace |
-| output/evidence/_traces/ | Playwright MCP（`--output-dir`） | 工具自動落地的 snapshot 與 console 暫存 |
+| .playwright-cli/ | playwright-cli | 工具自動落地的 snapshot 與 trace 暫存；`scripts/pack-trace.sh` 打包後清空（可用 `PW_TRACE_DIR` 覆寫）|
 | output/verdicts/V-*.yaml | bug-verifier | 獨立重現 + confidence |
 | output/calibration.yaml | bug-hunter 寫 predicted、bug-verifier / 人複核回填 | confidence 校準（範本 `state-templates/calibration.example.yaml`）|
 | output/known-false-positives.yaml | issue-quality-gate 維護、bug-hunter 讀 | 已知誤報（範本 `state-templates/known-false-positives.example.yaml`）|

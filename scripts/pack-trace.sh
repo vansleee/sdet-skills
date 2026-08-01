@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # pack-trace.sh <task-evidence-dir>
-# 把 Playwright MCP 暫存區的 raw trace 檔打包成 trace.zip、搬進當次證據資料夾、再清空暫存區。
+# 把 playwright-cli 暫存區的 raw trace 檔打包成 trace.zip、搬進當次證據資料夾、再清空暫存區。
 # 指令形狀固定(不含動態檔名),權限只需放行一條 Bash(bash scripts/pack-trace.sh:*)。
 set -euo pipefail
 
-STAGE="${PW_TRACE_DIR:-.pw-mcp-traces}"   # 暫存 output-dir,對齊 config/product-context.md
+STAGE="${PW_TRACE_DIR:-.playwright-cli/traces}"   # playwright-cli tracing-stop 的落地位置
 DEST="${1:?用法: bash scripts/pack-trace.sh <task-evidence-dir>}"
 
 [ -d "$STAGE" ] || { echo "找不到暫存區:$STAGE"; exit 1; }

@@ -2,6 +2,8 @@
   "permissions": {
     "allow": [
       "Skill(fewer-permission-prompts)",
+      "Bash(playwright-cli:*)",
+      "Bash(bash scripts/pack-trace.sh:*)",
       "mcp__playwright",
       "Bash(echo:*)",
       "Bash(cat:*)",

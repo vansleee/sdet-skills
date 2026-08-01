@@ -24,22 +24,21 @@ claude plugin validate . --strict
 bash scripts/link-skills.sh
 ```
 
-掛好後**開一個新的對話**讓 Claude 重新載入，打 `/` 應該看得到 `evidence-package`。
+掛好後**開新對話**讓 Claude 重新載入，打 `/` 應該看得到 `evidence-package`。
 
-### 3. 開啟 trace 能力（evidence-package 需要）
+### 3. 裝 playwright-cli（evidence-package 需要）
 
-Playwright MCP 的 trace 工具預設是關的，要用 `--caps=devtools` 啟動才會出現：
+本 skill 走 `playwright-cli`，不走 Playwright MCP：
 
 ```bash
-# 重新加上帶 --caps=devtools 的 Playwright MCP
-claude mcp remove playwright
-claude mcp add playwright -- npx @playwright/mcp@latest --caps=devtools --output-dir ./.pw-mcp-traces
-
-# 確認啟動指令有吃到 flag
-claude mcp get playwright
+brew install playwright-cli
+playwright-cli --version      # 0.1.8 驗過，需要有 tracing-start / tracing-stop
+playwright-cli install-browser
 ```
 
-重開對話後，工具集裡就會出現 `browser_start_tracing` / `browser_stop_tracing`。
+選 CLI 不選 MCP 的理由：權限用一條 `Bash(playwright-cli:*)` 就收斂得掉，不必整包放行 `mcp__playwright`；輸出路徑寫在指令參數裡，不會藏在 `~/.claude.json` 的 `--output-dir`；也省下每個 session 灌 30 幾個工具 schema 的 context。
+
+`tracing-start` / `tracing-stop` 的原始 trace 落在**工作目錄下**的 `.playwright-cli/traces/`，snapshot 落在 `.playwright-cli/`。這個暫存跟 `evidence-package` 自己組的 `output/evidence/<YYYYMMDD>-<任務代號>/` 是兩回事：前者由 `scripts/pack-trace.sh` 打包成 `trace.zip` 搬進後者（見 `docs/state-files.md`）。暫存區位置可用 `PW_TRACE_DIR` 覆寫。
 
 ### 4. 行為測試（真的跑一次、檢查產物）
 

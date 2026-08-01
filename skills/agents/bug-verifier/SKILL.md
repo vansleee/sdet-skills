@@ -12,7 +12,7 @@ description: 盲驗一個候選 bug：只吃 Evidence Package、拿不到 hunter
 ## 前置（缺了就停手回報）
 - 候選附完整 Evidence Package（manifest、重現步驟、佐證檔）。**證據不可攜（有「如上一步」式指涉、缺步驟）→ 直接退回 hunter 補證據，不硬驗。**
 - 驗證是在真的操作產品：嚴守 charter 的 `out_of_bounds` 與 `config/sdet-config.yaml` 預算。
-- 開錄前先確認 trace：工具集有 `browser_start_tracing` → 開錄；沒有 → 走 `evidence-package` 的降級規則，並在 verdict 寫明為什麼沒有。
+- 開錄前先確認 trace：`playwright-cli tracing-start` 成功 → 開錄；失敗 → 走 `evidence-package` 的降級規則，並在 verdict 寫明為什麼沒有。
 
 ## 執行順序
 
