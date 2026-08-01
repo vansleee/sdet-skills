@@ -53,6 +53,51 @@ Received: 0
 
 對應的人工發現與盲驗紀錄在 `output/reports/issues/2026-07-30-cart-line-total-zero.md`。
 
+### CI（GitHub Actions，2026-08-02）
+
+Workflow：`.github/workflows/e2e.yml`，matrix 同時跑兩個環境。
+
+| run | `e2e (clean)` | `e2e (with-bugs)` |
+| --- | --- | --- |
+| `30710272941` | ✗ 紅 | ✗ 紅 |
+| `30710272941`（rerun --failed） | ✗ 紅 | ✗ 紅 |
+| `30710677728` | ✓ 3 passed | ✗ 紅 |
+| `30710750654` | ✓ | — |
+| `30710799963` | ✓ | — |
+
+`with-bugs` 一路紅是設計，它紅在斷言（`Received: 0`），不是紅在別的地方。
+`clean` 前兩次紅**不是**設計，那是真的踩到坑，過程見下面一節。
+
+CI 上 `login.spec.ts` 的成功登入那支會 skip，因為 repo 沒設
+`TOOLSHOP_TEST_USER` / `TOOLSHOP_TEST_PASS` secrets，所以 `clean` 是 3 passed 不是 4。
+
+### `clean` 那兩次紅是怎麼回事（Day 35–36 的完整案例）
+
+這一段是實際發生的過程，不是編的教案。
+
+1. **看 traceback 就下結論。** 錯誤停在 `gotoCart` 的 `waitForSelector`，
+   我認定是 `addToCart` 把等待失敗 `.catch` 吞掉、購物車根本是空的。**猜錯了。**
+2. **拉 evidence。** `error-context.md` 的 page snapshot 顯示畫面根本不是應用程式，
+   而是 Cloudflare 的 `Performing security verification`。判 `environment`。
+3. **重跑確認。** `gh run rerun --failed` 症狀一模一樣，不是間歇。
+4. **比對同一個 job 內部。** `gotoHome`、商品頁、`login.spec` 都在同一個 runner、
+   同一個出口 IP、同一分鐘內成功載入，只有 `gotoCart` 的
+   `page.goto('/checkout')` 被擋。**所以基礎設施沒壞、產品沒壞。**
+   第 2 步的分類是錯的，這是 test-defect。
+5. **修。** `gotoCart` 改成點 `[data-test="nav-cart"]`；
+   順手把 `addToCart` 的 `.catch(() => {})` 拿掉 ——
+   吞例外把「東西沒加進去」變成兩步之後看不懂的逾時，正是它害第 1 步猜錯方向。
+6. **驗穩。** 連續 3 次 CI 全綠才算過，1 次不算。
+
+兩個要點：
+
+- **「紅了先別修」不是格言。** 這裡判錯兩次，兩次都是證據把方向拉回來的。
+- **測試抄捷徑會被當成機器人。** 使用者不會把 `/checkout` 貼進網址列，
+  測試也不該。這條後來寫進 `config/test-style.example.md` 的「導頁方式」。
+
+完整紀錄：`output/sessions/2026-08-02_ci-e2e-first-run/`
+（`failure-analysis.yaml` 含被推翻的初判與 revision、`runs/reruns-2026-08-02.yaml` 含裁決）。
+
 ### broken（2026-08-02，連跑三次）
 
 ```
