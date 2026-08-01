@@ -31,6 +31,8 @@ description: 用分片與平行讓一大包測試在時限內跑完：先驗獨�
 `shards = ceil(baseline_duration / target_duration)`，再加 1 當緩衝。上限讀 config 的 `ci.max_shards`。
 每個 shard 內部再開 `workers`（Playwright 預設 CPU/2）。**先加 workers（同一台機器、免錢）再加 shard（多開 runner、要錢）**。
 
+**API 測試分開算，而且通常不必分片。** 沒有瀏覽器要開，單支耗時常常是 UI 的十分之一，整包跑完往往還在時限內；先把 `workers` 開滿再談 shard，多開 runner 只是把時間花在 `npm ci` 上。真的要平行，瓶頸也換了一個：UI 的上限是本機 CPU，API 的上限是**受測服務扛不扛得住**與速率限制（讀 `config/product-context.md`）。把 workers 開到撞出 `429`，換來的是一批看起來像產品 bug 的假紅燈，那不是加速。
+
 ### 3. 產 matrix + 分片指令
 Playwright：`npx playwright test --shard=${{ matrix.shard }}/${{ strategy.job-total }}`，reporter 設 `blob`。
 

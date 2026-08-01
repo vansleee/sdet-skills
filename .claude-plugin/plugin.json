@@ -11,6 +11,7 @@
   "skills": [
     "./skills/foundation/setup-sdet",
     "./skills/observe/evidence-package",
+    "./skills/observe/api-evidence",
     "./skills/observe/structured-result",
     "./skills/observe/classify-anomaly",
     "./skills/explore/exploration-charter",
@@ -23,6 +24,7 @@
     "./skills/agents/bug-fixer",
     "./skills/agents/duty-oncall",
     "./skills/maintain/test-author",
+    "./skills/maintain/api-test-author",
     "./skills/maintain/test-data",
     "./skills/maintain/failure-analysis",
     "./skills/maintain/flaky-detect",

@@ -16,7 +16,10 @@ requirements:
     source: "knowledge/domains/checkout.md#折扣碼"
     statement: "過期折扣碼不得套用，並顯示明確錯誤"
     covered_by:
-      tests:    ["tests/checkout-coupon.spec.ts > rejects expired coupon"]
+      tests:
+        # level：api | ui，由測試檔位置判（判準見 references/traceability-mapping.md）
+        - { nodeid: "tests/api/checkout-coupon.spec.ts > rejects expired coupon", level: api }
+        - { nodeid: "tests/checkout.spec.ts > shows discount line", level: ui }
       findings: ["F-2026-07-24-003"]
     confidence: high           # high（測試自己宣告）| low（檔名語意推測 → uncertain）
     status: covered            # covered | gap | uncertain | retired
@@ -32,7 +35,8 @@ requirements:
     source: "knowledge/domains/auth.md#SSO"
     statement: "SSO 登入失敗需退回本地登入並保留原始導向目標"
     covered_by:
-      tests: ["tests/login.spec.ts > sso redirect"]
+      tests:
+        - { nodeid: "tests/login.spec.ts > sso redirect", level: ui }
       findings: []
     confidence: low            # 只有檔名語意相符，非測試自己宣告
     status: uncertain
@@ -46,6 +50,14 @@ requirements:
 gaps:
   - { req_id: REQ-CHECKOUT-006, risk_score: 0.71, suggestion: "交 test-planning 排進下輪" }
 
+# 有東西在守，但守在比較貴、比較脆的那一層。status 仍是 covered，故意跟 gaps 分開列。
+level_mismatches:
+  - req_id: REQ-CHECKOUT-009
+    covered_at: [ui]
+    should_be: api
+    risk_score: 0.55
+    suggestion: "折扣疊加規則的 4 個分支都用 UI 測試在守；降到 API 層交 api-test-author，原本那批交 test-prune 評估"
+
 orphans:
   tests:
     - nodeid: "tests/legacy-promo.spec.ts > applies promo banner"
@@ -56,4 +68,4 @@ orphans:
       note: "折扣碼大小寫不敏感，knowledge/ 未記載，可能是隱性需求"
       route: "補 knowledge/"
 
-caveat: "只回答『有沒有東西在守』，不回答『守得夠不夠』；uncertain 1 筆未計入 covered。"
+caveat: "只回答『有沒有東西在守』，不回答『守得夠不夠』；uncertain 1 筆未計入 covered；level_mismatches 1 筆仍算 covered。"

@@ -8,13 +8,17 @@
 | `test-results-json` | JSON / junit reporter 輸出 | `if: always()` | `pipeline-read`（解析失敗清單）|
 | `traces` | `test-results/**/trace.zip` | `if: failure()` | `failure-analysis` / `evidence-package` |
 | `blob-report-<shard>` | 分片的 blob report | `if: always()` | `test-parallelize` 的 merge job |
+| `api-test-results-json` | API 測試 job 的 JSON / junit 輸出 | `if: always()` | `pipeline-read`（與 UI 失敗清單分開解析）|
+| `api-evidence-<slug>` | `requests.jsonl` / `repro.sh` / `raw/`（憑證已遮蔽）| `if: failure()` | `failure-analysis` / `bug-verifier` |
 
 保留天數讀 `config/sdet-config.yaml` 的 `ci.artifact_retention_days`（預設 7；trace 佔空間，別無腦設 90）。
 
 ## `if: always()` 不能省
 
 測試紅了才最需要報告。紅了就不上傳，等於在最需要證據的時候把證據丟掉。
-`traces` 是唯一例外，只在失敗時留。全留很快就把 storage 吃爆，且沒人看綠燈的 trace。
+`traces` 與 `api-evidence-<slug>` 是例外，只在失敗時留。全留很快就把 storage 吃爆，且沒人看綠燈的 trace。
+
+`api-evidence-<slug>` 上傳前必須確認憑證已遮蔽（`Authorization`、`Set-Cookie` 換成 `<redacted>`）。CI artifact 的可見範圍比本機大得多，遮蔽是上傳的前置條件，不是事後補救。
 
 ## 靜默失蹤（驗數要擋的東西）
 

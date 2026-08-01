@@ -19,8 +19,8 @@ description: 把一張 ticket / PRD 轉成「這次要測什麼」的範圍 + �
    - 需求與 `knowledge/` **衝突** → 標 `spec-conflict` 列進開放問題。這是 `test-oracle` 之後的判準素材，**現在就要標出來**，不要等測到一半才發現兩份規格打架。
    - `knowledge/` **沒有**相關事實 → 明寫「本規劃基於假設」，並建議補 `knowledge/`。
 3. **圈範圍**：列候選項（改動的流程、被影響的相鄰流程、資料遷移、權限、跨裝置/瀏覽器）。
-4. **評風險**：把候選項整批交 `route-by-risk`，拿回 `score` / `route` / `reason`。**不自己發明第二套評分**。
-5. **決定怎麼測**：依 route 決定形式（見下表）。
+4. **評風險**：把候選項整批交 `route-by-risk`，拿回 `score` / `route` / `level` / `reason`。**不自己發明第二套評分**。
+5. **決定怎麼測**：依 route 與 `level` 決定形式（見下表）。`level: unknown` 的項目列進開放問題，不預設用 UI 測。
 6. **寫 out-of-scope**：`route-by-risk` 判 `skip` 的、以及人為排除的，**逐項寫理由**。
 7. **輸出並確認**：把 plan 列給使用者，確認後寫 `output/plans/<slug>.md`。
 
@@ -31,7 +31,9 @@ description: 把一張 ticket / PRD 轉成「這次要測什麼」的範圍 + �
 | route | 怎麼測 | plan 記什麼 |
 |---|---|---|
 | `must-test` + 行為未知/需求模糊 | 自主探索 | `how: explore`，`next` 指向要產的 `charters/<slug>.yaml`（由 `exploration-charter` 產）|
-| `must-test` + 行為明確、要長期守 | 固化成自動化回歸 | `how: test-author`，`next` 寫要幾支測試。**`test-author` 由人發動**（多一支測試就是多一份長期資產）|
+| `must-test` + 行為明確、要長期守 + `level: api` | 固化成 API 回歸 | `how: api-test-author`，`next` 寫要幾支。分支多的規則（過期／額度／幣別／疊加上限）全放這一層 |
+| `must-test` + 行為明確、要長期守 + `level: ui` | 固化成 UI 回歸 | `how: test-author`，`next` 寫要幾支測試。**由人發動**（多一支測試就是多一份長期資產）|
+| `must-test` + `level: both` | 兩層都要 | API 寫分支、UI 只留一條把主線接起來的代表路徑 |
 | `sample` | 預算夠才做，優先度低於 must-test | 同上，另標 `optional` |
 | `skip` | 本輪不測 | 不進 in_scope，列 out-of-scope **並寫理由** |
 

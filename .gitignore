@@ -4,6 +4,8 @@ node_modules/
 config/product-context.md
 config/sdet-config.yaml
 config/governance.yaml
+# 多專案佈局：config/<project>/ 底下全是真檔（含 base URL、帳密變數名），整個目錄不進版控
+config/*/
 test-results/
 playwright-report/
 .pw-mcp-traces/

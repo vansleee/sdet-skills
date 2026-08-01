@@ -1,0 +1,5 @@
+interface:
+  display_name: "API Test Author"
+  short_description: "把一條驗收條件固化成一支可維護的 API 測試：狀態碼與 body 都驗、斷言綁契約、憑證走環境變數。"
+policy:
+  allow_implicit_invocation: false

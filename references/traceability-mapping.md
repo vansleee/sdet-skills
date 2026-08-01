@@ -25,6 +25,27 @@ REQ-<AREA>-<NNN>
 
 前三種是「測試自己宣告的」，可信；第 4 種是推測，**一律標 `uncertain`，不計入 covered**。專案要提高可信度就往 1–3 遷移，不是靠放寬第 4 條。
 
+## 測試的 `level` 怎麼判
+
+| level | 判準 |
+|---|---|
+| `api` | 測試檔位在 `config/product-context.md` 記的 API testDir 底下 |
+| `ui` | 其餘 |
+
+位置優先於內容：一支放在 UI testDir 底下、內部卻只打 API 的測試，仍記 `ui` 並在 `note` 標「位置與內容不符，建議搬家」。用內容猜層級會讓同一支測試在不同輪被判成不同的 level，對照表就失去可比性。product-context 沒有 API testDir（或 API 段寫「無」）時，全部記 `ui`，不做推測。
+
+## 層級錯配（`level_mismatches`）怎麼判
+
+需求本身在講什麼，決定它該住在哪一層（判準見 `references/test-design.md` 第 0 節）：
+
+| 需求在講 | 該有的 level | 只有另一層在守時 |
+|---|---|---|
+| 商業規則、計算、驗證、權限 | `api` | 列進 `level_mismatches`，`should_be: api` |
+| 畫面呈現、互動、可及性 | `ui` | 不算錯配 |
+| 前後端整合 | 兩層各一條代表 | 缺 API 那條才算錯配 |
+
+**錯配的 `status` 仍是 `covered`。** 它確實有東西在守，只是守錯層。併進 `gap` 會讓「完全沒守」的數字灌水，而不列出來，套件會一路長成一堆慢又脆的 UI 測試在驗後端規則，對照表卻一片健康。分不出來該歸哪類就不標，跟 `uncertain` 同一個道理：不猜。
+
 ## finding 怎麼對到需求
 - finding 的 `oracle` 欄若引用了 `knowledge/` 的某條規則 → 直接對到該 `req_id`（high）。
 - 只有區域相符（同一個 area）→ `uncertain`。

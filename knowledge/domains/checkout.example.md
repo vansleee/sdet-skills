@@ -14,5 +14,16 @@
 ## 狀態機 / 合法轉移
 - <例：cart → address → payment → invoice；不可跳過 address 直接付款>
 
+## 端點與契約
+> 端點清單寫在這裡，`explore` 端點側才有得列（沒有 OpenAPI 時它只能從既有 network 紀錄反推，一定不完整）。
+
+| 端點 | 做什麼 | 誰能打 | 有副作用？ |
+|---|---|---|---|
+| `POST /carts/{id}/items` | <一句話> | <登入使用者本人> | 是（寫入） |
+| `GET /carts/{id}` | <一句話> | <本人> | 否 |
+
+- 這個模組的錯誤碼：<例：`COUPON_EXPIRED` → 422；`STOCK_INSUFFICIENT` → 409>
+- 不得自動化碰的端點：<例：`POST /orders/{id}/pay`，會觸發外部金流>
+
 ## 已知邊界 / 陷阱
 - <例：cart id 存在瀏覽器本地，過期會 404，預期行為應該是靜默重建，還是提示使用者？>

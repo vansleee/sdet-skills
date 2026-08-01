@@ -1,6 +1,6 @@
 ---
 name: failure-analysis
-description: 一支自動化測試紅了，分析根因並分流：選擇器/等待/測資/斷言/環境/產品迴歸/flaky。先歸類，別急著修。測試失敗、要判斷「這支為什麼紅、誰該修」時使用；`pipeline-triage` 對每個根因群呼叫它一次。
+description: 一支自動化測試紅了，分析根因並分流：選擇器/等待/測資/斷言/環境/產品迴歸/flaky，API 測試另加契約漂移/憑證過期/速率限制。先歸類，別急著修。測試失敗、要判斷「這支為什麼紅、誰該修」時使用；`pipeline-triage` 對每個根因群呼叫它一次。
 ---
 
 # Failure Analysis（一筆）
@@ -23,6 +23,17 @@ description: 一支自動化測試紅了，分析根因並分流：選擇器/等
 | `flaky` | 間歇重現 < 100% | `flaky-detect` / `flaky-manager` |
 | `cascade` | 前置失敗連鎖導致 | 修根源那一筆，其餘標 cascade |
 | `unknown` | 證據不足以歸類 | needs-investigation，補證據 |
+
+## API 測試的分類（`locator` 與 `wait-timing` 在這裡不適用）
+API 測試沒有元素可找、沒有渲染要等，所以那兩類不會命中；對應位置換成下面三類。其餘（`test-data`、`fixture-isolation`、`assertion-mismatch`、`environment`、`product-regression`、`flaky`、`cascade`）照舊。
+
+| classification | 訊號 | 分流 fix_target |
+|---|---|---|
+| `contract-drift` | 回應結構變了：欄位改名、型別變、必填變選填、多回或少回欄位 | **先問 `test-oracle`**：契約也跟著改了→`test-heal` 更新斷言；契約沒改→`product-regression` |
+| `auth-expired` | `401` / `403`，憑證過期、換環境沒換 token、取憑證那一步就失敗 | `test-data`（憑證與前置請求）；整批同時發生則歸 `environment` |
+| `rate-limit` | `429`，或大量請求後才開始零星失敗 | `environment`，**不動測試斷言**；併發過高交 `test-parallelize` 調分片與速率 |
+
+判 API 失敗時先看**前置請求**有沒有成功。取 token、建測資那幾步失敗造成的紅，是 `cascade` 或 `auth-expired`，不是被測端點的問題；把它記成產品迴歸會派錯人。
 
 ## 關鍵分岔：assertion-mismatch 是測試的錯還是產品的錯
 

@@ -29,6 +29,12 @@ description: 用風險決定要不要測、先測什麼，放在 pipeline 最前
 | 0.3–0.6 | `sample` | 預算/時間夠才做，優先度低於 must-test |
 | < 0.3 | `skip` | 本輪不測 |
 
+## 附帶輸出：建議的測試層級
+
+決定「要測」之後，順手給一個 `level` 建議（`api` / `ui` / `both`），判準照 `references/test-design.md` 第 0 節：規則、計算、驗證、權限 → `api`；呈現、互動、可及性 → `ui`；整合風險 → `both`，但 UI 只留一條代表路徑。
+
+這只是建議，不是決定：呼叫者（`test-planning`）拿它去挑 `how`（`api-test-author` 還是 `test-author`）。判不出來就寫 `level: unknown` 並說明，**不要預設 `ui`**。「不確定就用 UI 測」正是套件長成一堆慢測試的來源。
+
 ## 規則
 - **`skip` 不是丟掉，是留痕。** 每個 `skip` 都要寫 `reason`，交回呼叫者的紀錄裡；本 skill 不做「靜默排除」。之後有人要回頭查「這塊為什麼沒測到」，要查得到。
 - **資料源缺不等於低風險。** 缺資料一律用中性值 0.5，不准直接判 0（那會讓「沒人量過的風險」被錯誤地當成「沒風險」）。
@@ -40,6 +46,8 @@ description: 用風險決定要不要測、先測什麼，放在 pipeline 最前
 target: "checkout module"
 score: 0.82
 route: must-test
+level: api                 # api | ui | both | unknown（建議，非決定）
+level_reason: "折扣與稅額計算是後端規則,分支多;UI 只需一條代表路徑接起來"
 factors:
   - "change_frequency: 0.9（近 7 天 12 次 commit）× 0.4 = 0.36"
   - "user_traffic: 1.0（knowledge/ 標記為主要轉換路徑）× 0.4 = 0.40"

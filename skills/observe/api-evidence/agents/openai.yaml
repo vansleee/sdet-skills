@@ -1,0 +1,3 @@
+interface:
+  display_name: "API Evidence"
+  short_description: "直接打端點時蒐集請求與回應證據：requests.jsonl、raw headers/body、可重放的 repro.sh，憑證不落地。"

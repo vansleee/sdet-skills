@@ -1,3 +1,3 @@
 interface:
   display_name: "Failure Analysis"
-  short_description: "單筆測試失敗的根因分析與分流（測試/環境/產品/flaky）。"
+  short_description: "單筆測試失敗的根因分析與分流（測試/環境/產品/flaky；API 另加契約漂移、憑證過期、速率限制）。"

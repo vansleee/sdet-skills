@@ -7,6 +7,8 @@ description: 執行測試、操作產品、驗證功能或探索頁面時，蒐�
 
 `playwright-cli` 產生證據，本 skill 只負責組裝成一份可攜證據包 + manifest。設計理念見 `docs/observe/evidence-package.md`。
 
+> **只管畫面側。** 不經畫面、直接打端點的請求交 `api-evidence`；兩者共用同一個 `$D`，它把 `requests.jsonl` / `repro.sh` / `raw/` 併進來，manifest 由本 skill 統一寫一份。
+
 ## 開工前
 1. 建資料夾 `output/evidence/<YYYYMMDD>-<任務代號>/`，以下用 `$D` 代稱。
 2. 開瀏覽器並開錄 trace：

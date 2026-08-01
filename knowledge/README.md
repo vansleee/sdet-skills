@@ -17,3 +17,5 @@ skill 是「能力」（怎麼做，產品無關、可重用）；這個資料�
 
 ## 與 `config/` 的關係
 `config/product-context.example.md` 是「開工設定」層級的最小起點（base URL、帳號來源）。當產品知識長大到需要描述業務規則、領域、名詞表，就搬來 `knowledge/`。前者是「怎麼連上產品」，後者是「產品是什麼」。
+
+API 照同一條線切：base URL、認證方式、憑證變數名、契約檔位置在 `config/`；這個 API 承諾什麼（錯誤結構、狀態碼慣例、授權模型、冪等承諾、端點清單與副作用）在 `knowledge/`。前者換環境會變，後者換環境不會。`explore` 的端點側靠 `knowledge/` 的端點清單才有得列，`test-oracle` 的 API oracle 也讀它。

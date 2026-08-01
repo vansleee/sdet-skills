@@ -12,7 +12,7 @@ Agentic SDET 技能組：GitHub Actions · Playwright (TypeScript) · GitHub Iss
 
 ## Skill 分層（bucket）
 - `foundation/` — 開工設定與後端抽象層
-- `observe/`    — 觀察與留證（截圖/console/network/結構化結果/異常分類）
+- `observe/`    — 觀察與留證（截圖/console/network/API 請求回應/結構化結果/異常分類）
 - `explore/`    — 自主探索（charter/探索迴圈/test oracle）
 - `agents/`     — 代理人：找 bug、獨立驗證、品質閘、開單、修產品、值班
 - `maintain/`   — 測試維護「一支」層級：寫測試、根因分析、修測試、重跑到綠、減法
@@ -22,6 +22,8 @@ Agentic SDET 技能組：GitHub Actions · Playwright (TypeScript) · GitHub Iss
 - `meta/`       — 路由（ask-sdet）
 
 **「一筆 vs 一批」原則：** `maintain/` 處理一支測試/一次失敗；`infra/` 處理整批（幾百支、一片紅、跨 run 趨勢）。同名能力（如 failure-analysis vs pipeline-triage、flaky-detect vs flaky-manager）在兩層不是重複，是規模升級。一批必須先 fan-in 合併根因再分析。
+
+**「畫面 vs 端點」原則：** API 是另一個介面層，不是另一條產線。手段差很多的才成對開 skill（`evidence-package`／`api-evidence`、`test-author`／`api-test-author`）；判準與分類差的只是一張表的，就在原 skill 裡加表（`test-oracle`、`failure-analysis`、`heuristics`）。不准為 API 另立一套平行體系。哪條規則該在哪一層驗，判準在 `references/test-design.md` 第 0 節；覆蓋對照用 `level: api|ui` 記，層級錯配單獨列，不併進 gap。
 
 ## 每支 skill 的規範
 - 一定要有 `SKILL.md` 與 `agents/openai.yaml`。

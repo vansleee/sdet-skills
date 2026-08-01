@@ -28,7 +28,7 @@
 | output/triage-reports/<date>_<run>.md | pipeline-triage | 一片紅的根因群 → owner → issue 對照報告 |
 | output/reports/health-<date>.md | pipeline-observability | 測試健康指標、趨勢與行動路由 |
 | output/reports/status-<date>.md | status-report | standup / 測試報告 / release-readiness 摘要 |
-| output/evidence/<YYYYMMDD>-<slug>/ | evidence-package | 截圖 / console / network / trace |
+| output/evidence/<YYYYMMDD>-<slug>/ | evidence-package、api-evidence | 畫面側：截圖 / console / network / trace；API 側：requests.jsonl / repro.sh / raw/。兩者共用同一夾，manifest 只寫一份 |
 
 ## 不在 output/ 底下
 

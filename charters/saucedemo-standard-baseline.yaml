@@ -1,0 +1,38 @@
+# 探索憲章（exploration charter）
+# 由 exploration-charter 產生、供 explore 讀取的輸入。
+# 位置慣例：charters/<slug>.yaml（committed；output/ 才是每次跑的輸出、被 gitignore）
+# project 欄位的解析規則見 references/config-resolution.md
+charter:
+  project: saucedemo          # 對應 config/saucedemo/ 與 knowledge/saucedemo/
+  goal: "用 standard_user 走完 saucedemo 主流程，建立『正常行為長什麼樣』的基準線，並抓出真正未被刻意植入的缺陷"
+  target: "https://www.saucedemo.com/"
+  scope: [登入頁, 登入失敗路徑, 商品列表, 排序下拉, 商品詳情, 購物車, 結帳資訊表單, 結帳總覽, 完成頁, 側邊選單]
+
+  # --- 端點側 ---
+  # 純前端 demo，無後端 API；契約 / schema / 狀態碼語意 oracle 全部停用（見 config/saucedemo/product-context.md 的「API」段）
+  api_base: null
+  endpoints: []
+
+  oracles:
+    - "內部一致性：同一商品的名稱與價格在列表、詳情、購物車、結帳總覽四處必須相同；購物車 badge 數字等於實際品項數"
+    - "正常操作不應出現 console error 或未捕捉例外"
+    - "計算正確性：結帳總覽 Item total 等於各品項價格加總；Tax 與 Total 符合公式；四種排序的結果真的有序"
+    - "使用者期待：登入失敗要有看得懂的錯誤訊息；登出後不得靠上一頁或直接改網址回到已登入頁；重新整理後購物車不應無故清空"
+
+  test_account: standard_user   # env:SAUCEDEMO_USER / env:SAUCEDEMO_PASS
+  max_steps: 40                 # 沿用 config/saucedemo/sdet-config.yaml 的 budget.max_actions_per_explore
+
+  # --- 授權分級（2026-08-01 由 wclee 拍板；subagent 必須逐條遵守）---
+  authorization:
+    allowed:
+      - "結帳可完整走完，含按下 Finish（無真金流、無後端，訂單只進 client 端狀態）"
+      - "可按 Reset App State 清空購物車狀態，當作情境之間的 teardown"
+      - "登入失敗路徑可用空帳號、錯密碼、locked_out_user 觸發錯誤訊息"
+    forbidden:
+      - "不得用 problem_user / performance_glitch_user / error_user / visual_user 當基準線，它們的異常是站方刻意植入的練習素材"
+      - "任何異常都必須在 standard_user 身上重現得出來，才有資格記成候選 finding"
+      - "不做安全測試：不試 SQL injection、不試繞過登入、不列舉他人資料"
+      - "不得寫迴圈連打或壓測 saucedemo.com，一律單發、手動節奏"
+      - "不得對 saucedemo.com 以外的網域做任何操作"
+
+  out_of_bounds: [特殊帳號當基準線, 安全測試, 壓測與連打, 跨網域操作, 未經 standard_user 對照就記 finding]

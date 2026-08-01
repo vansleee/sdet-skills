@@ -13,7 +13,7 @@ description: 依一份 charter 獵一輪 bug，交回已判定、已去重、標
 ## 前置（缺了就停手回報，不要自己編）
 - charter 檔存在且可讀（沒有 → 先叫 `exploration-charter` 產一份）。
 - `output/known-false-positives.yaml`、`output/issues-index.yaml` 存在（沒有 → 從 `state-templates/` 對應範本複製一份空的，並在回報中說明「本輪未做去重／未濾誤報」）。
-- `config/sdet-config.yaml` 的門檻與預算（`confidence.min_to_file`、`budget.max_actions_per_explore`）。
+- `sdet-config.yaml` 的門檻與預算（`confidence.min_to_file`、`budget.max_actions_per_explore`）；charter 有 `project` 時讀 `config/<project>/`，規則見 `references/config-resolution.md`。
 
 ## 執行順序（順序本身就是規格，不得跳號）
 

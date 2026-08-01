@@ -14,4 +14,19 @@ Happy path = 一連串沒說出口的假設。Heuristic = 「常見隱形假設 
 | 過期 / staleness | 資料永遠新鮮 | 放久了再操作、用過期的 id / session | 用很久前的 cart id 去結帳 |
 | 中斷 / 取消 | 使用者會把流程走完 | 中途離開、reload、關頁再回來 | 填到一半 reload 結帳頁 |
 
-用法：搭配 tour。tour 給路線（error / configuration…），heuristic 給「到了那裡戳哪個假設」。不必每次全跑，用風險挑最相關的幾個（呼應 `route-by-risk`）。
+## API 專屬（被測物是端點時加用；charter 有 `endpoints` 時讀這張）
+
+上面七條在端點上照樣成立（逆操作＝建了再刪、狀態組合＝空清單與滿清單、重複＝同一筆送兩次）。下面這幾條只有直接打端點才戳得到，因為畫面根本不會幫你送出這種請求。
+
+| heuristic | 隱含假設 | 反過來怎麼測 | 例子 |
+|---|---|---|---|
+| 方法竄改 | 只有畫面用得到的方法會被呼叫 | 同一路徑換 `PUT` / `PATCH` / `DELETE` / `OPTIONS` | 唯讀端點是不是也接受 `DELETE` |
+| 越權取用 | 只有該看的人會帶著 token 來 | 換另一個帳號的 token、換別人的 id、整個不帶憑證 | `GET /users/2` 帶 user1 的 token |
+| 欄位增減 | 前端只會送畫面上有的欄位 | 少送必填、多送不該送的（`role`、`is_admin`、`price`）| 建立帳號時夾帶 `role: admin` |
+| 型別與邊界 | 送來的一定是合法值 | 字串換數字、負數、超長、`null`、巢狀物件換陣列 | `qty: -1`、`qty: "abc"` |
+| 契約以外的回應 | 回什麼就是什麼 | 拿回應對契約逐欄位比，看有沒有多回不該回的 | 使用者物件夾帶密碼雜湊 |
+| 憑證生命週期 | token 一直有效 | 用過期的、剛登出的、別的環境的 token 重放 | 登出後拿舊 token 再打一次 |
+| 請求標頭 | 客戶端會送對的標頭 | 改 `Content-Type`、拿掉它、送不支援的 `Accept` | 表單編碼冒充 JSON |
+| 併發與順序 | 請求會照順序到 | 同一筆同時送兩次、先刪再改、分頁途中改資料 | 同時扣同一份庫存 |
+
+用法：搭配 tour。tour 給路線（error / configuration…），heuristic 給「到了那裡戳哪個假設」。不必每次全跑，用風險挑最相關的幾個（呼應 `route-by-risk`）。端點側的挑選另外受 `config/product-context.md` 的「不得碰的端點」與 charter `out_of_bounds` 限制，破壞性的變化一律不做，只記「需人工授權才驗」。

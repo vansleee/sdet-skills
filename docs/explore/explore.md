@@ -9,6 +9,7 @@
 - **沒證據不喊 bug** → 防幻覺；判定外包給 `test-oracle` / `classify-anomaly`，探索只負責「看與試」。
 - **一定要有停止條件。** 達標 / max_steps / 偵測打轉就停，不無限探索。
 - **charter 決定邊界。** out-of-bounds 硬守，遇到就停手回報。
+- **設定在開跑前解析一次，之後往下傳。** charter 的 `project` 決定讀哪組 `config/<project>/`（規則見 `references/config-resolution.md`）。解析放在迴圈之外，是因為它一輪只該發生一次；解析不到寧可停手也不回退讀扁平設定，否則會拿別的產品的 base URL 與帳號跑完一整輪，產出一批看起來很正常的錯證據。
 
 ## 覆蓋鐵則怎麼來的
 
@@ -38,4 +39,12 @@ charter 的 oracle 幾乎都是內部一致性（列表價格等於內頁價格�
 
 所以停止條件要求把鐵則自檢的結果寫進 `stop_reason`：說得出哪幾條過了、哪幾條沒過，比宣稱「走完」有用。
 
-上游：`exploration-charter`（給目標與邊界）。下游：`structured-result`、`classify-anomaly`、`bug-verifier`。
+## 為什麼要有第二條迴圈，而不是把端點當成一種頁面
+
+畫面側的迴圈靠 `snapshot`：先看有什麼可操作的元素，再從中挑一個。這條迴圈之所以成立，是因為**畫面會主動把可能性端出來**。端點不會。沒有任何請求會告訴你「這個 API 還有 `PATCH` 方法」或「還有一個 `/admin/users`」。
+
+所以端點側的第一步不是觀察，是**列舉**：有契約就照契約列，沒契約就從既有的 network 紀錄反推，並且明說反推出來的清單不完整。把這一步省掉、直接沿用畫面迴圈，結果就是只會打畫面已經打過的那幾個端點，而那批端點通常是最不可能有授權漏洞的一批。
+
+第二個差別是基準。畫面有「正常長什麼樣」的直覺，回應沒有。所以端點側強制先打一次正常請求存起來，後面的每個異常才有得比。少了基準，探索會把「本來就長這樣」記成發現。
+
+上游：`exploration-charter`（給目標與邊界）。下游：`structured-result`、`classify-anomaly`、`bug-verifier`；留證 `evidence-package`（畫面側）／`api-evidence`（端點側）。

@@ -1,3 +1,3 @@
 interface:
   display_name: "Test Oracle"
-  short_description: "用一致性/規格/對照/使用者期待等 oracle 判斷「這到底是不是 bug」。"
+  short_description: "用一致性/規格/對照/使用者期待等 oracle 判斷「這到底是不是 bug」；API 情境另加狀態碼語意、error envelope、冪等、授權邊界、契約 schema。"

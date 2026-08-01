@@ -17,7 +17,7 @@ description: 盲驗一個候選 bug：只吃 Evidence Package、拿不到 hunter
 ## 執行順序
 
 1. **進盲驗** — 以獨立 subagent 開乾淨 session，可讀的只有 Evidence Package。
-2. **重現** — 照 package 內的重現步驟自己跑一次，過程中蒐集**自己的**截圖 / console / network / trace，交 `evidence-package` 組裝進 `verifier-run/`。
+2. **重現** — 照 package 內的重現步驟自己跑一次，過程中蒐集**自己的**截圖 / console / network / trace，交 `evidence-package` 組裝進 `verifier-run/`。純 API 的候選改跑 package 裡的 `repro.sh`，證據交 `api-evidence`；憑證用自己這輪的 env，不沿用對方留下的任何值。
    證據是給**人**複核的：關鍵操作前後各截一張、trace 收工時打包，讓人能重播這一輪，而不是只讀你的結論。
 3. **判定** — 三選一，不自創詞彙：
    - `confirmed`：照步驟跑、**自己觀察到同一現象**。

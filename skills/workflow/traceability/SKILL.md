@@ -12,16 +12,17 @@ description: 維護「需求 ↔ 測試 ↔ finding」的覆蓋對照，指出�
 
 ## 輸入 / 輸出
 - **輸入**：需求（`knowledge/` 的業務規則 ＋ `output/plans/<slug>.md` 的 in-scope）＋ 測試（掃 `tests/**/*.spec.ts`）＋ findings（`output/sessions/**/findings/F-*.yaml`）＋ issues（`output/issues-index.yaml`）。
-- **輸出**：`output/traceability.yaml`（對照表）＋ gap 清單（依風險排序）＋ 孤兒清單（附處置建議）。
+- **輸出**：`output/traceability.yaml`（對照表）＋ gap 清單（依風險排序）＋ 層級錯配清單 ＋ 孤兒清單（附處置建議）。
 
 ## 步驟
 1. **收需求**：從 `knowledge/` 抽業務規則，每條給一個穩定的 `req_id`（規則見 `references/traceability-mapping.md`）。
-2. **收測試**：掃測試檔，依對應規則（annotation / tag / 命名 / 對照檔）找出它宣告覆蓋哪些 `req_id`。
+2. **收測試**：掃測試檔，依對應規則（annotation / tag / 命名 / 對照檔）找出它宣告覆蓋哪些 `req_id`，並依檔案位置標 `level`（`config/product-context.md` 的 API testDir 底下＝`api`，其餘＝`ui`；判準見 `references/traceability-mapping.md`）。
 3. **收 finding / issue**：每筆 finding 與 issue 試著對到 `req_id`。
 4. **建對應**：產生三欄關係。對不確定的標 `uncertain`，**不猜**。
 5. **標 gap**：沒有任何測試或 finding 對到的需求 → gap。把 gap 整批交 `route-by-risk` 排序（先補高風險的洞）。
+5b. **標層級錯配**：需求講的是商業規則、驗證或權限，卻只有 `level: ui` 的測試在守 → 寫進 `level_mismatches`，建議降到 API 層（交 `api-test-author`，原本那批交 `test-prune` 評估）。**它的 `status` 仍然是 `covered`**：確實有東西在守，只是守在比較貴、比較脆的那一層。跟 gap 分開列，才不會讓「沒有安全網」跟「安全網放錯位置」混成同一個數字。
 6. **標孤兒**（雙向，見下表）。
-7. **輸出**：寫 `output/traceability.yaml`（先給人看）＋ 報告 gap 與孤兒。
+7. **輸出**：寫 `output/traceability.yaml`（先給人看）＋ 報告 gap、層級錯配與孤兒。
 
 ## 孤兒處置
 
@@ -31,6 +32,7 @@ description: 維護「需求 ↔ 測試 ↔ finding」的覆蓋對照，指出�
 | finding 孤兒 | finding 對不到任何需求 | 需求外的意外收穫。**這是好事**（探索本來就該找到規格沒寫的東西），建議補 `knowledge/` 或確認是否為隱性需求 |
 
 ## 鐵則
+- **層級錯配不是 gap，也不能無視。** 它的 `status` 留 `covered`，但要單獨列出來。把它併進 gap，會讓「完全沒守」的數字灌水；不列出來，套件會一路長成一堆慢又脆的 UI 測試在驗後端規則，而對照表看起來完全健康。
 - **不猜對應，不確定就標 `uncertain`。** 灌水的覆蓋率比沒有覆蓋率危險，它會讓人以為有安全網。
 - **不算單一覆蓋率數字。** 輸出的是對照表與 gap 清單。一個「覆蓋率 82%」會立刻變成 KPI，然後有人靠寫廢測試把它衝到 95%。
 - **測試孤兒不等於該刪。** 先問「是不是需求沒寫進 `knowledge/`」，再談 prune；順序反了會把有用的測試砍掉。
@@ -46,7 +48,8 @@ requirements:
     source: "knowledge/domains/checkout.md#折扣碼"
     statement: "過期折扣碼不得套用,並顯示明確錯誤"
     covered_by:
-      tests:    ["tests/checkout-coupon.spec.ts > rejects expired coupon"]
+      tests:
+        - { nodeid: "tests/api/checkout-coupon.spec.ts > rejects expired coupon", level: api }
       findings: ["F-2026-07-24-003"]
     status: covered            # covered | gap | uncertain
   - req_id: REQ-CHECKOUT-006
@@ -57,6 +60,9 @@ requirements:
     risk_score: 0.71           # 來自 route-by-risk
 gaps:
   - { req_id: REQ-CHECKOUT-006, risk_score: 0.71, suggestion: "交 test-planning 排進下輪" }
+level_mismatches:
+  - { req_id: REQ-CHECKOUT-009, covered_at: [ui], should_be: api, risk_score: 0.55,
+      suggestion: "折扣疊加規則只有 4 支 UI 測試在守;降到 API 層交 api-test-author,原本那批交 test-prune" }
 orphans:
   tests:
     - nodeid: "tests/legacy-promo.spec.ts > applies promo banner"

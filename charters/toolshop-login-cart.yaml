@@ -1,15 +1,36 @@
 # 探索憲章（exploration charter）
 # 由 exploration-charter 產生、供 explore 讀取的輸入。
 # 位置慣例：charters/<slug>.yaml（committed；evidence/ 才是每次跑的輸出、被 gitignore）
-# 加 tour 只需多一行，例如：tours: [data]（見 Day 16）
+# 加 tour 只需多一行，例如：tours: [data]（鏡頭清單見 references/tours.md）
 charter:
   goal: "在 Bug Hunting build（with-bugs.practicesoftwaretesting.com）獵一輪 bug，含註冊/付款/API/安全類（非破壞性）"
   target: "https://with-bugs.practicesoftwaretesting.com/#/?bug-hunting=true"
-  scope: [登入頁, 商品頁, 購物車, 註冊, 付款, 結帳表單, 個人資料, 聯絡表單, API 授權, 安全]
+  scope: [登入頁, 商品頁, 購物車, 註冊, 付款, 結帳表單, 個人資料, 聯絡表單]
+  tours: [authz]
+
+  # --- 端點側（介面層與 scope 不同，故分開；規則見 exploration-charter）---
+  api_base: "https://api-with-bugs.practicesoftwaretesting.com"
+  endpoints:
+    # 來源＝觀察（前幾輪 network 紀錄反推），非契約，**這份清單一定不完整**。
+    # 這個 demo 站沒有可用的 OpenAPI，所以契約 / schema oracle 停用（見 test-oracle）。
+    - "POST /users/login"
+    - "POST /users/register"
+    - "GET /users/me"
+    - "GET /users/{id}"
+    - "GET /products"
+    - "GET /invoices"
+  auth_context:
+    as: "env:TOOLSHOP_TEST_USER / env:TOOLSHOP_TEST_PASS 換得的 bearer token（顧客帳號 id=2）"
+    other: "runtime-registered — 探索時自行註冊的第二個測試帳號（sdet+<ts>@example.com），用來驗越權；不得使用 admin 帳號當 other"
+
   oracles:
     - "UI 顯示的結果要與 API 狀態碼一致"
     - "正常操作不應出現 console error"
     - "安全預期：不應能不用密碼登入、不應外洩密碼提示、鎖定閾值不應過低、輸入應被驗證"
+    # 端點側（API 專屬 oracle，清單見 test-oracle）
+    - "授權邊界：帶 A 帳號的 token 讀 B 的資源應回 403/404，不得回 200 帶個資；不帶憑證應回 401"
+    - "狀態碼語意：失敗不得回 200 包錯誤訊息，找不到資源應回 404 而非 500"
+    - "error envelope：同一組 API 的錯誤回應結構應一致"
   test_account: customer@practicesoftwaretesting.com
   max_steps: 40
 
@@ -25,4 +46,6 @@ charter:
       - "不得使用或嘗試取得 admin token"
       - "不得對非 with-bugs 的站台（正式站、其他網域）做任何安全測試"
       - "SQLi 僅止於單一登入繞過的存在性驗證，不得列舉資料、不得 UNION/dump、不得自動化打多筆"
-  out_of_bounds: [正式站寫入, 刪除共享資料, admin 權限, 資料庫 dump]
+      - "越權驗證只驗存在性：命中一次就停手記錄，不得逐一列舉 id 把他人資料撈成一份清單"
+      - "端點一律單發、手動節奏，不得寫迴圈連打（撞出 429 會把速率限制變成假的產品 bug）"
+  out_of_bounds: [正式站寫入, 刪除共享資料, admin 權限, 資料庫 dump, 端點自動化連打, 他人資料列舉]

@@ -17,8 +17,8 @@ description: 從 GitHub Actions run 拉失敗、artifact、annotation（用 gh�
 1. **摘要先行**：`gh run view <id> --json databaseId,headBranch,headSha,conclusion,createdAt,jobs`。得到哪些 job 紅、各自幾秒。**這步通常就夠回答「哪裡紅」**。
 2. **只拉失敗 log**：`gh run view <id> --log-failed`。**絕不 `--log`**（整包成功 log 動輒數萬行，燒 context 又沒資訊）。
 3. **取 annotation**：`gh api repos/{owner}/{repo}/actions/runs/{id}/jobs --jq '.jobs[].steps'`，撈 failure annotation 與 step 層級的錯誤。
-4. **需要才下載 artifact**：要逐筆 nodeid、要 trace 時才 `gh run download <id> -n test-results-json`（或 `-n traces`）。artifact 名照 `references/artifact-contract.md`。
-5. **解析成結構**：每筆失敗抽 `nodeid` / `file` / `error_signature`（錯誤訊息正規化：去掉行號、timestamp、UUID、隨機測資，留下可比對的骨架）/ `job` / `shard`。
+4. **需要才下載 artifact**：要逐筆 nodeid、要 trace 時才 `gh run download <id> -n test-results-json`（或 `-n traces`）。API job 的結果在 `api-test-results-json`、證據在 `api-evidence-<slug>`，兩個都要單獨拉。artifact 名照 `references/artifact-contract.md`。
+5. **解析成結構**：每筆失敗抽 `nodeid` / `file` / `error_signature`（錯誤訊息正規化：去掉行號、timestamp、UUID、隨機測資，留下可比對的骨架）/ `job` / `shard` / `level`（`api` 或 `ui`，由來源 artifact 決定）。下游要靠 `level` 才分得出「契約漂移」跟「定位器失效」是兩群，別讓它們合併成一個根因。
 6. **驗數**：`passed + failed + skipped == total`。不符就寫進 `warnings[]` 標 `count-mismatch`（判準與理由見 `references/artifact-contract.md` 的「靜默失蹤」）。
 7. **輸出**：交給呼叫者。失敗數 ≥ config 的 `triage.batch_threshold`（預設 5）就在輸出裡建議轉 `pipeline-triage`；1 筆就建議轉 `failure-analysis`。
 
@@ -50,6 +50,7 @@ failures:
   - nodeid: "checkout.spec.ts > applies coupon"
     file: "tests/checkout.spec.ts:42"
     job: "e2e (shard 3)"
+    level: ui
     error_signature: "locator([data-test=apply-coupon]) timeout at <line>"
     annotation: "Test timeout of 30000ms exceeded"
     artifacts: ["traces/checkout-applies-coupon/trace.zip"]

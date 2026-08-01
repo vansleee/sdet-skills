@@ -16,10 +16,10 @@ bash scripts/link-skills.sh      # 把 skill link 進 ~/.claude/skills
 ## Skill 目錄（依 bucket）
 
 **foundation/** setup-sdet(user) · product-context(ref)
-**observe/** evidence-package · structured-result · classify-anomaly
+**observe/** evidence-package · api-evidence · structured-result · classify-anomaly
 **explore/** exploration-charter(user) · explore · test-oracle
 **agents/** bug-hunter · bug-verifier · issue-quality-gate · triage · bug-fixer · duty-oncall(user)
-**maintain/**（顧好每一支測試） test-author(user) · test-design(ref) · test-data · failure-analysis · flaky-detect · test-heal · re-run-gate · test-prune
+**maintain/**（顧好每一支測試） test-author(user) · api-test-author(user) · test-design(ref) · test-data · failure-analysis · flaky-detect · test-heal · re-run-gate · test-prune
 **infra/**（顧好整條生產線） ci-pipeline · test-parallelize · test-env · pipeline-read · pipeline-triage · flaky-manager · quality-gate(user) · pipeline-observability · governance(config)
 **economics/** route-by-risk · sdet-economics(ref)
 **workflow/**（把 SDET 接進團隊/SDLC） test-planning · traceability · status-report · release-signoff(user)
@@ -36,11 +36,13 @@ bash scripts/link-skills.sh      # 把 skill link 進 ~/.claude/skills
 ## 其他
 - `config/` — 後端設定（CI / issue-tracker / product / governance），祕密走 env
 - `knowledge/` — 受測產品的事實（依規模：單檔 → domains/ 多檔 → RAG/MCP）
-- `references/` — test-design / tours / heuristics / confidence / bug-fingerprint / test-health-metrics / traceability-mapping 等參考文件（**演算法放這裡**）
+- `references/` — test-design / tours / heuristics / confidence / bug-fingerprint / test-health-metrics / traceability-mapping / config-resolution 等參考文件（**演算法放這裡**）
 - `state-templates/*.example.yaml` — 狀態檔範本（calibration / known-false-positives / issues-index / flaky-registry / pipeline-gate / traceability / signoff），複製到 repo 根成同名真檔使用
 - `docs/` — 每支 skill 的設計理念說明頁 + `state-files.md`（資料流）
 
 **「一筆 vs 一批」：** maintain/ 修一支測試，infra/ 顧整批 pipeline。
+
+**「畫面 vs 端點」：** 同一件事換一個介面層做，成對存在。留證 evidence-package／api-evidence，寫測試 test-author／api-test-author。判定與分析不分家：test-oracle 與 failure-analysis 各自多一張 API 專屬的表，不另開 skill。哪一層該測哪條規則見 `references/test-design.md` 第 0 節。
 
 ## 兩條迴圈
 

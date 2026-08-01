@@ -23,10 +23,10 @@
 | 資料夾           | 負責                    | 技能                                                                      |
 | ------------- | --------------------- | ----------------------------------------------------------------------- |
 | `foundation/` | 初始設定與產品背景知識           | setup-sdet、product-context(ref)                                         |
-| `observe/`    | 用來觀察測試產品與留下相關證據       | evidence-package、structured-result、classify-anomaly                     |
+| `observe/`    | 用來觀察測試產品與留下相關證據       | evidence-package、api-evidence、structured-result、classify-anomaly       |
 | `explore/`    | 自主探索產品                | exploration-charter、explore、test-oracle                                 |
 | `agents/`     | 能夠自行探索、驗證問題、並且開立票     | bug-hunter、bug-verifier、issue-quality-gate、triage、bug-fixer、duty-oncall |
-| `maintain/`   | 用來維護測試程式碼             | test-author、failure-analysis、test-heal、re-run-gate…                     |
+| `maintain/`   | 用來維護測試程式碼             | test-author、api-test-author、failure-analysis、test-heal、re-run-gate…    |
 | `infra/`      | 用來維護測試的 CI 與測試的 infra | ci-pipeline、pipeline-triage、flaky-manager、quality-gate…                 |
 | `economics/`  | 用來管理使用的 token         | route-by-risk、sdet-economics(ref)                                       |
 | `workflow/`   | 專案相關的流程               | test-planning、traceability、status-report、release-signoff                |
@@ -34,6 +34,14 @@
 
 
 `maintain/` 主要是維護測試程式碼的撰寫、執行、並且修復失敗的測試案例，`infra/` 則是針對 CI 上面的錯誤進行分析、執行 pipeline 和相關活動。
+
+## 介面層：畫面與端點
+
+同一個 bucket 裡有些 skill 是成對的，差別在被測的介面層：留證有 `evidence-package`（畫面）與 `api-evidence`（端點），寫測試有 `test-author` 與 `api-test-author`。成對的理由是**手段完全不同**：一邊靠 snapshot 與截圖，一邊靠請求與回應；一邊講定位器與 web-first assertion，一邊講 schema 斷言與狀態碼語意。硬合成一支，紀律就會退化成「看情況適用」。
+
+反過來，判定與分類**不成對**：`test-oracle` 與 `failure-analysis` 各自多一張 API 專屬的表就夠了，因為它們的流程一模一樣，只是判準多幾條。這條界線就是新增 skill 的門檻：**手段不同才開新的，判準不同只加一張表。**
+
+哪一條規則該在哪一層驗，判準在 `references/test-design.md` 第 0 節；覆蓋對照用 `level: api|ui` 記在 `output/traceability.yaml`。
 
 ## `knowledge/` — 依照規模的大小，分層產品知識
 
@@ -67,7 +75,7 @@ charters/<slug>.yaml     由人設定目標與邊界（可由 test-planning 產�
               └─> /gate.yaml     是否可以重現？移除重複的 Bug？
                     └─> GitHub Issue → PR（並需要由人決定是否能夠合併 PR）
         └─> /runs/<date>.yaml
-tests/*.spec.ts          使用 test-author 撰寫的測試程式碼，用來執行迴歸測試(Regression Testing)
+tests/*.spec.ts          使用 test-author（畫面）或 api-test-author（端點）撰寫的測試程式碼，用來執行迴歸測試(Regression Testing)
   └─> 使用 CI run 或是 Local 機器執行
 ```
 

@@ -23,5 +23,8 @@
       "WebFetch(domain:downloads.claude.ai)",
       "Bash(git status *)"
     ]
-  }
+  },
+  "disabledMcpjsonServers": [
+    "playwright"
+  ]
 }
