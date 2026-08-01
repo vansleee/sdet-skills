@@ -1,10 +1,10 @@
 # sdet-skills 架構
 
-這是一套**可以重複使用的 SDET 的技能包，**主要涵蓋（GitHub Actions · Playwright MCP/CLI · GitHub Issues）。它的核心設計原則：是讓 AI 能夠執行探索產品 Bug 和撰寫自動化測試的能力。
+這是一套**可以重複使用的 SDET 的技能包**，主要涵蓋（GitHub Actions · Playwright MCP/CLI · GitHub Issues）。它的核心設計原則：是讓 AI 能夠執行探索產品 Bug 和撰寫自動化測試的能力。
 
 ## 心智模型
 
-身為一個 SDET 的同事，除了擁有相關的技能以外，同時還需要知道產品的知識與專案流程，在這個 sdet-skilss 裡面，將其獨立分層並且能夠互相存取對方的知識。
+作為一個 QA/SDET 的同事，除了擁有相關的技能以外，同時還需要知道產品的知識與專案流程，在這個 sdet-skilss 裡面，將其獨立分層並且能夠互相存取對方的知識。
 
 
 | 名稱                | 說明             | 檔案位置               | 備註                                       |
@@ -67,11 +67,11 @@ charters/<slug>.yaml     由人設定目標與邊界（可由 test-planning 產�
               └─> /gate.yaml     是否可以重現？移除重複的 Bug？
                     └─> GitHub Issue → PR（並需要由人決定是否能夠合併 PR）
         └─> /runs/<date>.yaml
-tests/*.spec.ts          test-author 固化的回歸資產（留 repo 根、要 commit）
+tests/*.spec.ts          使用 test-author 撰寫的測試程式碼，用來執行迴歸測試(Regression Testing)
   └─> 使用 CI run 或是 Local 機器執行
 ```
 
 session 資料夾一輪一個，裝的是「這一輪的判斷」；跨輪累積的登錄簿（`output/issues-index.yaml`、`output/calibration.yaml`、`output/known-false-positives.yaml`、`output/flaky-registry.yaml`）留在 `output/` 根，切進單輪就失去去重與校準的能力。完整清單見 `docs/state-files.md`。
 
-> 需要跨 skill 的狀態檔規範可以參考 `docs/state-files.md`。`results.yaml`（總過會有各自的狀態）貫穿各自的 skill，每個地方都不可以自己新創狀態相關的詞彙。
+> 需要跨 skill 的狀態檔規範可以參考 `docs/state-files.md`。`results.yaml`（skill 會有各自的狀態）並貫穿其他 skill，記得不可以自己新創狀態相關的詞彙。
 
