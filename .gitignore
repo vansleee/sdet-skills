@@ -21,7 +21,8 @@ knowledge/**
 # 所有執行期產物與狀態檔都集中在 output/（2026-07-30 起），整個 gitignore。
 # 只 commit state-templates/ 下的 *.example.yaml 範本。真檔（evidence、verdicts、issues-index、
 # calibration、gate、runs、reports…）全留本地。
+# Playwright MCP 的 trace/snapshot 暫存也走 output/evidence/_traces/（見 README 的 MCP 設定）。
 /output/
 
-# Playwright MCP 探索留下的 trace/snapshot 暫存
+# 保險：舊版曾把產物落在 repo 根目錄，留著擋回頭路
 /evidence/
