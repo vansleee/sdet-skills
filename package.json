@@ -3,5 +3,14 @@
   "version": "0.1.0",
   "description": "Agentic SDET skills — GitHub Actions · Playwright (TS) · GitHub Issues",
   "private": true,
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "test": "playwright test --config tests/playwright.config.ts",
+    "test:clean": "SUT=clean playwright test --config tests/playwright.config.ts tests/e2e",
+    "test:with-bugs": "SUT=with-bugs playwright test --config tests/playwright.config.ts tests/e2e",
+    "test:flaky": "playwright test --config tests/playwright.config.ts tests/flaky --repeat-each=20"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.62.1"
+  }
 }

@@ -1,0 +1,96 @@
+# Playwright E2E —— maintain/ 與 infra/ 那批 skill 的實測來源。
+#
+# 這條 pipeline 刻意會紅：SUT=with-bugs 那一格跑的是植入 bug 的環境，
+# cart 兩支必定失敗。目的是產生一次「真的紅」的 run，讓 pipeline-read
+# 有東西可讀（gh run view --log-failed / gh run download）。
+#
+# 綠的那一格（SUT=clean）才是回歸基準：它紅了才代表真的有事。
+name: e2e
+
+on:
+  push:
+    branches: ['**']
+    paths:
+      - 'tests/**'
+      - 'package.json'
+      - '.github/workflows/e2e.yml'
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      repeat_flaky:
+        description: '額外跑 flaky 量測（重複次數，0 = 不跑）'
+        required: false
+        default: '0'
+
+concurrency:
+  group: e2e-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  e2e:
+    name: e2e (${{ matrix.sut }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        sut: [clean, with-bugs]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+
+      - name: Run e2e
+        env:
+          SUT: ${{ matrix.sut }}
+          TOOLSHOP_TEST_USER: ${{ secrets.TOOLSHOP_TEST_USER }}
+          TOOLSHOP_TEST_PASS: ${{ secrets.TOOLSHOP_TEST_PASS }}
+        run: npx playwright test --config tests/playwright.config.ts tests/e2e
+
+      # 失敗時才有 trace/video，但報告一律上傳，讓 pipeline-read 兩種情況都拿得到
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ matrix.sut }}
+          path: output/reports/playwright
+          retention-days: 7
+
+      - name: Upload failure artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-artifacts-${{ matrix.sut }}
+          path: output/runs/playwright-artifacts
+          retention-days: 7
+
+  flaky:
+    name: flaky rate
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.repeat_flaky != '0'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+
+      # 量重現率，不是判成敗，所以紅了也讓 job 繼續
+      - name: Measure flaky rate
+        continue-on-error: true
+        run: |
+          npx playwright test --config tests/playwright.config.ts tests/flaky \
+            --repeat-each=${{ github.event.inputs.repeat_flaky }} \
+            --reporter=line 2>&1 | tee flaky.log
+          echo '### flaky rate' >> "$GITHUB_STEP_SUMMARY"
+          grep -oE '[0-9]+ (failed|passed)' flaky.log >> "$GITHUB_STEP_SUMMARY" || true

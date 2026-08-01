@@ -34,7 +34,7 @@ bash scripts/link-skills.sh      # 把 skill link 進 ~/.claude/skills
 完整說明見 `architecture/sdet-skills-architecture.md`。
 
 ## 其他
-- `config/` — 後端設定（CI / issue-tracker / product / governance），祕密走 env
+- `config/` — 後端設定（CI / issue-tracker / product / governance / test-style），祕密走 env。`test-style.md` 是這個專案的測試碼風格，`test-author` / `api-test-author` / `test-heal` 動筆前讀它；機械性規則（縮排、引號、import 順序）交 eslint／prettier，不寫在這裡
 - `knowledge/` — 受測產品的事實（依規模：單檔 → domains/ 多檔 → RAG/MCP）
 - `references/` — test-design / tours / heuristics / confidence / bug-fingerprint / test-health-metrics / traceability-mapping / config-resolution 等參考文件（**演算法放這裡**）
 - `state-templates/*.example.yaml` — 狀態檔範本（calibration / known-false-positives / issues-index / flaky-registry / pipeline-gate / traceability / signoff），複製到 repo 根成同名真檔使用
