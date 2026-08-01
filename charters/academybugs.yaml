@@ -1,0 +1,87 @@
+# 探索憲章（exploration charter）
+# 由 /explore 依使用者指定目標 inline 產生。
+charter:
+  goal: "在 AcademyBugs 練習站獵 bug：站方宣稱植入 25 個，目標盡量把它們找出來並留證"
+  target: "https://academybugs.com/find-bugs/"
+  scope:
+    - 商品列表頁（排序、每頁筆數、結果數、卡片版型）
+    - 商品內頁（價格、庫存、選項、圖片、加入購物車）
+    - 購物車（數量、小計、稅、運費、移除、優惠碼）
+    - 結帳表單（欄位驗證、必填、格式）
+    - 帳號／登入／註冊表單驗證
+    - 搜尋
+    - 站內導覽、頁尾、404 路由
+    - RWD（375px）與 a11y（alt、焦點、標籤）
+    - console error 與失敗網路請求
+  oracles:
+    - "內部一致性：列表價格＝內頁價格；卡片標題＝內頁標題；結果數＝實際卡片數"
+    - "數學一致性：購物車小計＝Σ(單價×數量)；總計＝小計＋稅＋運費；折扣後價格＜原價"
+    - "控制項必須有效：排序／每頁筆數／數量欄位／移除鍵，操作後畫面要真的改變"
+    - "正常瀏覽不應出現 console error；站內資源不得回 4xx/5xx（第三方另計 environment）"
+    - "表單驗證：必填要擋、格式要擋（email／郵遞區號／信用卡），錯誤訊息要對得上欄位"
+    - "拼字與文案：商品名／按鈕／訊息不得拼錯或前後不一致"
+    - "RWD：375px 不得橫向捲動或內容被裁切"
+    - "a11y：圖片有 alt、互動元素可鍵盤操作、焦點可見"
+    - "使用者期待：連結不死鏈；圖片與商品相符；不得有佔位／範例資料外洩"
+  # 2026-08-01 校準後補：站方植入 25 支，探索兩輪獨立命中 17 支（0.68）。
+  # 漏掉的 8 支收斂成四個根因，逐條轉成本 charter 的具體判準。
+  # 通用版見 skills/explore/explore/SKILL.md 的「覆蓋鐵則」，來由見 docs/explore/explore.md。
+  coverage_rules:
+    - rule: "每條相對判準配一條絕對判準"
+      why: "18 張列表圖比對只抓到唯一離群那張，14 張一致地沒填滿容器的沒有訊號"
+      apply:
+        - "圖片：量 rendered height 是否等於容器 height，不是問它跟其他張一不一樣"
+        - "卡片：量每張卡的實際高度是否等於版型設定值"
+      caught: [F-021, F-031]
+
+    - rule: "靜態解析只用來選目標，不用來下結論"
+      why: "Twitter 分享鈕的 href 是正常的 twitter.com，事件處理器攔截後才改開拼錯網域"
+      apply:
+        - "分享列、manufacturer、麵包屑、頁尾：每一顆都要實際點過，看最終落地 URL 與 HTTP 狀態"
+        - "fetch + DOMParser 的批次比對只拿來圈候選，不得直接寫進 checked_and_ok"
+      caught: [F-028, F-030]
+
+    - rule: "通過條件寫到終態"
+      why: "「編輯表單可載入、可送出」被記成 OK，實際上送出後 loader 永遠轉、資料沒存"
+      apply:
+        - "任何表單送出後，等到成功訊息、錯誤訊息或逾時三者之一才記結果"
+        - "有 spinner 的區塊一律等滿 8 秒，仍在轉就判 fail，不判 OK"
+      caught: [F-033, F-024, F-025, F-012]
+
+    - rule: "控制項換頁重測，變因交叉配對"
+      why: "價格篩選只在列表頁驗過就結案；色票與數量各測各的，沒交叉"
+      apply:
+        - "側欄控制項（幣別／搜尋／Store Menu／Filter by Price／minicart／Your Account）在列表頁與商品頁各測一次"
+        - "組合配對表：色票 × 數量增減、色票 × 加入購物車、數量 × 超上限、登入狀態 × 帳號子頁"
+      caught: [F-029, F-035]
+
+    - rule: "把沒被畫面主動端出來的東西列進計畫"
+      why: "minicart 收合時 DOM 裡沒有商品標題；忘記密碼被隱含歸進「登入表單驗證」而整條沒走"
+      apply:
+        - "scope 列到 URL 層級，不能只寫功能區塊名稱"
+        - "收合／要點開才長 DOM 的元件單獨列一條（minicart、行動版選單、色票 tooltip）"
+      caught: [F-032, F-034]
+
+  # scope 的 URL 層級展開（補上原本被功能區塊名稱隱含涵蓋、實際沒走的路徑）
+  scope_urls:
+    - /account/?ec_page=forgot_password       # 2026-08-01 前兩輪未走，藏 F-034
+    - /account/?ec_page=change_password
+    - /account/?ec_page=shipping_information
+    - /account/?ec_page=billing_information   # 要等 Update 的終態，不是只確認表單可送出
+    - /store/all-items/?perpage=10            # 每頁筆數的實際結果，不只看選取狀態
+
+  max_steps: 60      # 40 不足以同時做完 18 商品的廣度與交叉配對的深度；本輪實測需 60
+
+  authorization:
+    allowed:
+      - "唯讀瀏覽與導覽、改路由、reload、resize viewport"
+      - "加入購物車、改數量、移除、套用優惠碼（本站即為此用途設計的練習站）"
+      - "填寫結帳／登入／註冊表單以測欄位驗證，使用明顯假資料"
+      - "讀 console／network／DOM"
+    forbidden:
+      - "不得送出真實付款或真實信用卡號"
+      - "不得使用真實個資（email 用 example.com 假址）"
+      - "不得掃描、壓測、爆破路徑、高頻打站"
+      - "不得送出 XSS／SQLi payload"
+      - "不得離開 academybugs.com 網域做互動"
+  out_of_bounds: [真實付款, 壓測, 弱點掃描, 注入測試, 真實個資, 其他網域的互動]
