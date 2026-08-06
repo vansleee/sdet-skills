@@ -33,3 +33,6 @@ knowledge/**
 
 # Claude Code 個人設定(不進版控;團隊共用的規則放 .claude/settings.json)
 .claude/settings.local.json*
+
+# Ulysses 外部資料夾的個人狀態，不進版控
+book/.Ulysses-*.plist
