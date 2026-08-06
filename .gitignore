@@ -36,3 +36,7 @@ knowledge/**
 
 # Ulysses 外部資料夾的個人狀態，不進版控
 book/.Ulysses-*.plist
+
+# Python 快取
+__pycache__/
+*.pyc
