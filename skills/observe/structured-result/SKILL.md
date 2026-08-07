@@ -15,9 +15,17 @@ description: 把測試/觀察結果表達成超越 Pass/Fail 的結構化狀態�
 | fail         | 確定不符預期 → 候選 bug               |
 | blocked      | 前置壞了、沒測到判斷點（非產品錯）             |
 | flaky        | 有時 pass 有時 fail（填 repro_rate） |
-| anomaly      | 範圍外／尚未判定的可疑現象（只描述）            |
+| anomaly      | 可疑但還不判定：範圍外，或範圍內但要有規格才判得動（只描述） |
 | inconclusive | 證據不足以判斷                       |
 
+
+## 三組界線（填錯最多的地方）
+
+| 分不清 | 判準 |
+| --- | --- |
+| blocked ／ inconclusive | **沒測到判斷點是 blocked；測到了但看不出來是 inconclusive。** |
+| fail ／ anomaly | **有明確預期可比對就是 fail；要先有規格才判得動就是 anomaly。** 例：數量填 `-5` 顯示負金額＝fail（本來就該擋）；填 `0` 導致總計沒重算＝anomaly（要看規格怎麼定義）|
+| flaky ／ 穩定壞掉 | **能穩定重現就是 fail，不是 flaky。** 時好時壞才是 flaky，且要重跑幾次量出 `repro_rate` 才填 |
 
 ## 每筆欄位
 
