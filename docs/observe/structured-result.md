@@ -1,27 +1,15 @@
 # Structured Result
-把測試/觀察的結果，從「Pass/Fail」二分擴充成六種狀態，每筆附證據。
+
+把測試到的觀察或觀察結果，從 pass 和 fail 的二分法，擴充成六種狀態，而且每一筆都需要附上證據。
 
 ## 設計理念
-- **「Fail」扛太多意思。** 環境掛、時好時壞、證據不足、真 bug 全塞進 Fail，等於沒說。
-- **拆開「非 Pass」才報得準。** blocked / inconclusive / anomaly / flaky 各自獨立。
-- **錯誤情境被正確擋下 = pass。** 狀態對應「符不符合預期」，不是「畫面上有沒有紅字」。
-- **承認不知道是專業。** 誠實的 blocked / inconclusive 比硬給一個不敢信的答案有用。
-- **False Positive 的第一道閘。** 只有 fail（及經分類確認的 anomaly）能往下開單。
 
-## 為什麼是六種
-**通過只有一種標準：行為符合預期。失敗卻有五種原因** —— 不符合預期（可能是缺陷）、前置沒設起來、結果不穩定、撞到非預期範圍、證據不足。全部塞進 `fail`，等於把五件事講成一件。
+- 因為測試案例失敗有非常多的意思：有時候可能是環境有問題，有時候可能是這個測試案例的結果時好時壞，那也有時候是證據上可能不足。
 
-六選一不是新發明的分類學，是把那五種各給一格。
-
-## 三組界線與它們的代價
-- **blocked ／ inconclusive** —— 沒測到判斷點是 blocked；測到了但看不出來是 inconclusive。實例：snapshot 只讀到「Reltded products」看似整塊不見，但 `GET /products/1` 回 `200`、全頁截圖證實畫面完整 —— 測到了，是工具的觀測時機早於渲染，填 inconclusive。帳號回 `423 Locked` 則是後面全部沒走到，填 blocked。
-- **fail ／ anomaly** —— 有明確預期可比對就是 fail；要先有規格才判得動就是 anomaly。實例：購物車數量填 `-5` 顯示負金額，本來就該擋，填 fail；填 `0` 導致單列歸零而總計沒重算，算不算錯要看規格，填 anomaly。**anomaly 讓探索不被帶偏** —— 看到怪東西可以記下來繼續走，不必當場定罪。
-- **flaky ／ 穩定壞掉** —— 能穩定重現就是 fail。填了 flaky 就會被當成重試可以蓋掉的東西，這也是本專案 `retries: 0` 的理由。要真的量重現率，交 `flaky-detect`。
-
-## 一個現象可以是兩筆
-帳號被鎖：「擋得對」是 pass，「因此測不到的檢查點」是 blocked。混成一筆就會丟掉其中一半的資訊。
-
-## 觀念源頭
-James Bach 與 Jon Bach 的 Session-Based Test Management（2000）：一輪測試結束要交 session sheet，交代涵蓋範圍、發現的問題與時間分配。`results.yaml` 是同一件事換成機器讀得懂的形狀 —— session sheet 寫給經理看，`results.yaml` 寫給下一支 skill 吃。
+  如果我們把真的 bug 和這些測試全部都放在 fail 裡面的話，等於我們沒辦法分清楚哪些是真的 bug，哪些是因為其他原因所導致 fail。
+- 我們必須要把非 pass 的狀態再細切分為 blocked、inconclusive、abnormal 或是 flaky，這樣我們才可以更精確地判斷這些失敗的測試案例。
+- 如果今天非預期的情境被測試案例擋下來，這樣的情況我們會視為是 PASS。我們會去對應說它符不符合預期，而不是單看 console 上面有沒有錯誤，就判斷它是 FAIL。
+- 有的是，我們必須要承認我們不知道，所以誠實的 blocked 或是 inconclusive，比假想或是推理出一個自己懷疑的答案會更有用。
+- 通常 False Positive 是第一道閘門，只有 fail 或是經過我們分類確定的 anomaly，我們才可以繼續往下一步，例如說：為這個問題開一張單子。
 
 搭配 `evidence-package`；是 `classify-anomaly`、`test-oracle`、`bug-verifier` 的共同詞彙。
