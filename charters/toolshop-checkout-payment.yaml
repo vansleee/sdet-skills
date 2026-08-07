@@ -1,0 +1,24 @@
+# 探索憲章（exploration charter）
+# 由 exploration-charter 產生、供 explore 讀取的輸入。
+# 位置慣例：charters/<slug>.yaml（committed；output/evidence/ 才是每次跑的輸出、被 gitignore）
+charter:
+  goal: "在 with-bugs build 走完 Toolshop 的結帳流程，找付款與金額計算相關的 bug"
+  target: "https://with-bugs.practicesoftwaretesting.com/#/?bug-hunting=true"
+  scope: [商品頁, 購物車, 結帳表單, 配送資訊, 付款方式, 訂單確認頁]
+
+  oracles:
+    - "金額內部一致：單價 × 數量 = 小計，小計 + 運費 − 折扣 = 應付總額，購物車與結帳頁與確認頁三處數字要一致"
+    - "付款失敗時要有明確錯誤訊息，而且不得建立訂單；成功才有訂單編號"
+    - "UI 顯示的結果要與 API 狀態碼一致"
+    - "正常操作不應出現 console error"
+
+  out_of_bounds:
+    - "不得對正式站 practicesoftwaretesting.com 做任何操作，只打 with-bugs 這個 build"
+    - "不得修改或刪除既有他人資料，只能動自己這輪建立的購物車與訂單"
+    - "不得使用或嘗試取得 admin 權限"
+    - "不得做安全類測試（SQLi、越權列舉）—— 這輪的目標是金額與付款邏輯"
+    - "不得寫迴圈連打端點"
+    - "不得對外部金流服務送出真實請求"
+
+  test_account: customer@practicesoftwaretesting.com   # 帳密走 env:TOOLSHOP_TEST_USER / env:TOOLSHOP_TEST_PASS
+  max_steps: 25
