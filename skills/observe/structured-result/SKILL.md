@@ -38,6 +38,8 @@ description: 把測試/觀察結果表達成超越 Pass/Fail 的結構化狀態�
 - anomaly 只描述、不判定是否為 bug。
 - 只有 fail（及經分類確認的 anomaly）可往下開單；blocked / inconclusive 不得直接開 Issue。
 - 寫 results.yaml 前，先讀過本次 evidence 包裡所有原始檔（console.log / network.log 等）。每一則 error / warning 至少要對應一筆 result；判斷為預期行為也要留一筆 pass 或 anomaly 交代理由，不能只寫進 notes.md 就整批省略。
+- **UI 全綠但 console 有紅字**：與受測行為無關 → `pass`（留一筆交代理由）；與受測行為有關 → `anomaly` 並寫明關聯。不得因為畫面沒問題就整批忽略。
+- **同一個現象可以拆成兩筆。** 例：帳號被鎖，「擋得對」是 pass、「因此測不到的檢查點」是 blocked。不要混成一筆。
 
 ## 範例
 
