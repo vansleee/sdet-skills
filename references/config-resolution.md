@@ -1,6 +1,6 @@
 # Config 解析規則（多專案）
 
-同一個 repo 可以同時養多個常態受測產品。這份定義「要讀哪一組 `config/`」的唯一判準，所有需要讀 config 的 skill 一律照這條走，不各自寫一套路徑邏輯。設定怎麼產生見 `setup-sdet`。
+可以同時支援多個待測試的產品，而這份定義主要是用來判斷要讀取哪一組 config。所有需要讀取的 config 的 skill 都需要 follow 這條規則，不能各自撰寫另外一套路徑的邏輯。相關設定怎麼產生可以參考 setup-sdet。
 
 ## 解析
 
@@ -14,7 +14,7 @@
 
 ## 鐵則
 
-- **解析失敗就停手，不准回退。** charter 寫了 `project: shopnow` 但 `config/shopnow/product-context.md` 不存在時，回報「專案 shopnow 的設定不存在，請先跑 `setup-sdet`」，**不得改讀扁平的 `config/product-context.md`**。回退的後果是拿 A 產品的 base URL 與帳號去打 B 產品，證據全錯而且看起來很正常。
+- 當某個解析失敗的話，就終止目前的動作，不能去讀取別組 config。charter 寫了 `project: shopnow` 但 `config/shopnow/product-context.md` 不存在時，回報「專案 shopnow 的設定不存在，請先跑 `setup-sdet`」，**不得改讀扁平的 `config/product-context.md`**。回退的後果是拿 A 產品的 base URL 與帳號去打 B 產品，證據全錯而且看起來很正常。
 - **第一次讀就覆誦。** 讀到某個專案的 `product-context.md` 後，在輸出裡覆誦一次讀回的 base URL 與 slug。覆誦不出來代表讀錯專案或路徑寫錯，當場攔下。
 - **slug 兩邊一致。** `config/<project>/` 與 `knowledge/<project>/` 用同一個 slug，不另外維護對照表。`knowledge/` 由人工維護。
 - **往下傳，不重解析。** 一條鏈上（`explore` → `evidence-package` / `api-evidence` / `test-oracle`）由最上游解析一次，把 slug 傳給下游；下游拿到就用，拿不到才自己照上面第 1 步解析。
