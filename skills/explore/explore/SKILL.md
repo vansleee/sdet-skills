@@ -1,6 +1,7 @@
 ---
 name: explore
-description: 依一份 Exploration Charter 自主探索產品：觀察現況、自己決定下一步、記住走過的路、順手留證，產出候選 findings。當要「自主探索」「給方向自己測」「不寫逐步腳本地探索某流程」時使用。關鍵詞：探索、自主、charter、exploration、找問題。
+description: 依照一份 Exploration Charter 自主探索產品：觀察現況、自己決定下一步、記住走過的路、並且留下證據，產生候選 findings。當需要「自主探索」「給方向自己測」「不用寫腳本逐步地探索某流程」時使用。
+  關鍵詞：探索、自主、charter、exploration、找問題。
 ---
 
 # Explore (v0.1)
@@ -56,11 +57,14 @@ description: 依一份 Exploration Charter 自主探索產品：觀察現況、�
 - **端點不會自己現身。** 畫面沒呼叫過的端點（舊版本遺留、只給行動端用、只給管理端用）不會出現在 network 紀錄裡，卻常常是授權最鬆的一批。有契約就照契約列，沒契約就在 log 寫明清單來源是觀察、涵蓋不完整，不准拿「畫面打過的都試了」當走完。
 
 ## 輸出（路徑固定，全部落在 `output/` 底下）
+
+```
     output/sessions/<YYYY-MM-DD>_<slug>/
     ├── exploration-log.yaml               # 這次走過的路徑（供續跑與人審）；開頭記 project slug 與解析到的 config 路徑
     └── findings/F-NNN-<slug>.yaml         # 一筆一檔，候選發現
 
     output/evidence/<YYYYMMDD>-<slug>/     # 截圖 / console / network，由 evidence-package 建
+```
 
 - `findings`：每筆附證據、狀態＝fail/anomaly、待確認理由 → 交 `structured-result` / `classify-anomaly`。
 - 不得寫在 repo 根目錄（`findings/`、`evidence/` 都不行）；完整檔案地圖見 `docs/state-files.md`。
