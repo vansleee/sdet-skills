@@ -12,7 +12,8 @@ charter:
   api_base: "https://api-with-bugs.practicesoftwaretesting.com"
   endpoints:
     # 來源＝觀察（前幾輪 network 紀錄反推），非契約，**這份清單一定不完整**。
-    # 這個 demo 站沒有可用的 OpenAPI，所以契約 / schema oracle 停用（見 test-oracle）。
+    # 更正（2026-08-08）：這站其實有 OpenAPI 契約 https://api-with-bugs.practicesoftwaretesting.com/docs?api-docs.json，
+    # 契約 / schema oracle 可用（見 config/product-context.md 的「API」段與 charters/toolshop-api-oracles.yaml）。
     - "POST /users/login"
     - "POST /users/register"
     - "GET /users/me"

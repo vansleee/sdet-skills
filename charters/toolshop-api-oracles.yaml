@@ -1,0 +1,55 @@
+# 探索憲章（exploration charter）
+# 由 exploration-charter 產生、供 explore 讀取的輸入。
+# 這一份專打端點側：目的是把 test-oracle 的 API 專屬 oracle 逐條實跑一次。
+# 不填 project → 照 references/config-resolution.md 讀扁平的 config/product-context.md（預設專案＝Toolshop）。
+charter:
+  goal: "只走端點、不經畫面，把 test-oracle 的 API 專屬 oracle 逐條實跑：狀態碼語意、error envelope、冪等重放、分頁排序、授權邊界、契約 schema、header 與 content-type"
+  target: "https://api-with-bugs.practicesoftwaretesting.com"
+  scope: [端點側探索]
+
+  api_base: "https://api-with-bugs.practicesoftwaretesting.com"
+  contract: "https://api-with-bugs.practicesoftwaretesting.com/docs?api-docs.json"   # OpenAPI 3.0，Toolshop API 5.0.0，41 條 path
+  endpoints:
+    # 來源＝契約（非觀察反推）。這一輪只列讀取類與登入，寫入類一律不打。
+    - "POST /users/login"
+    - "GET /users/me"
+    - "GET /users/{userId}"
+    - "GET /users"
+    - "GET /products"
+    - "GET /products/{productId}"
+    - "GET /products/search"
+    - "GET /brands"
+    - "GET /brands/{brandId}"
+    - "GET /categories"
+    - "GET /categories/tree"
+    - "GET /invoices"
+    - "GET /favorites"
+    - "GET /messages"
+    - "GET /reports/total-sales-per-country"
+  auth_context:
+    as: "env:TOOLSHOP_TEST_USER / env:TOOLSHOP_TEST_PASS 換得的 bearer token（顧客帳號）"
+    other: "不註冊第二個帳號。越權改用『拿自己的 token 去讀別人的 userId』與『整個不帶憑證』兩種驗法，都是讀取，不留資料"
+
+  oracles:
+    # 端點側（清單見 test-oracle 的「API 專屬 oracle」）
+    - "狀態碼語意：失敗不得回 200 包錯誤訊息，找不到資源應回 404 而非 500；成功不得回 4xx"
+    - "error envelope 一致：同一組 API 的錯誤回應結構在不同端點應長得一樣"
+    - "冪等 / 重放：GET 重打兩次結果應相同"
+    - "分頁 / 排序一致：逐頁取回的總數與內容應與 meta 宣告的 total 相符，不得重複或漏項"
+    - "授權邊界：帶 A 帳號的 token 讀 B 的資源應回 403/404，不得回 200 帶個資；不帶憑證應回 401"
+    - "契約 / schema 符合：response 與 OpenAPI 3.0 契約相符，不缺必填欄位、不多回不該回的欄位（例如密碼雜湊）"
+    - "header 與 content-type：宣告的 Content-Type 要與實際 body 相符"
+    # 跨介面
+    - "內部一致性：同一份資料在不同端點取得時應一致"
+
+  out_of_bounds:
+    - "不得對正式站 api.practicesoftwaretesting.com 做任何操作，只打 with-bugs 這個 build"
+    - "不得送出任何寫入請求（POST / PUT / PATCH / DELETE），本輪唯一的例外是 POST /users/login"
+    - "不得打 config/product-context.md 列為『不得碰』的端點"
+    - "不得註冊新帳號、不得改動任何既有資料"
+    - "不得寫迴圈連打端點；單發、手動節奏"
+    - "越權只驗存在性：命中一次就停手記錄，不得逐一列舉 id 把他人資料撈成清單"
+    - "不得做破壞性安全測試（SQLi、資料 dump、UNION）"
+
+  test_account: customer@practicesoftwaretesting.com
+  max_steps: 25
