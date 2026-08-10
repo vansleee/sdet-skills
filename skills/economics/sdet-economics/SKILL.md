@@ -28,7 +28,7 @@ description: 成本紀律 reference：省 token、重用 context、模型分級�
 - 沒有 `sdet-config.yaml` 或欄位缺漏時，用保守預設（寧可提早停、事後被問「怎麼停這麼快」，不要燒穿預算才發現）。
 
 ## ROI：一個確認 bug 花多少成本
-從各輪的 `output/sessions/**/runs/*.yaml`（`duty-oncall` 寫）取 `tokens` / `duration` / `findings` / `confirmed`（見 `docs/state-files.md`），算：
+**token 與成本讀 `output/token-ledger/`（hook 自動記，見 `docs/state-files.md`），不要拿模型自己報的數字。** `rollup.yaml` 有依 skill 與依動作（hunt / verify / rerun / file / fix）的 `cost_usd` 與 token；`<session_id>.yaml` 有逐次呼叫的明細。`findings` / `confirmed` / `duration` 仍從各輪的 `output/sessions/**/runs/*.yaml`（`duty-oncall` 寫）取，算：
 
 ```
 cost_per_confirmed_bug = Σ tokens(該輪所有 run) ÷ Σ confirmed(該輪所有 run)

@@ -15,16 +15,27 @@ disable-model-invocation: true
 - `config/governance.yaml`、`config/sdet-config.yaml`（預算與門檻）、charter 檔可讀。
 - `gh auth status` 已登入（triage / fixer 會用到）。
 
+## 記帳打點（每一站開始前先打，這是逐階段成本的唯一依據）
+
+進站前先跑一次：
+
+```bash
+python3 scripts/token-ledger.py --mark --run <date>_<slug> --stage <setup|hunt|verify|gate|dispatch|wrapup>
+```
+
+`--run` 用 charter 的 `<date>_<slug>`，跟 `output/sessions/<date>_<slug>/` 用同一個名字。**第 0 步就打 `--stage setup`**，比前置檢查還早 —— 打點之前的花費歸不進這輪。它不做事，就是在 transcript 留一個邊界給 `scripts/token-ledger.py` 讀；沒打點就只切得到 skill，回到編排者寫記帳與摘要那段會被誤算進最後一個 sub-skill。
+
 ## 執行順序（逐站接力，站與站之間交的是檔案，不是對話記憶）
 
-1. **獵** — `bug-hunter` 依 charter 跑一輪（四道守門在它體內），交回候選清單。
-2. **驗** — 每個候選交 `bug-verifier` 獨立重現，得 `output/sessions/<date>_<slug>/verdicts/`。
-3. **把關** — 全數過 `issue-quality-gate`，得 `output/sessions/<date>_<slug>/gate.yaml`（pass / hold / block）。
-4. **分派** — 只動 pass 的：
+0. **開班** — 打點 `--stage setup`，再做前置檢查。
+1. **獵** — 打點 `--stage hunt`，`bug-hunter` 依 charter 跑一輪（四道守門在它體內），交回候選清單。
+2. **驗** — 打點 `--stage verify`，每個候選交 `bug-verifier` 獨立重現，得 `output/sessions/<date>_<slug>/verdicts/`。
+3. **把關** — 打點 `--stage gate`，全數過 `issue-quality-gate`，得 `output/sessions/<date>_<slug>/gate.yaml`（pass / hold / block）。
+4. **分派** — 打點 `--stage dispatch`，只動 pass 的：
    - 一律交 `triage` 開單（開單前確認規則依 triage 自己的鐵則）。
    - **範圍清楚、可修**的再交 `bug-fixer` 開 PR（標 ready-for-review，**不 merge**）。
    - hold → 人工佇列；block → 待規格／待人判。**不替人拍板。**
-5. **記帳** — 寫 `output/sessions/<date>_<slug>/runs/<date>.yaml`（格式見下）。**當下埋、不能事後補**：今天不記 tokens 與 gate_passed，之後就算不出 ROI 與校準。
+5. **記帳** — 打點 `--stage wrapup`，再跑 `python3 scripts/token-ledger.py --report <date>_<slug>` 取逐階段花費與總額，填進 `output/sessions/<date>_<slug>/runs/<date>.yaml`（格式見下）。**當下埋、不能事後補**：今天不記 gate_passed，之後就算不出 ROI 與校準。token 數一律取 ledger，**不要自己估**。
 6. **留摘要** — 一份五分鐘能複核完的值班摘要（開了什麼、待判什麼、花了多少、forbidden 動作幾次）。
 
 ## 輸出
@@ -32,7 +43,10 @@ disable-model-invocation: true
 # output/sessions/<date>_<slug>/runs/<date>.yaml
 date: <date>
 charter: charters/<slug>.yaml
-tokens: { input: <n>, output: <n> }
+ledger_run: <date>_<slug>     # 對到 output/token-ledger 的 by_run，逐階段明細在那裡
+tokens: { input: <n>, output: <n>, cache_write: <n>, cache_read: <n> }
+cost_usd: <n>                 # 這輪總額，取自 --report
+cost_by_stage_usd: { setup: <n>, hunt: <n>, verify: <n>, gate: <n>, dispatch: <n>, wrapup: <n> }
 duration_min: <n>
 model_mix: { hunt: <model>, verify: <model> }
 findings: <n>                # hunter 候選數
@@ -54,4 +68,5 @@ confirmed_by_human: null     # 待回填
 ## 驗收（跑完自己對一次）
 - 每一道門都有生效嗎（誤報擋了、重複併了、needs-spec 沒硬開、PR 沒被 merge）？
 - `output/sessions/<date>_<slug>/runs/<date>.yaml` 是**當下**寫的、量都在嗎？
+- 六個階段的打點都打了嗎（`--report <date>_<slug>` 六段齊全，沒有東西掉進 `_unassigned`）？
 - hold / block 的都進了看得到的佇列嗎？

@@ -10,7 +10,7 @@
 | findings/F-*.yaml | explore | 候選發現（含 oracle 判定） |
 | verdicts/V-*.yaml | bug-verifier | 獨立重現 + confidence |
 | gate.yaml | issue-quality-gate | **一張 issue** 能不能開的閘門結果 |
-| runs/<date>.yaml | duty-oncall | 一次值班的計量（tokens/duration/model/findings/gate/issues/confirmed）→ ROI |
+| runs/<date>.yaml | duty-oncall | 一次值班的計量（tokens/cost_usd/cost_by_stage_usd/duration/model/findings/gate/issues/confirmed）→ ROI。token 與成本取自 `output/token-ledger`，靠 `ledger_run` 欄位對回逐階段明細 |
 | runs/reruns-<date>.yaml | re-run-gate | 逐支測試的重跑紀錄（次數/逐次結果/裁決）→ flaky 趨勢 |
 
 ## 跨輪累積：`output/` 根目錄
@@ -28,6 +28,8 @@
 | output/triage-reports/<date>_<run>.md | pipeline-triage | 一片紅的根因群 → owner → issue 對照報告 |
 | output/reports/health-<date>.md | pipeline-observability | 測試健康指標、趨勢與行動路由 |
 | output/reports/status-<date>.md | status-report | standup / 測試報告 / release-readiness 摘要 |
+| output/token-ledger/<session_id>.yaml | `scripts/token-ledger.py`（Stop / SessionEnd hook 自動寫） | 單一 session 逐次 skill 呼叫的 token 與成本：`calls[]`（run / stage / skill / action / models / input / output / cache_write_5m / cache_write_1h / cache_read / cost_usd）＋ `by_run`（逐次 run 的逐階段成本，靠編排者打的 mark 分段）/ `by_skill` / `by_action` / `total` |
+| output/token-ledger/rollup.yaml | 同上，每次寫入後重算 | 跨 session 累積：依 skill 與依動作（hunt / verify / rerun / file / fix …）的呼叫次數、token、美金成本 → 餵 `sdet-economics` 的 ROI |
 | output/evidence/<YYYYMMDD>-<slug>/ | evidence-package、api-evidence | 畫面側：截圖 / console / network / trace；API 側：requests.jsonl / repro.sh / raw/。兩者共用同一夾，manifest 只寫一份 |
 
 ## 不在 output/ 底下

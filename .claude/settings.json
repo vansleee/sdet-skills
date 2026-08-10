@@ -1,5 +1,29 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/scripts/token-ledger.py\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/scripts/token-ledger.py\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  },
   "permissions": {
     "deny": [
       "Bash(rm -rf *)",
