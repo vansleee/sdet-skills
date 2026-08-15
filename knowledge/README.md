@@ -3,7 +3,7 @@
 skill 是「能力」（怎麼做，產品無關、可重用）；這個資料夾是「事實」（產品是什麼，產品專屬）。**skill 讀這裡，但不把產品知識寫死進 skill**。這樣同一套 skill 換個產品，只要換掉這個資料夾。
 
 ## 為什麼獨立成一塊
-- **保持 skill 可重用**：產品知識天生產品專屬，混進 skill 就不能 reuse。
+- **保持 skill 可重用**：產品知識天生是產品專屬，混進 skill 就不能 reuse。
 - **餵給「規格 oracle」**：`explore/test-oracle` 判「對不對」時，很多情境只有規格說得準。像購物 demo 可以靠「內部一致性 / API↔UI」這種**不需外部規格**的 oracle；但公司自己的產品，這裡就是**規格 oracle 的判準來源**。
 - **single source of truth**：一處維護，所有 skill 共用。
 
