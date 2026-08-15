@@ -73,7 +73,7 @@
 - **status-report**：standup / 測試報告 / release-readiness 摘要
 - **release-signoff**：檢查是否這次 release 能不能通過驗收標準
 
-總共會有三個閘門，每個閘門都需要獨立通過：`issue-quality-gate`（單張 issue）&lt; `infra/quality-gate`（pipeline 放行）&lt; `workflow/release-signoff`（整個 release 對需求/風險驗收）。
+總共會有三個閘門，每個閘門都需要獨立通過：`issue-quality-gate`（單張 issue）< `infra/quality-gate`（pipeline 放行）< `workflow/release-signoff`（整個 release 對需求/風險驗收）。
 
 ## 資料流
 
