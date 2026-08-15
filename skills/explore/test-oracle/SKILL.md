@@ -13,7 +13,7 @@ description: 判斷一個 anomaly 到底是不是 bug：拿產品行為比對 or
 | 內部一致性 | 產品自相矛盾（同一數字兩個值、狀態前後不一）| 否（最強，優先用）|
 | API ↔ UI 一致 | 畫面結果與 API 狀態碼不符 | 否 |
 | 無 console error | 正常操作不該噴 error | 否 |
-| 規格 / 需求 | 與文件、驗收條件不符 | 是（要有 spec）|
+| 規格 / 需求 | 與文件、驗收條件不符 | 是（讀 `knowledge/` 的業務規則，路徑同 `references/config-resolution.md` 的 slug 規則）|
 | 使用者期待 / 領域常識 | 違反常理（金額為負、數量非整數）| 弱（易主觀，需標明）|
 | 對照品 / 歷史行為 | 與同類產品或過去版本不同 | 是 |
 
@@ -34,14 +34,16 @@ description: 判斷一個 anomaly 到底是不是 bug：拿產品行為比對 or
 1. 讀該 anomaly 的證據（screenshot / network / console，或 `api-evidence` 的 `requests.jsonl`）。
 2. 由強到弱試 oracle：先找「不需外部資訊」的（內部一致性、API↔UI、console；API 情境再加狀態碼語意、error envelope、冪等、授權邊界）。
 3. 命中 → `verdict: bug`，寫下 `oracle_used` + `basis`（違反了什麼、指向證據）。
-4. 都不命中、要有規格才判得動 → `verdict: needs-spec`（寫「缺哪份規格 / 該問誰」）。
-5. 證據不足以套任何 oracle → `verdict: inconclusive`（寫還缺什麼證據）。
+4. 免費 oracle 全不命中 → 讀 `knowledge/` 的業務規則再判一次；命中就寫 `oracle_used: 規格`，`basis` 要引到是哪一條（檔名＋規則原文）。
+5. 連 `knowledge/` 也判不動 → `verdict: needs-spec`（寫「缺哪份規格 / 該問誰」，並建議補進 `knowledge/`）。
+6. 證據不足以套任何 oracle → `verdict: inconclusive`（寫還缺什麼證據）。
 
 ## 規則
 - **沒有 oracle 命中，不得判 bug。** 只能 `needs-spec` / `inconclusive`。
 - 「不需外部規格」的 oracle（內部一致性、API↔UI、console）優先。它們最不會吵、最站得住。
 - 使用者期待類 oracle 主觀；用了要明講「這是常識判斷、非規格」。
 - **契約來源填「無」時，契約 oracle 直接不可用**，不准拿「我覺得這個欄位應該要有」當 schema 判準；降級去用狀態碼語意與一致性，判不動就 `needs-spec`。
+- **規格 oracle 只認 `knowledge/` 寫著的句子。** `knowledge/` 不存在或沒有相關規則，這條 oracle 不可用，不准拿「我覺得應該要」補位；判不動就 `needs-spec` 並建議補 `knowledge/`。
 - **`4xx` 本身不是 bug。** 打錯參數換來 `400`、沒帶 token 換來 `401`，那是產品做對了。要判 bug 的是「該擋沒擋」與「該過卻擋」。
 - **`429` 先當環境訊號，不當產品 bug**：對照 `product-context.md` 記的速率限制，超過就是自己打太快，交 `classify-anomaly` 標 `environment`。
 - verdict 寫回 finding：`verdict` / `oracle_used` / `basis`。判 bug 者才續走 `bug-verifier` / 開單。
@@ -58,6 +60,12 @@ description: 判斷一個 anomaly 到底是不是 bug：拿產品行為比對 or
   verdict: needs-spec
   oracle_used: —
   basis: "空車時 navbar 無 cart icon;無內部矛盾、無 API/console 違反,是否刻意設計需產品規格"
+- id: R-11
+  status: anomaly
+  verdict: bug
+  oracle_used: 規格
+  basis: "數量填 150 被接受並寫回(PUT 回 200,quantity=150);
+          knowledge/product-overview.md「業務規則」:數量為 1–99 的整數,超出範圍應擋下。屬該擋沒擋"
 - id: A-03
   status: anomaly
   verdict: bug
