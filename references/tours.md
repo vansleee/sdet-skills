@@ -1,6 +1,6 @@
 # 探索 Tours（reference，被 exploration-charter / explore 讀）
 
-Tour = 探索的「鏡頭」：給 agent 一個角度，不是一串步驟。憲章可引用 `tours: [data, error]`，explore 照鏡頭系統性地挖。
+Tour = 探索的「鏡頭」：給 agent 一個角度，不是一串步驟。章程可引用 `tours: [data, error]`，explore 照鏡頭系統性地挖。
 
 | tour | 意圖 | 在購物車情境的例子 |
 |---|---|---|

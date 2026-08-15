@@ -1,4 +1,4 @@
-# 探索憲章（exploration charter）
+# 探索章程（exploration charter）
 # 由 exploration-charter 產生、供 explore 讀取的輸入。
 # 這一份專打端點側：目的是把 test-oracle 的 API 專屬 oracle 逐條實跑一次。
 # 不填 project → 照 references/config-resolution.md 讀扁平的 config/product-context.md（預設專案＝Toolshop）。

@@ -1,4 +1,4 @@
-# 探索憲章（exploration charter）
+# 探索章程（exploration charter）
 # 由 /explore 依使用者指定目標 inline 產生。
 charter:
   goal: "在 debbie.codes 個人網站獵一輪 bug：導覽與路由、文章列表與內頁、搜尋、主題切換、RWD、a11y 與 console/network 健康度"

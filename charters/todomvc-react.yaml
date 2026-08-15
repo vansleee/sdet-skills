@@ -1,4 +1,4 @@
-# 探索憲章（exploration charter）
+# 探索章程（exploration charter）
 # 由 exploration-charter 產生、供 explore 讀取的輸入。
 charter:
   goal: "在 TodoMVC React 官方 demo 獵一輪 bug：新增／編輯／完成／filter／localStorage 持久化／鍵盤與邊界輸入"

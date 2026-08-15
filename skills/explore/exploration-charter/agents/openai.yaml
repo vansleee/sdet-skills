@@ -1,5 +1,5 @@
 interface:
   display_name: "Exploration Charter"
-  short_description: "把目標或 test case 轉成探索憲章：範圍、oracle、風險區、邊界。"
+  short_description: "把目標或 test case 轉成探索章程：範圍、oracle、風險區、邊界。"
 policy:
   allow_implicit_invocation: false

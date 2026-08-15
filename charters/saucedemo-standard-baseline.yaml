@@ -1,4 +1,4 @@
-# 探索憲章（exploration charter）
+# 探索章程（exploration charter）
 # 由 exploration-charter 產生、供 explore 讀取的輸入。
 # 位置慣例：charters/<slug>.yaml（committed；output/ 才是每次跑的輸出、被 gitignore）
 # project 欄位的解析規則見 references/config-resolution.md

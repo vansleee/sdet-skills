@@ -1,4 +1,4 @@
-# 探索憲章（exploration charter）
+# 探索章程（exploration charter）
 # 由 exploration-charter 產生、供 explore 讀取的輸入。
 # 位置慣例：charters/<slug>.yaml（committed；evidence/ 才是每次跑的輸出、被 gitignore）
 # 加 tour 只需多一行，例如：tours: [data]（鏡頭清單見 references/tours.md）

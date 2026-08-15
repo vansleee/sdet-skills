@@ -1,4 +1,4 @@
-# 探索憲章（exploration charter）
+# 探索章程（exploration charter）
 # 由 /explore 依使用者指定目標 inline 產生。
 charter:
   goal: "在 AcademyBugs 練習站獵 bug：站方宣稱植入 25 個，目標盡量把它們找出來並留證"
