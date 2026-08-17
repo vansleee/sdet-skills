@@ -35,7 +35,7 @@ charter:
   test_account: customer@practicesoftwaretesting.com
   max_steps: 40
 
-  # --- 授權分級（2026-07-30 由 wclee 拍板；subagent 必須逐條遵守）---
+  # --- 授權分級（2026-07-30 由人拍板；subagent 必須逐條遵守）---
   authorization:
     allowed:
       - "註冊：可真的送出建立帳號，但 email 必須帶唯一時間戳標記（例：sdet+<ts>@example.com），只建測試帳號"

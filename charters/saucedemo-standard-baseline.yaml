@@ -22,7 +22,7 @@ charter:
   test_account: standard_user   # env:SAUCEDEMO_USER / env:SAUCEDEMO_PASS
   max_steps: 40                 # 沿用 config/saucedemo/sdet-config.yaml 的 budget.max_actions_per_explore
 
-  # --- 授權分級（2026-08-01 由 wclee 拍板；subagent 必須逐條遵守）---
+  # --- 授權分級（2026-08-01 由人拍板；subagent 必須逐條遵守）---
   authorization:
     allowed:
       - "結帳可完整走完，含按下 Finish（無真金流、無後端，訂單只進 client 端狀態）"
