@@ -25,8 +25,8 @@ Agentic SDET 技能組：GitHub Actions · Playwright (TypeScript) · GitHub Iss
 - `config/test-style.md` — 這個專案的測試碼風格，由 `setup-sdet` 訪談產出，`test-author` / `api-test-author` / `test-heal` 動筆前讀它。**只收需要判斷的規則**（Page Object、選擇器優先序、導頁方式、斷言與命名慣例）；縮排、引號、import 順序交 eslint／prettier。風格是設定不是能力，不准為它另開 skill。
 
 ## 執行期產物
-- **除了 `charters/`、`tests/` 與 `book/` 之外，所有執行期產物一律寫在 `output/` 底下。** 不准在 repo 根目錄留 `findings/`、`evidence/`、截圖或 JSON。
-- **`book/` 是書稿，進版控。** 鐵人賽三十天的文章與 `book/images/`。書稿引用的競品觀察、成本量測那些決策素材仍留 `output/ithome-2026/`（不進版控），從 `book/` 引用時要寫成 `output/ithome-2026/…` 這種從 repo 根算起的路徑。
+- **除了 `charters/` 與 `tests/` 之外，所有執行期產物一律寫在 `output/` 底下。** 不准在 repo 根目錄留 `findings/`、`evidence/`、截圖或 JSON。
+- **`book/` 是另一個 repo，不進這裡的版控。** 鐵人賽的書稿獨立成 private repo（`vansleee/sdet-book`），實體位置還是 `book/`，這個 repo 的 `.gitignore` 擋著。要動書稿就在 `book/` 底下自己 commit。書稿引用的競品觀察、成本量測留 `output/ithome-2026/`（一樣不進版控），從書稿引用時寫成 `output/ithome-2026/…` 這種從 skills repo 根算起的路徑。
 - 單輪產物進 `output/sessions/<date>_<slug>/`，跨輪累積的登錄簿留 `output/` 根，證據走 `output/evidence/<YYYYMMDD>-<slug>/`。**切進單輪就失去去重與校準的能力。**
 - 完整檔案清單與欄位規範見 `docs/state-files.md`；不可以自創狀態詞彙。
 
