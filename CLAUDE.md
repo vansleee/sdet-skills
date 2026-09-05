@@ -26,7 +26,7 @@ Agentic SDET 技能組：GitHub Actions · Playwright (TypeScript) · GitHub Iss
 
 ## 執行期產物
 - **除了 `charters/` 與 `tests/` 之外，所有執行期產物一律寫在 `output/` 底下。** 不准在 repo 根目錄留 `findings/`、`evidence/`、截圖或 JSON。
-- **`book/` 是另一個 repo，不進這裡的版控。** 鐵人賽的書稿獨立成 private repo（`vansleee/sdet-book`），實體位置還是 `book/`，這個 repo 的 `.gitignore` 擋著。要動書稿就在 `book/` 底下自己 commit。書稿引用的競品觀察、成本量測留 `output/ithome-2026/`（一樣不進版控），從書稿引用時寫成 `output/ithome-2026/…` 這種從 skills repo 根算起的路徑。
+- **書稿不在這個 repo 裡。** 鐵人賽的書稿是獨立 private repo（`vansleee/agentic-sdet-book`），實體放在 `/Users/wclee/workspace/books-and-courses/agentic-sdet-book`，跟這裡完全分開，不共用 `.gitignore` 或版控。要動書稿就去那邊自己 commit。書稿引用的競品觀察、成本量測留這裡的 `output/ithome-2026/`（不進版控），從書稿引用時寫成本 repo 根算起的路徑，例如 `sdet-skills/output/ithome-2026/…`。
 - 單輪產物進 `output/sessions/<date>_<slug>/`，跨輪累積的登錄簿留 `output/` 根，證據走 `output/evidence/<YYYYMMDD>-<slug>/`。**切進單輪就失去去重與校準的能力。**
 - 完整檔案清單與欄位規範見 `docs/state-files.md`；不可以自創狀態詞彙。
 
