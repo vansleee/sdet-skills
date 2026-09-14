@@ -1,5 +1,7 @@
 # SDET Economics
 
+校準改以 project、session、finding_id 定位預測，verifier 重現結果與 human 裁定分開。人工 precision 只計已明確裁定的樣本；獨立重現率另計，null／inconclusive 不視為否定。欄位與舊資料處理見 `references/confidence.md`。
+
 成本紀律 reference：省 token、重用 context、模型分級、預算與停止條件、ROI、績效。
 
 ## 設計理念
@@ -10,4 +12,3 @@
 - **ROI 的分母只能是 confirmed，不能是 findings。** 候選發現量大不代表有價值，算 ROI 時把未驗證的也算進去，會製造好看但騙人的數字。
 - **停在哪、為什麼停，跟結果一樣重要。** 一次沒跑完的探索，若不記錄停止原因，下次沒有人知道是該加預算、還是那塊真的不值得投入更多。
 - **和 route-by-risk 分工不重疊。** `route-by-risk` 決定要不要測；本文件決定測的時候怎麼花、花完值不值得。兩層治理疊起來，才不會一邊為了風險猛測、一邊燒穿預算沒人喊停。
-

@@ -12,5 +12,9 @@
 ## 上下游
 輸入：charter ＋ 排程／使用者觸發。內部依序：`bug-hunter` → `bug-verifier` → `issue-quality-gate` → `triage` / `bug-fixer`。輸出：`output/sessions/<date>_<slug>/runs/<date>.yaml`、值班摘要、人工佇列。
 
+先獨立確認問題，再判能否開單，接著開 Issue 與修復。bug-verifier 的 confirmed 表示問題重現，不能移到 fixer 後當成修好了；修復的先紅後綠驗證由 fixer 執行。
+
+各站沿用 project、session、finding_id。編排者只把盲驗包交給不繼承對話的獨立 context，收到 verdict 才回填 calibration。無法隔離就保留待驗；重複項記 block 並連結舊單。留言、改碼與開單各自受 governance 管制。
+
 ## 成長路徑
 v0.1：單 charter 單班。之後：多 charter 排班、與 route-by-risk 決定值什麼、餵 sdet-economics 算帳。

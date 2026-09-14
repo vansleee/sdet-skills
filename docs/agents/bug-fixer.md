@@ -8,6 +8,8 @@
 - **防綠色作弊。** 最陰險的失敗是為了讓測試通過而弱化斷言、加 sleep、mock 掉真實呼叫。測試綠了、bug 還在。守則明列不准。
 - **有自知之明。** 範圍清楚的才動手（如 qty=-5 缺前端驗證）；根因牽涉廣、影響面不明的（如元件狀態糾纏的 TypeError）只報不修，交回人判。
 - **開 PR 是上限。** merge 由 `governance.yaml` 的 forbidden 釘死，不是靠自律，是根本沒有權力（Day 29）。
+- **授權分動作。** 改測試、改產品、留言、更新標籤、推送、開 PR 各查對應權限；開 PR 的同意不能追認先前未授權的修改。資料與產品 repo 沿用交接 project，PR 目標不從 Issue tracker repo 猜。
+- **修復驗證在本 skill。** 先確認原問題存在，再驗修復後轉綠。bug-verifier 在上游確認缺陷可重現，其 confirmed 不代表修復驗收通過。
 
 ## 上下游
 上游：`issue-quality-gate` pass 且範圍清楚的 issue。下游：人 review / merge。編排它的：`duty-oncall`。

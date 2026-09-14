@@ -1,6 +1,6 @@
 ---
 name: duty-oncall
-description: 排一次獨立值班：獵 → 驗 → 閘 → 開單／開 PR（不 merge）跑完一輪，受 governance 與預算管制，留下 output/sessions/<date>_<slug>/runs/<date>.yaml 與五分鐘可複核的摘要。
+description: 排一次獨立值班：獵 → 驗 → 閘 → 開單／開 PR（不 merge）跑完一輪，受 governance 與預算管制，留下本輪值班紀錄與五分鐘可複核的摘要。
 disable-model-invocation: true
 ---
 
@@ -12,8 +12,8 @@ disable-model-invocation: true
 
 ## 前置（缺了就停手回報，不硬跑）
 - 五站全數就緒：`bug-hunter` / `bug-verifier` / `issue-quality-gate` / `triage` / `bug-fixer`。
-- `config/governance.yaml`、`config/sdet-config.yaml`（預算與門檻）、charter 檔可讀。
-- `gh auth status` 已登入（triage / fixer 會用到）。
+- 讀 `references/agent-handoff.md` 與 `references/config-resolution.md`，解析 charter 的 project 與預算設定；全域 `config/governance.yaml` 可讀。保留本輪唯一 session，逐筆傳遞 project、session、finding_id。
+- 分派時依解析後的 Issue／PR 後端檢查工具與登入；本地 Issue 不要求 gh。副作用依 `references/agent-governance.md`，先確認已授權範圍。
 
 ## 記帳打點（每一站開始前先打，這是逐階段成本的唯一依據）
 
@@ -29,12 +29,12 @@ python3 scripts/token-ledger.py --mark --run <date>_<slug> --stage <setup|hunt|v
 
 0. **開班** — 打點 `--stage setup`，再做前置檢查。
 1. **獵** — 打點 `--stage hunt`，`bug-hunter` 依 charter 跑一輪（四道守門在它體內），交回候選清單。
-2. **驗** — 打點 `--stage verify`，每個候選交 `bug-verifier` 獨立重現，得 `output/sessions/<date>_<slug>/verdicts/`。
+2. **驗**：打點 `--stage verify`，以不繼承對話的獨立 subagent／session 啟動 `bug-verifier`，只傳盲驗輸入。收到 verdict 後依 `references/confidence.md` 回填同筆 calibration；無法隔離的保留待驗紀錄，不自行蓋章。
 3. **把關** — 打點 `--stage gate`，全數過 `issue-quality-gate`，得 `output/sessions/<date>_<slug>/gate.yaml`（pass / hold / block）。
 4. **分派** — 打點 `--stage dispatch`，只動 pass 的：
    - 一律交 `triage` 開單（開單前確認規則依 triage 自己的鐵則）。
    - **範圍清楚、可修**的再交 `bug-fixer` 開 PR（標 ready-for-review，**不 merge**）。
-   - hold → 人工佇列；block → 待規格／待人判。**不替人拍板。**
+   - hold → 人工佇列；block 依 `blocked_on` 分流。重複項只連結舊單，需補證才交 triage 檢查留言權限，不開新單。
 5. **記帳** — 打點 `--stage wrapup`，再跑 `python3 scripts/token-ledger.py --report <date>_<slug>` 取逐階段花費與總額，填進 `output/sessions/<date>_<slug>/runs/<date>.yaml`（格式見下）。**當下埋、不能事後補**：今天不記 gate_passed，之後就算不出 ROI 與校準。token 數一律取 ledger，**不要自己估**。
 6. **留摘要** — 一份五分鐘能複核完的值班摘要（開了什麼、待判什麼、花了多少、forbidden 動作幾次）。
 
@@ -42,6 +42,8 @@ python3 scripts/token-ledger.py --mark --run <date>_<slug> --stage <setup|hunt|v
 ```yaml
 # output/sessions/<date>_<slug>/runs/<date>.yaml
 date: <date>
+project: null
+session: <date>_<slug>
 charter: charters/<slug>.yaml
 ledger_run: <date>_<slug>     # 對到 output/token-ledger 的 by_run，逐階段明細在那裡
 tokens: { input: <n>, output: <n>, cache_write: <n>, cache_read: <n> }
@@ -70,3 +72,4 @@ confirmed_by_human: null     # 待回填
 - `output/sessions/<date>_<slug>/runs/<date>.yaml` 是**當下**寫的、量都在嗎？
 - 六個階段的打點都打了嗎（`--report <date>_<slug>` 六段齊全，沒有東西掉進 `_unassigned`）？
 - hold / block 的都進了看得到的佇列嗎？
+- 各站是否沿用同一 project，盲驗 context 是否隔離，校準是否按完整識別回填？

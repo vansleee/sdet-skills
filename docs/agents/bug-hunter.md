@@ -8,17 +8,17 @@
 - **「找的人」不能當「判的人」。** Hunter 對自己找到的東西有確認偏誤，所以它的權力被刻意切窄：只輸出「候選」。獨立蓋章交 `bug-verifier`（沒有 Hunter 記憶的 subagent），能不能開單交 `issue-quality-gate`。這是 `agents/` 最重要的治理設計。
 - **model-invoked。** `duty-oncall` 得在值班中直接調用它，user-invoked 會讓整條編排叫不到它。「會消耗預算、會操作產品」不靠 invocation mode 擋，靠 charter 的 `out_of_bounds`、`config/sdet-config.yaml` 的 `budget`，以及「不開單、不碰 tracker」的鐵則。真正不可逆的那一下留在 `triage` / `bug-fixer` 的確認步驟與 `governance.yaml`。
 - **四道守門缺一不可。** oracle 擋「把怪當成錯」、confidence 擋「沒把握的自動往下」、dedup 擋「同一個報十次」、known-FP 擋「判過的再報一次」。前三週教的規矩，在這裡第一次被強制執行而不只是好習慣。
-- **證據必須可攜。** 下游 verifier 是獨立 context，拿得到證據、拿不到 Hunter 的推理。Evidence Package 站不站得住，這裡就會現形。
+- **證據必須可攜。** UI 與 API 各依留證 skill 封裝完整包，再另建只含步驟、原始證據與限制的盲驗包。完整包有結論，不能直接交給 verifier；兩者共用同一組 project、session、finding_id。
 
 ## 上下游
 
 上游：`exploration-charter`（給目標與邊界）。
-內部依序：`explore` → `structured-result` → `classify-anomaly` → `test-oracle` → confidence（`references/confidence.md`）→ dedup（`references/bug-fingerprint.md`）→ known-FP → `evidence-package`。
+內部依序：`explore` → `structured-result` → `classify-anomaly` → `test-oracle` → confidence（`references/confidence.md`）→ dedup（`references/bug-fingerprint.md`）→ known-FP → UI／API 封裝與盲驗輸入。
 下游：`bug-verifier` → `issue-quality-gate` → `triage` / `bug-fixer`。
 編排它的：`duty-oncall`（排班值勤時的第一站）。
 
 ## 狀態檔
 
 讀：`output/known-false-positives.yaml`、`output/issues-index.yaml`、`config/sdet-config.yaml`。
-寫：`output/calibration.yaml`（predicted）、evidence 目錄、候選清單。
+寫：`output/calibration.yaml`（以 project + session + finding_id 記 predicted）、evidence 目錄、候選清單；已知指紋只在同 project 的本地 index 合併觀察。
 **不寫** issue tracker。

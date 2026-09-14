@@ -1,6 +1,16 @@
 # 授權分級總表（被所有會產生副作用的 skill 讀）
 # 由需要副作用的 skill 沿途寫入/參照：triage 與 bug-fixer（開 issue/PR 權限）、
 # test-heal（改測試權限）、pipeline-triage 與 quality-gate（開單/放行）、route-by-risk（要不要測）。
+# agents 動作名稱（實際授權填入下方 tiers，定義本身不授權）：
+# create_issue：建立 GitHub Issue 或正式本地 Issue 檔。
+# comment_issue：留言或在正式本地 Issue 附加內容。
+# update_issue：修改 Issue 內容、標籤或狀態。
+# edit_tests：新增或修改測試碼。
+# edit_product：修改產品碼。
+# push_branch：推送修復分支。
+# create_pr：建立 PR。
+# merge_pr：合併 PR，agents 永遠禁止。
+# 執行規則見 references/agent-governance.md；未列動作須有使用者授權。
 tiers:
   autonomous: []          # 可自主執行、不需人審的動作
   needs_review: []         # 需人審（如 test-heal 批次、quality-gate override、開 PR）

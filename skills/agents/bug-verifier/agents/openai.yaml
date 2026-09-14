@@ -1,3 +1,3 @@
 interface:
   display_name: "Bug Verifier"
-  short_description: "獨立 subagent 只吃 Evidence Package、從零重現候選 bug，輸出 confirmed/not-reproduced/inconclusive 與獨立證據。"
+  short_description: "以隔離 context 盲驗 UI／API 候選，只收原始證據與執行限制，回傳獨立重現結果。"

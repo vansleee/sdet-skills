@@ -10,6 +10,8 @@ disable-model-invocation: true
 
 > 只列「你要自己打」的 user-invoked 入口。其餘 model-invoked skill（evidence-package、explore、bug-hunter、triage、failure-analysis…）agent 遇到對的任務會自己觸發，不用你記；你想手動指定時照樣可以直接打名字。
 
+下表用 Claude Code 的 `/名稱` 示意。Codex 以 `$名稱` 指定，ChatGPT 從 `@` 選取已安裝 skill；流程與授權契約相同。平台缺獨立 context 或操作工具時如實回報，不模擬完成。
+
 ## 你想做什麼 → 用哪支
 | 你的情境 | 打這個 |
 |---|---|
@@ -25,6 +27,8 @@ disable-model-invocation: true
 ## 主要流程（誰接誰）
 **找新 bug**：`/exploration-charter` 定目標 → bug-hunter 打獵（自動用 explore／evidence-package／test-oracle）→ bug-verifier 獨立重現 → issue-quality-gate 把關 → triage 開單 → bug-fixer 開 PR（人 merge）。整條要一次跑完，打 `/duty-oncall`。
 
+verifier 的 confirmed 是「問題重現」，修復後的先紅後綠由 fixer 驗證。全鏈沿用 project、session、finding_id；盲驗只收原始證據與操作限制，UI／API 各驗必要證據。重複候選擋下並連結舊單；開單、留言、改碼、push、開 PR 各查治理權限。交接與授權規則見 `references/agent-handoff.md`、`references/agent-governance.md`。
+
 **顧測試**：`/test-author`（畫面）或 `/api-test-author`（端點）寫測試 → 進 CI 跑 → 紅了 failure-analysis 分析 → test-heal 修測試 → re-run-gate 重跑到綠
 
 **該用哪一層**：規則、計算、驗證、權限 → API；呈現、互動、可及性 → UI；不確定就先問 `route-by-risk`，判準見 `references/test-design.md` 第 0 節。留證同理：經畫面走 evidence-package，直接打端點走 api-evidence。
@@ -36,6 +40,8 @@ disable-model-invocation: true
 **三層閘門**（各管一層，上層吃下層產物）：issue-quality-gate（一張單能不能開）→ `/quality-gate`（一個 build 能不能放行）→ `/release-signoff`（一版 release 能不能簽）
 
 **串起來**：`/duty-oncall` 在授權（`config/governance.yaml`）內把上面整條排程跑完。
+
+**看校準**：sdet-economics 分開讀人工 precision 與 verifier 重現率；未裁定、驗不完與來源不明的舊資料不算成人工否定。現有 token-ledger 的 Claude 格式限制見 README，不能把其他平台缺用量的結果填成零成本。
 
 ## 維護規則
 新增／改名／移除任一 user-invoked skill，或改了它在流程裡的位置，就要回來更新這張表。過時的路由器會騙人。

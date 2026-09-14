@@ -1,7 +1,7 @@
 {
   "name": "sdet-skills",
   "version": "0.3.0",
-  "description": "Agentic SDET skills for GitHub Actions + Playwright (TypeScript)",
+  "description": "Shared SDET workflows for Claude Code, Codex, and ChatGPT: project-aware discovery, blind verification, issue gating, and authorized fixes with GitHub Actions and Playwright",
   "author": {
     "name": "vansleee",
     "url": "https://github.com/vansleee"

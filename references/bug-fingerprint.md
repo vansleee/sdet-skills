@@ -37,22 +37,27 @@
 
 ## 比對與合併
 
-1. 算出指紋 → 查 `output/issues-index.yaml`。
-2. **完全相同** → 不開新單：舊單 `occurrences += 1`、把新證據 append 到 `evidence`、必要時更新 `confidence`。
+1. 算出指紋 → 查 `output/issues-index.yaml` 中同 project 的列，以 `(project, fingerprint)` 比對；`project: null` 為預設專案。缺 project 的舊列先確認來源，不跨專案合併，也不直接視為目前專案。
+2. **完全相同** → 不開新單：本地 index 的 `occurrences += 1`、新證據 append 到 `evidence`、必要時更新 `confidence`。同一 `(session, finding_id)` 只計一次，以 `observations` 留識別，續跑不能重複加總。tracker 留言或改內容交 triage 另查權限，hunter 不碰 tracker。
 3. **`area` + `signature` 相同但 `trigger` 不同** → 標 `related`，**不自動合併**，列給人判（可能是同一根因的兩個入口，也可能真是兩個 bug）。
 4. **找不到** → 才開新單，並把指紋寫進 index。
+
+gate 對已合併的候選仍記 `not_duplicate: fail`、`result: block`，`existing_issue` 與 `blocked_on` 指向舊單。triage 在實際建立前再讀一次 index，發現重複就停止新單流程。單一 project 的開單與 index 更新依序執行；建立結果不明時先查 tracker，不能直接重送。未確定歸屬的舊列若疑似命中，先核對來源再決定是否開新單。
 
 ## 範例（取自 toolshop 四輪真跑）
 
 ```yaml
 # output/issues-index.yaml
-- fingerprint: "checkout|typeerror:cart_items-undefined|enter-checkout"
+- project: null
+  fingerprint: "checkout|typeerror:cart_items-undefined|enter-checkout"
   issue: "#<n>"
   occurrences: 4          # 四輪各一次,一張單
   confidence: high
-- fingerprint: "cart|http-404-on-stale-cart-id|use-expired-local-cart-id"
+- project: null
+  fingerprint: "cart|http-404-on-stale-cart-id|use-expired-local-cart-id"
   occurrences: 2          # 匿名 + 已登入,同一指紋 → 併入
-- fingerprint: "cart|footer-total-stale|set-qty-0"
+- project: null
+  fingerprint: "cart|footer-total-stale|set-qty-0"
   occurrences: 1
 ```
 

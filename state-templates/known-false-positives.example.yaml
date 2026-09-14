@@ -10,13 +10,15 @@
 #   2. pattern 要窄，不要貪。「任何 401 都壓」會把「登入後不該出現的 401」也吃掉。
 #      寧可漏擋、下次再補，也不要寬到蓋掉真問題。
 
-- pattern: "GET /users/me 回 401，且發生在未登入頁面"
+- project: null             # 只套用同 project；缺 project 的舊規則先核對來源
+  pattern: "GET /users/me 回 401，且發生在未登入頁面"
   scope: "anonymous-only"          # 登入後仍出現 401 → 不適用此條，照常回報
   reason: "未登入本就無 session，前端把它記成 error，非產品缺陷"
   decided_by: "<誰拍板的>"
   decided_at: 2026-07-27
 
-- pattern: "POST /users/login 回 423 Account locked（共享測試帳號）"
+- project: null
+  pattern: "POST /users/login 回 423 Account locked（共享測試帳號）"
   scope: "test-account only"
   reason: "共享 demo 帳號被鎖，屬 test-data 問題，非產品缺陷；鎖定為暫時性"
   decided_by: "<誰拍板的>"

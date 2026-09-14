@@ -13,7 +13,7 @@ description: 依一份 charter 獵一輪 bug，交回已判定、已去重、標
 ## 前置（缺了就停手回報，不要自己編）
 - charter 檔存在且可讀（沒有 → 先叫 `exploration-charter` 產一份）。
 - `output/known-false-positives.yaml`、`output/issues-index.yaml` 存在（沒有 → 從 `state-templates/` 對應範本複製一份空的，並在回報中說明「本輪未做去重／未濾誤報」）。
-- `sdet-config.yaml` 的門檻與預算（`confidence.min_to_file`、`budget.max_actions_per_explore`）；charter 有 `project` 時讀 `config/<project>/`，規則見 `references/config-resolution.md`。
+- 讀 `references/config-resolution.md` 解析 project 與 `sdet-config.yaml` 的門檻、預算。交接前讀 `references/agent-handoff.md`，全程保留 `project`、`session`、`finding_id` 與介面欄位。
 
 ## 執行順序（順序本身就是規格，不得跳號）
 
@@ -23,10 +23,10 @@ description: 依一份 charter 獵一輪 bug，交回已判定、已去重、標
 3. **初篩分類** — 交 `classify-anomaly`：product-bug / environment / test-data / operation-artifact / flaky / known-issue / needs-investigation。
 4. **判定** — 對 `product-bug` 與未定案的 anomaly 交 `test-oracle`，取得 `verdict` / `oracle_used` / `basis`。
    **沒有 oracle 命中，不得判 bug**，只能 `needs-spec` / `inconclusive`。
-5. **打分** — 依 `references/confidence.md` 算 confidence，寫下用了哪幾個因子與分數，並在 `output/calibration.yaml` 記一列 `predicted`。
+5. **打分** — 依 `references/confidence.md` 按 UI／API 證據算 confidence，寫下 `score` 與因子；在 `output/calibration.yaml` 以 `(project, session, finding_id)` 記本次 `predicted`，不得覆寫其他輪的預測。
 6. **去重** — 依 `references/bug-fingerprint.md` 算指紋、查 `output/issues-index.yaml`，照該文「比對與合併」四規則分流（併入 / related / 新候選）。
-7. **濾誤報** — 比對 `output/known-false-positives.yaml`，命中的移到 `suppressed`，並記下命中哪一條。
-8. **封裝與交付** — 剩下的候選交 `evidence-package` 封裝（**可攜、自帶脈絡**，不得寫「如上一步所說」，下游 `bug-verifier` 是沒有本次記憶的獨立 subagent），依 confidence 排序輸出。
+7. **濾誤報** — 比對 `output/known-false-positives.yaml` 中同 project 的規則，命中的移到 `suppressed`，並記下命中哪一條。舊規則缺 project 時先核對來源，不跨專案套用。
+8. **封裝與交付** — UI 交 `evidence-package`、API 交 `api-evidence`，混合候選共用一份完整包。依 `references/agent-handoff.md` 另建 `blind/manifest.yaml` 與必要原始證據；完整包留給 gate／人複核，獨立 verifier 只收盲驗輸入。依 confidence 排序輸出候選。
 
 步驟 4–7 就是**四道守門**（oracle / confidence / dedup / known-FP），少一道就不算跑完；判準本身以 `issue-quality-gate` 的六條表與 `references/` 為準，這裡不重述。
 
@@ -40,16 +40,27 @@ description: 依一份 charter 獵一輪 bug，交回已判定、已去重、標
 
 ## 輸出
 ```yaml
+project: null                   # 有專案時填 slug，全鏈沿用
+session: <date>_<slug>
 charter: charters/<slug>.yaml
 run: <evidence 目錄>
 candidates:                      # 依 confidence 排序,尚未開單
-  - fingerprint: "<area>|<signature>|<trigger>"
+  - finding_id: F-001
+    project: null
+    session: <date>_<slug>
+    level: ui
+    evidence_levels: [ui]
+    fingerprint: "<area>|<signature>|<trigger>"
+    category: product-bug
     verdict: bug
     oracle_used: <哪條 oracle>
     basis: "<違反了什麼,指向證據檔>"
-    confidence: high             # 附 score 與 factors
+    confidence: high
+    score: <0 到 1>
+    factors: []                  # 列出各因子與配分
     occurrences: <n>
     evidence: <evidence package 路徑>
+    verification_input: <evidence package 路徑>/blind/manifest.yaml
 merged: []                       # 指紋已存在,併入舊單的
 related: []                      # 疑似同根因,交人判
 suppressed: []                   # 命中 known-FP,附命中哪條
@@ -62,3 +73,4 @@ stopped_because: <達標 | max_steps | 無進展>
 - 每個候選都帶著 **oracle 依據 + confidence 因子 + 指紋**了嗎？
 - 四道守門逐道**留了紀錄**嗎（`merged` / `suppressed` / `needs_spec` 三欄即使 0 筆也要出現）？
 - 它是不是**只交清單、沒開任何一張單**？
+- 盲驗包是否排除結論與評分，且各筆識別與 project 完整？

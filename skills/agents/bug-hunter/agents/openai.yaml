@@ -1,3 +1,3 @@
 interface:
   display_name: "Bug Hunter"
-  short_description: "依 charter 自主獵一輪：探索→判定→打分→去重→濾誤報，交回候選 issue 清單（不開單）。"
+  short_description: "依 charter 探索 UI／API，按專案去重與評分，交付候選清單及盲驗輸入，不開單。"

@@ -37,8 +37,10 @@ cost_per_confirmed_bug = Σ tokens(該輪所有 run) ÷ Σ confirmed(該輪所�
 `confirmed` 只算 `bug-verifier` 蓋章或人複核為真的，候選 findings 不算。分母膨脹會讓 ROI 好看但失真。
 
 ## 績效：`output/calibration.yaml` 算得準不準
-`output/calibration.yaml`（`references/confidence.md` 定義的同一份資料）記 `predicted` vs `human_verdict`：
-- `precision = 判 high 且 human_verdict=confirmed 的筆數 ÷ 判 high 的總筆數`
+先讀 `references/confidence.md` 的校準規則，只用識別完整、裁定來源明確的列；按 project 與報告期間篩選，分開計算：
+- `precision_high = high 且 human_verdict=confirmed 的筆數 ÷ high 且已有明確人工裁定的筆數`。
+- `reproduction_rate_high = high 且 verifier_verdict=confirmed 的筆數 ÷ high 且 verifier_verdict 為 confirmed 或 not-reproduced 的筆數`。
+- null／inconclusive 與來源不明的舊資料不算成否定；回報兩個分母與排除筆數，分母為零時指標填 null。verifier confirmed 只證明現象重現，不能代替人工裁定。
 - precision 持續偏低 → confidence 因子配分過鬆，或門檻設太低，兩者都會拉低 ROI（花力氣送驗證/開單的東西大半是假警報）。
 
 **沒有 calibration，ROI 只是沒人驗證過的自我感覺。**
@@ -51,6 +53,10 @@ runs: 6
 confirmed_bugs: 9
 cost_per_confirmed_bug: 137_778
 precision_high: 0.78          # output/calibration.yaml 算出
+human_reviewed_high: 9
+reproduction_rate_high: 0.90
+verifier_decided_high: 10
+excluded: { human: 3, verifier: 2 }
 stop_events:
   - run: "20260726-checkout"
     reason: "hit max_tokens_per_run，停在 checkout 第 3 步"
@@ -58,4 +64,4 @@ recommendation: "checkout 區域 precision 偏低，檢討 confidence 因子配�
 ```
 
 ## 上下游
-上游資料：`output/sessions/**/runs/*.yaml`（`duty-oncall`）、`output/calibration.yaml`（`bug-hunter` 寫 predicted、`bug-verifier`/人回填）。與 `economics/route-by-risk` 分工：`route-by-risk` 決定「要不要測」，本文件決定「用什麼成本測、測完值不值得」。
+上游資料：`output/sessions/**/runs/*.yaml`（`duty-oncall`）、`output/calibration.yaml`（hunter 寫 predicted；呼叫端／gate 回填 verifier；明確人判另填 human）。與 `economics/route-by-risk` 分工：`route-by-risk` 決定「要不要測」，本文件決定「用什麼成本測、測完值不值得」。

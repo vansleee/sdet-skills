@@ -1,8 +1,8 @@
 # sdet-skills
 
-一組 Claude Code skill，把測試工程師的判斷寫成 agent 讀得懂的流程：**自己探索找 bug、判定它是不是真的 bug、開單、修產品、顧測試、顧整條 CI 生產線**。
+一組供 Claude Code、Codex 與 ChatGPT 使用的 skills，把測試工程師的判斷寫成 agent 讀得懂的流程：**自己探索找 bug、判定它是不是真的 bug、開單、修產品、顧測試、顧整條 CI 生產線**。
 
-> A reusable Agentic SDET skill set for Claude Code — exploratory testing, bug triage, and CI pipeline care, built on Playwright and GitHub Actions. Documentation is in Traditional Chinese.
+> Reusable Agentic SDET skills for Claude Code, Codex, and ChatGPT: exploratory testing, bug triage, and CI pipeline care with Playwright and GitHub Actions. Documentation is in Traditional Chinese.
 
 技術面固定在 **GitHub Actions · Playwright（TypeScript）· GitHub Issues**，其餘都是設定。
 
@@ -20,12 +20,14 @@
 
 ## 需要什麼
 
-- [Claude Code](https://code.claude.com)
+- Claude Code、Codex 或具備 skills 的 ChatGPT 執行環境；實際操作需可用的瀏覽器／API 工具與專案檔案存取權
 - Node.js 20 以上（Playwright 用）
 - `gh` CLI 並已登入，如果要用 GitHub Issues 那條路
 - 一個受測產品。想先試跑的話，`charters/` 裡有幾份現成的 charter，打的是公開練習站（Toolshop、SauceDemo、TodoMVC）
 
 ## 安裝
+
+以下外掛指令用於 Claude Code：
 
 ```
 /plugin marketplace add vansleee/sdet-skills
@@ -43,6 +45,10 @@
 bash scripts/link-skills.sh
 ```
 </details>
+
+Codex／ChatGPT 可載入同一份 `SKILL.md` 與 `agents/openai.yaml`。Codex 以 `$skill-name` 指定，ChatGPT 從 `@` 選取已安裝 skill；載入方式見 [OpenAI skills 文件](https://learn.chatgpt.com/docs/build-skills)。安裝時保留套件共用的 `references/`、`docs/`、`state-templates/` 與 `scripts/`，執行時另提供受測專案的 config、knowledge 與 output 工作目錄。
+
+`agents/` 的資料與授權契約共用；獨立驗證須由平台建立不繼承對話的 context。現有 `token-ledger.py` 仍使用 Claude transcript 格式，Codex／ChatGPT 的 duty-oncall 成本記帳尚需接入對應用量來源，不能宣稱已完成該平台的記帳驗收。
 
 ## 第一步
 
@@ -87,6 +93,14 @@ bash scripts/link-skills.sh
 三層閘門 `issue-quality-gate`（一張單）→ `quality-gate`（一個 build）→ `release-signoff`（一版 release），上層吃下層產物當證據，不重跑下層。
 
 會產生副作用的動作（開 issue、開 PR、改測試、重置環境、放行 release）一律先確認，並受 `config/governance.yaml` 的授權分級管制：可自主、要人審、永遠禁止。**合併 PR 不在任何 agent 的權限內。**
+
+## 找問題到修復
+
+`bug-hunter → bug-verifier → issue-quality-gate → triage → bug-fixer`
+
+verifier 確認問題可重現，gate 判斷能否開單，triage 才建立 Issue，fixer 再做先紅後綠的修復驗證。verifier 的 confirmed 不代表修復成功，issue-quality-gate 也不是 PR 合併閘門。
+
+全鏈保留 project、session、finding_id；盲驗只傳原始證據與操作限制。UI／API 依介面驗收，重複項記 block 並連結舊單。每個副作用分別檢查 governance，已授權範圍可沿用；校準分開記 verifier 與 human 結果。契約見 `references/agent-handoff.md`、`references/agent-governance.md` 與 `docs/state-files.md`。
 
 ## 兩條迴圈
 
