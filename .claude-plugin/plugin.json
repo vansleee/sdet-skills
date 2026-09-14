@@ -42,6 +42,7 @@
     "./skills/economics/route-by-risk",
     "./skills/economics/sdet-economics",
     "./skills/workflow/test-planning",
+    "./skills/workflow/api-coverage-matrix",
     "./skills/workflow/traceability",
     "./skills/workflow/status-report",
     "./skills/workflow/release-signoff",

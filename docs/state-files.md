@@ -26,6 +26,7 @@
 | output/pipeline-gate.yaml | infra/quality-gate 寫；release-signoff / pipeline-observability / status-report 讀 | **一個 build** 能不能放行 + override 留痕（範本 `state-templates/pipeline-gate.example.yaml`）|
 | output/signoffs/<version>.yaml | release-signoff | **整個 release** 能不能簽出去 + 簽核留痕（範本 `state-templates/signoff.example.yaml`）|
 | output/plans/<slug>.md | test-planning | 本輪測試範圍 + 風險排序 + out-of-scope 理由 |
+| output/api-coverage-matrix/<slug>.csv（可選 .xlsx / .html） | api-coverage-matrix | 逐端點、逐方法的優先序案例矩陣，含覆蓋狀態；三種格式共用同一份事實來源 |
 | output/triage-reports/<date>_<run>.md | pipeline-triage | 一片紅的根因群 → owner → issue 對照報告 |
 | output/reports/health-<date>.md | pipeline-observability | 測試健康指標、趨勢與行動路由 |
 | output/reports/status-<date>.md | status-report | standup / 測試報告 / release-readiness 摘要 |

@@ -34,7 +34,7 @@
 /plugin install sdet-skills@sdet-skills
 ```
 
-37 支 skill 一次到位，`git pull` 之後跟著更新。清單見 `.claude-plugin/plugin.json`。
+38 支 skill 一次到位，`git pull` 之後跟著更新。清單見 `.claude-plugin/plugin.json`。
 
 <details>
 <summary>備用：symlink 到 <code>~/.claude/skills</code></summary>
@@ -77,7 +77,7 @@ Codex／ChatGPT 可載入同一份 `SKILL.md` 與 `agents/openai.yaml`。Codex �
 **maintain/**（顧好每一支測試） test-author(user) · api-test-author(user) · test-design(ref) · test-data · failure-analysis · flaky-detect · test-heal · re-run-gate · test-prune
 **infra/**（顧好整條生產線） ci-pipeline · test-parallelize · test-env · pipeline-read · pipeline-triage · flaky-manager · quality-gate(user) · pipeline-observability · governance(config)
 **economics/** route-by-risk · sdet-economics(ref)
-**workflow/**（把 SDET 接進團隊/SDLC） test-planning · traceability · status-report · release-signoff(user)
+**workflow/**（把 SDET 接進團隊/SDLC） test-planning · api-coverage-matrix(user) · traceability · status-report · release-signoff(user)
 **meta/** ask-sdet(user)
 
 標 `(user)` 的只在你叫它的時候才動，其餘由模型視情況自己呼叫；`(ref)` 是給其他 skill 讀的參考文件，不是流程。各 bucket 負責什麼、為什麼這樣切，見 [`architecture/sdet-skills-architecture.md`](architecture/sdet-skills-architecture.md)。

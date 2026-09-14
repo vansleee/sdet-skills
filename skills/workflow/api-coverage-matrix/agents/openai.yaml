@@ -1,0 +1,5 @@
+interface:
+  display_name: "API Coverage Matrix"
+  short_description: "把 API 設計文件轉成逐端點、逐方法的優先序測試案例矩陣，含代表性 payload、回應與可重現的 cURL；覆蓋狀態餵 traceability，Gap 餵 api-test-author。"
+policy:
+  allow_implicit_invocation: false
