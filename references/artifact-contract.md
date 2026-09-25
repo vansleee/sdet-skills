@@ -7,9 +7,19 @@
 | `playwright-report` | HTML report | `if: always()` | `pipeline-read` / 人 |
 | `test-results-json` | JSON / junit reporter 輸出 | `if: always()` | `pipeline-read`（解析失敗清單）|
 | `traces` | `test-results/**/trace.zip` | `if: failure()` | `failure-analysis` / `evidence-package` |
+| `playwright-artifacts` | Playwright `outputDir`（截圖、影片、trace）| `if: failure()` | `failure-analysis` / `evidence-package` |
 | `blob-report-<shard>` | 分片的 blob report | `if: always()` | `test-parallelize` 的 merge job |
 | `api-test-results-json` | API 測試 job 的 JSON / junit 輸出 | `if: always()` | `pipeline-read`（與 UI 失敗清單分開解析）|
 | `api-evidence-<slug>` | `requests.jsonl` / `repro.sh` / `raw/`（憑證已遮蔽）| `if: failure()` | `failure-analysis` / `bug-verifier` |
+
+## matrix 與重跑：名稱後綴
+
+同一個 workflow 用 matrix 跑多個環境時，上表的基本名後面依序加 `-<matrix 值>-attempt-<run_attempt>`，例如 `playwright-report-clean-attempt-1`、`test-results-json-with-bugs-attempt-2`。
+
+- `<matrix 值>`：分出是哪個環境。少了它，兩格同名上傳會互相衝突。
+- `attempt-<run_attempt>`：重跑時執行編號不變、嘗試編號加一；帶上它，才能只下載同一次嘗試的附件。
+- 下載同一次嘗試：`gh run download <run_id> --pattern "*-attempt-<n>"`。`gh run download` 沒有 `--attempt` 參數，只能靠名稱篩選。
+- 沒有 matrix、也不需要分辨重跑的 workflow，照用基本名。解析時先去掉後綴再對表。
 
 保留天數讀 `config/sdet-config.yaml` 的 `ci.artifact_retention_days`（預設 7；trace 佔空間，別無腦設 90）。
 
