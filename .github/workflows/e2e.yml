@@ -13,6 +13,7 @@ on:
     paths:
       - 'tests/**'
       - 'package.json'
+      - 'package-lock.json'
       - '.github/workflows/e2e.yml'
   pull_request:
   workflow_dispatch:
@@ -54,21 +55,33 @@ jobs:
           TOOLSHOP_TEST_PASS: ${{ secrets.TOOLSHOP_TEST_PASS }}
         run: npx playwright test --config tests/playwright.config.ts tests/e2e
 
-      # 失敗時才有 trace/video，但報告一律上傳，讓 pipeline-read 兩種情況都拿得到
+      # 失敗時才有 trace/video，但報告與結構化結果一律上傳，讓 pipeline-read 兩種情況都拿得到。
+      # 名稱帶 SUT 與 run_attempt（見 references/artifact-contract.md），重跑後才分得出是哪一次。
       - name: Upload report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report-${{ matrix.sut }}
+          name: playwright-report-${{ matrix.sut }}-attempt-${{ github.run_attempt }}
           path: output/reports/playwright
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload structured results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-json-${{ matrix.sut }}-attempt-${{ github.run_attempt }}
+          path: output/runs/playwright-results.json
+          if-no-files-found: error
           retention-days: 7
 
       - name: Upload failure artifacts
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-artifacts-${{ matrix.sut }}
+          name: playwright-artifacts-${{ matrix.sut }}-attempt-${{ github.run_attempt }}
           path: output/runs/playwright-artifacts
+          if-no-files-found: warn
           retention-days: 7
 
   flaky:
