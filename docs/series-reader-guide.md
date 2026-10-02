@@ -19,7 +19,7 @@ git rev-parse HEAD
 git status --short
 ```
 
-已有 checkout 時，直接 `cd ~/workspace/sdet-skills` 後核對版本與修改，不再 clone。記下 commit，後續遇到文章與檔案不一致時，才能區分版本差異。這次整理尚未發布；新 clone 取得的是 GitHub 當下版本，不會取得本機未提交文件。Day 27 的版本落差見下方「已核對的跟做紀錄」。
+已有 checkout 時，直接 `cd ~/workspace/sdet-skills` 後核對版本與修改，不再 clone。記下 commit，後續遇到文章與檔案不一致時，才能區分版本差異。新 clone 取得的是 GitHub 當下版本；以記錄的 commit 為準，不會取得其他 checkout 的未提交文件。Day 27 的跟做關聯見下方「已核對的跟做紀錄」。
 
 ### 2. 掛載 SDET skills，再確認 Claude 載入
 
@@ -121,4 +121,4 @@ manifest 應與檔案一致，文風檢查應通過，runner 應能列出測試�
 - [PR #20](https://github.com/vansleee/sdet-skills/pull/20) 已於 2026-09-25 合併，說明標示為 iThome Day 27 跟做案例。它補上結構化結果與含環境、嘗試編號的 artifact 名稱。
 - [Issue #17 的修復留言](https://github.com/vansleee/sdet-skills/issues/17#issuecomment-5241139335) 說明 IDOR 缺陷是 `sprint5-with-bugs` 刻意植入的教材；修復在作者 fork 的 [PR #1](https://github.com/vansleee/practice-software-testing/pull/1)，本次核對仍未合併，等待人類 review。這是練習修復紀錄，不能當成正式環境事故或已發布修復。
 
-本次整理的本機起點為 `e5b5f5c`，尚未包含 PR #20。若跟做 Day 27，先確認 checkout 已含該 PR，再依新版 artifact 契約操作；不要把遠端已合併與本機已更新視為同一件事。
+本次整理的本機起點為 `e5b5f5c`，當時尚未包含 PR #20；提交前已合併遠端 `b10343f`，納入該 PR。若從其他版本跟做 Day 27，先確認 checkout 已含該 PR，再依新版 artifact 契約操作。

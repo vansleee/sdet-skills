@@ -110,7 +110,7 @@ setup-sdet 會一次問一個主題（受測產品、登入、CI、issue tracker
 **maintain/**（顧好每一支測試） test-author(user) · api-test-author(user) · test-design(ref) · test-data · failure-analysis · flaky-detect · test-heal · re-run-gate · test-prune
 **infra/**（顧好整條生產線） ci-pipeline · test-parallelize · test-env · pipeline-read · pipeline-triage · flaky-manager · quality-gate(user) · pipeline-observability · governance(config)
 **economics/** route-by-risk · sdet-economics(ref)
-**workflow/**（把 SDET 接進團隊/SDLC） test-planning · traceability · status-report · release-signoff(user)
+**workflow/**（把 SDET 接進團隊/SDLC） test-planning · api-coverage-matrix(user) · traceability · status-report · release-signoff(user)
 **meta/** ask-sdet(user，共同入口；需要設定時接入 setup-sdet)
 **writing/**（跟 SDET 無關的通用文字工具） unslop(user)
 **technical-writing/**（技術文件結構與寫作規則） technical-writing(user)
