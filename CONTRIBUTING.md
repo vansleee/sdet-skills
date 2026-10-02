@@ -22,7 +22,7 @@ npm run test:list
 4. 設計理由放 `docs/<bucket>/`；共用判準與演算法放 `references/`。產品事實與設定只提交範本。
 5. 執行 `npm run check`。涉及測試行為時，再依 [測試指南](tests/README.md) 選受影響的測試。
 
-`skills/technical-writing/` 保留原有入口；不要只為目錄外觀搬動它。
+設定與路由入口放 `skills/meta/`，文字工具放 `skills/writing/`。舊的 `skills/technical-writing/` 保留檔案 symlink，只登錄新路徑；維護時不要複製成另一支同名 skill。
 
 ## 選擇驗證範圍
 

@@ -10,6 +10,7 @@
 部分,避免把 `env:VAR`、`[a, b]` 這種語法當成中文標點。
 """
 import re
+from pathlib import Path
 import subprocess
 import sys
 
@@ -68,7 +69,7 @@ def main():
     files = [
         f
         for f in subprocess.check_output(["git", "ls-files"], text=True).split()
-        if f.endswith((".md", ".yaml", ".yml"))
+        if f.endswith((".md", ".yaml", ".yml")) and Path(f).is_file()
     ]
     problems = []
     emdash_hits = []

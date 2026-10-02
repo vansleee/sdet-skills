@@ -70,7 +70,7 @@ ask-sdet 會讀取 setup-sdet，接入同一份訪談；完成後回到原任務
 
 依訪談指定產品、環境、issue tracker 與前一步選擇的 Playwright 工具。GitHub 流程需要 `gh auth status` 成功；沒有 GitHub issue repo 時可選本地 Markdown tracker。祕密只提供環境變數名稱，值留在環境中。
 
-完成後要求 agent 依 [setup 契約](../skills/foundation/setup-sdet/SKILL.md) 重新讀回產物，核對工作目錄、專案 slug、base URL、Playwright config 與 trace 來源。單一既有預設專案沿用 `config/`，多專案使用 `config/<project>/`：
+完成後要求 agent 依 [setup 契約](../skills/meta/setup-sdet/SKILL.md) 重新讀回產物，核對工作目錄、專案 slug、base URL、Playwright config 與 trace 來源。單一既有預設專案沿用 `config/`，多專案使用 `config/<project>/`：
 
 - `product-context.md`
 - `ci-backend-github-actions.md`
@@ -99,7 +99,7 @@ manifest 應與檔案一致，文風檢查應通過，runner 應能列出測試�
 
 | 想跟做的工作 | Repo 入口 |
 | --- | --- |
-| 安裝與設定受測產品 | [README](../README.md)、[setup-sdet](../skills/foundation/setup-sdet/SKILL.md) |
+| 安裝與設定受測產品 | [README](../README.md)、[setup-sdet](../skills/meta/setup-sdet/SKILL.md) |
 | 定探索範圍並找 bug | [exploration-charter](../skills/explore/exploration-charter/SKILL.md)、[bug-hunter](../skills/agents/bug-hunter/SKILL.md) |
 | 獨立重現與建單判斷 | [bug-verifier](../skills/agents/bug-verifier/SKILL.md)、[issue-quality-gate](../skills/agents/issue-quality-gate/SKILL.md) |
 | 分辨產品錯誤、測試錯誤與 flaky | [測試教材與歷史實測](../tests/README.md) |
@@ -111,7 +111,7 @@ manifest 應與檔案一致，文風檢查應通過，runner 應能列出測試�
 
 文章或測試教材引用的 `output/` 是作者本地證據，受 gitignore 保護，clone 後不會取得。請用 [測試指南](../tests/README.md) 與 [狀態範本](../state-templates/README.md) 重跑自己的案例；文中的歷史實測日期與結果不保證公開練習站今日仍有相同行為。
 
-既有 `skills/`、`tests/`、`references/` 與架構文件路徑維持原位。後續文章審查若發現舊連結或名稱差異，先補對照，再評估改名。
+既有 `tests/`、`references/` 與架構文件路徑維持原位。setup-sdet 的 skill 與設計文件已移至 `meta/`；舊目錄已移除，文章檔案連結請使用新位置，`/setup-sdet` 指令仍可直接使用。後續文章審查若發現舊連結或名稱差異，先補對照，再評估改名。
 
 ## 已核對的跟做紀錄
 

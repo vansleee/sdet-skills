@@ -9,7 +9,7 @@
   "repository": "https://github.com/vansleee/sdet-skills",
   "license": "MIT",
   "skills": [
-    "./skills/foundation/setup-sdet",
+    "./skills/meta/setup-sdet",
     "./skills/observe/evidence-package",
     "./skills/observe/api-evidence",
     "./skills/observe/structured-result",
@@ -48,6 +48,6 @@
     "./skills/workflow/release-signoff",
     "./skills/meta/ask-sdet",
     "./skills/writing/unslop",
-    "./skills/technical-writing"
+    "./skills/writing/technical-writing"
   ]
 }

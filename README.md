@@ -103,7 +103,6 @@ setup-sdet 會一次問一個主題（受測產品、登入、CI、issue tracker
 
 ## Skill 目錄（依 bucket）
 
-**foundation/** setup-sdet(user) · product-context(ref)
 **observe/** evidence-package · api-evidence · structured-result · classify-anomaly
 **explore/** exploration-charter(user) · explore · test-oracle
 **agents/** bug-hunter · bug-verifier · issue-quality-gate · triage · bug-fixer · duty-oncall(user)
@@ -111,11 +110,14 @@ setup-sdet 會一次問一個主題（受測產品、登入、CI、issue tracker
 **infra/**（顧好整條生產線） ci-pipeline · test-parallelize · test-env · pipeline-read · pipeline-triage · flaky-manager · quality-gate(user) · pipeline-observability · governance(config)
 **economics/** route-by-risk · sdet-economics(ref)
 **workflow/**（把 SDET 接進團隊/SDLC） test-planning · api-coverage-matrix(user) · traceability · status-report · release-signoff(user)
-**meta/** ask-sdet(user，共同入口；需要設定時接入 setup-sdet)
-**writing/**（跟 SDET 無關的通用文字工具） unslop(user)
-**technical-writing/**（技術文件結構與寫作規則） technical-writing(user)
+**meta/** ask-sdet(user)（共同入口） · setup-sdet(user)（專案設定）
+**writing/**（通用文字與技術文件工具） unslop(user) · technical-writing(user)
 
 標 `(user)` 的只在你叫它的時候才動，其餘由模型視情況自己呼叫；`(ref)` 是給其他 skill 讀的參考文件，不是流程。各 bucket 負責什麼、為什麼這樣切，見 [`architecture/sdet-skills-architecture.md`](architecture/sdet-skills-architecture.md)。
+
+technical-writing 與 unslop 都放在 `skills/writing/`，原本的 `skills/technical-writing/` 保留相容連結；skill 名稱與指令不變。
+
+setup-sdet 與 ask-sdet 都放在 `skills/meta/`，設計文件放在 `docs/meta/`。更新 checkout 後，重跑 `bash scripts/link-skills.sh`，讓既有安裝連到新位置。
 
 ## 設計原則
 

@@ -16,7 +16,7 @@
 
 | 工作 | 文件入口 |
 | --- | --- |
-| 建立受測專案設定 | [setup-sdet](foundation/setup-sdet.md) |
+| 建立受測專案設定 | [setup-sdet](meta/setup-sdet.md) |
 | 探索與判定異常 | [explore](explore/explore.md)、[test-oracle](explore/test-oracle.md) |
 | 封裝證據 | [evidence-package](observe/evidence-package.md)、[api-evidence](observe/api-evidence.md) |
 | 找 bug、驗證、開單與修復 | [bug-hunter](agents/bug-hunter.md)、[bug-verifier](agents/bug-verifier.md)、[issue-quality-gate](agents/issue-quality-gate.md)、[triage](agents/triage.md)、[bug-fixer](agents/bug-fixer.md) |

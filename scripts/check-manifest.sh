@@ -12,7 +12,8 @@ from pathlib import Path
 
 manifest = json.loads(Path('.claude-plugin/plugin.json').read_text())
 declared = manifest['skills']
-actual = {'./' + str(p.parent) for p in Path('skills').rglob('SKILL.md')}
+# 舊文章入口使用檔案 symlink，只登錄與檢查真正的 skill。
+actual = {'./' + str(p.parent) for p in Path('skills').rglob('SKILL.md') if not p.is_symlink()}
 problems = []
 for path, count in Counter(declared).items():
     if count > 1:

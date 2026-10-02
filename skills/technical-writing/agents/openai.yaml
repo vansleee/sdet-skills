@@ -1,5 +1,1 @@
-interface:
-  display_name: "Technical Writing"
-  short_description: "Write and review technical documents with clear structure and instructions."
-policy:
-  allow_implicit_invocation: false
+../../writing/technical-writing/agents/openai.yaml

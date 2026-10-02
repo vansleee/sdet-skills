@@ -22,7 +22,6 @@
 
 | 資料夾           | 負責                    | 技能                                                                      |
 | ------------- | --------------------- | ----------------------------------------------------------------------- |
-| `foundation/` | 初始設定與產品背景知識           | setup-sdet、product-context(ref)                                         |
 | `observe/`    | 用來觀察測試產品與留下相關證據       | evidence-package、api-evidence、structured-result、classify-anomaly       |
 | `explore/`    | 自主探索產品                | exploration-charter、explore、test-oracle                                 |
 | `agents/`     | 能夠自行探索、驗證問題、並且開立票     | bug-hunter、bug-verifier、issue-quality-gate、triage、bug-fixer、duty-oncall |
@@ -30,7 +29,8 @@
 | `infra/`      | 用來維護測試的 CI 與測試的 infra | ci-pipeline、pipeline-triage、flaky-manager、quality-gate…                 |
 | `economics/`  | 用來管理使用的 token         | route-by-risk、sdet-economics(ref)                                       |
 | `workflow/`   | 專案相關的流程               | test-planning、traceability、status-report、release-signoff                |
-| `meta/`       | 用來詢問如何使用 sdet-skills  | ask-sdet                                                                |
+| `meta/`       | 使用入口、路由與專案設定       | ask-sdet、setup-sdet                                                      |
+| `writing/`    | 通用文字與技術文件寫作         | unslop、technical-writing                                                |
 
 
 `maintain/` 主要是維護測試程式碼的撰寫、執行、並且修復失敗的測試案例，`infra/` 則是針對 CI 上面的錯誤進行分析、執行 pipeline 和相關活動。
