@@ -26,3 +26,6 @@
 已接：`exploration-charter`、`explore`、`api-evidence`、`test-oracle`、`agents/` 全部六支 skill。
 
 尚未接：`maintain/`、`infra/`、`workflow/` 各 skill 仍寫死扁平路徑，等它們真的要跑多專案時再照這份接。單一專案的扁平佈局不受影響。
+
+
+`test-author`、`api-test-author` 與 `test-heal` 的測試風格同樣讀扁平的 `config/test-style.md`，不得搭配其他專案的風格檔。這是現有預設專案的路徑一致性要求，不代表 `maintain/` 已支援具名 project。具名 project 的請求或交接先停手核對，不得自行改讀預設專案。

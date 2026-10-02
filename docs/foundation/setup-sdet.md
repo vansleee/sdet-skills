@@ -22,7 +22,7 @@
 
 只有一個常態受測產品時，沿用既有扁平佈局（`config/product-context.md` 等，不建子目錄），視為預設專案。第二個常態受測產品出現時才切換成 `config/<project>/`，既有的扁平檔案留著當遺留的預設專案，不強迫搬遷。
 
-多專案要接 charter 時，charter 用 `project: <slug>` 欄位指向要讀哪組 `config/<project>/`、`knowledge/<project>/`。這條約定由本 skill 定義，解析規則寫在 `references/config-resolution.md`，`exploration-charter` 訪談時問、`explore` 開跑前解析，`api-evidence`、`test-oracle`、`bug-hunter` 沿用同一個 slug。`maintain/`、`infra/`、`workflow/` 各 skill 尚未接，仍讀扁平路徑。
+多專案要接 charter 時，charter 用 `project: <slug>` 欄位指向要讀哪組 `config/<project>/`、`knowledge/<project>/`。這條約定由本 skill 定義，解析規則寫在 `references/config-resolution.md`，`exploration-charter` 訪談時問、`explore` 開跑前解析，`api-evidence`、`test-oracle`、`bug-hunter` 沿用同一個 slug。`maintain/`、`infra/`、`workflow/` 各 skill 尚未接，仍讀扁平路徑。`test-author`、`api-test-author` 與 `test-heal` 的風格檔也讀 `config/test-style.md`；不能把其他專案的風格檔搭配預設產品設定。這三支收到具名 project 時先停手核對，不會自動回退。
 
 ## 範例：怎麼用
 
@@ -61,7 +61,7 @@
 
 - **後端可替換。** skill 內文只寫「file to the issue tracker」「讀 CI run」，實際指令放 `config/`。這是從 Jenkins/JIRA 遷到 GitHub Actions/Issues 不必重寫邏輯的關鍵。
 - **祕密不落地。** 帳密/token 只記變數名（`env:VAR`），不記值、不在對話裡索取。把安全變成機制，不靠自律。
-- **user-invoked。** 設定是有後果的動作，只有人打 `/setup-sdet` 才會啟動（`disable-model-invocation: true`），AI 不會自作主張改設定。
+- **user-invoked。** 設定是有後果的動作，使用者可直接打 `/setup-sdet`，或在 `/ask-sdet` 明確要求設定後接入（`disable-model-invocation: true`）。純諮詢不啟動設定，寫檔前仍列出具體內容確認。
 - **一次一個主題、可重複執行。** 不一次丟六段表單；重跑時先讀現有 config、只問缺的。
 - **開工前先驗 trace 能力。** 讓「跑完才發現沒 trace」提前到設定階段就攔下。
 - **API 是另一個介面層，不是另一個產品。** 所以它是 `product-context.md` 裡的一段，不是另一個 project slug。契約來源填「無」也是有效答案，它讓下游知道 contract oracle 不可用、要降級成狀態碼語意與一致性判準，而不是讓下游自己去猜有沒有 spec。

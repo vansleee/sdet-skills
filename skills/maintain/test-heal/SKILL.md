@@ -33,8 +33,11 @@ description: 修好一支「測試自己壞掉」的測試：只改測試、不�
 - 綠燈的最終確認交 `re-run-gate`。
 
 ## 規則
+
+目前只支援扁平佈局的預設專案，產品設定與測試風格都讀同一個 `config/` 根目錄。收到具名 `project` 的請求或交接時，先停手核對，不得自行改讀預設專案；多專案尚未接線，範圍見 `references/config-resolution.md`。
+
 - 只動測試碼，不動產品。
-- **改法要合這個專案的風格**：動手前讀 `config/<project>/test-style.md`；沒有這個檔就沿用 `references/test-design.md` 的預設。修測試不是重寫測試，別順手把風格改成自己偏好的那套。
+- **改法要合這個專案的風格**：動手前讀 `config/test-style.md`；沒有這個檔就沿用 `references/test-design.md` 的預設。修測試不是重寫測試，別順手把風格改成自己偏好的那套。
 - **批次修復需人審**（見 `config/governance.yaml`）；單支可自主但仍要過上面的驗收。
 
 ## 輸出（格式，非某次執行結果）

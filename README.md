@@ -6,6 +6,13 @@
 
 技術面固定在 **GitHub Actions · Playwright（TypeScript）· GitHub Issues**，其餘都是設定。
 
+先選入口：
+
+- 第一次使用：從下面的「安裝」與「第一步」開始。
+- 從鐵人賽過來：見 [系列讀者入口](docs/series-reader-guide.md)。
+- 查架構與資料契約：見 [文件索引](docs/README.md)。
+- 修改或新增 skill：見 [維護指南](CONTRIBUTING.md)。
+
 ## 這東西想解決什麼
 
 叫模型「幫我寫測試」很容易，它會生出跑得動的程式碼。難的是後面幾件事：
@@ -34,7 +41,7 @@
 /plugin install sdet-skills@sdet-skills
 ```
 
-37 支 skill 一次到位，`git pull` 之後跟著更新。清單見 `.claude-plugin/plugin.json`。
+外掛提供的 skill 清單見 [.claude-plugin/plugin.json](.claude-plugin/plugin.json)。更新外掛請使用 Claude Code 的外掛更新機制；自行 clone 並以 symlink 安裝時，`git pull` 才會同步既有 skill 的內容。
 
 <details>
 <summary>備用：symlink 到 <code>~/.claude/skills</code></summary>
@@ -50,22 +57,48 @@ Codex／ChatGPT 可載入同一份 `SKILL.md` 與 `agents/openai.yaml`。Codex �
 
 `agents/` 的資料與授權契約共用；獨立驗證須由平台建立不繼承對話的 context。現有 `token-ledger.py` 仍使用 Claude transcript 格式，Codex／ChatGPT 的 duty-oncall 成本記帳尚需接入對應用量來源，不能宣稱已完成該平台的記帳驗收。
 
+## 從 clone 開始跟做（Claude Code）
+
+新讀者可用 symlink 安裝，依序取得 repo、掛載，再設定；這條流程與上方外掛安裝擇一。
+
+```bash
+mkdir -p ~/workspace
+cd ~/workspace
+git clone https://github.com/vansleee/sdet-skills.git
+cd sdet-skills
+git rev-parse HEAD
+bash scripts/link-skills.sh
+test -f ~/.claude/skills/ask-sdet/SKILL.md
+test -f ~/.claude/skills/setup-sdet/SKILL.md
+claude
+```
+
+已有 checkout 時，從 `cd ~/workspace/sdet-skills` 開始，先看 `git status --short`，保留未提交修改。`link-skills.sh` 會更新 `~/.claude/skills/` 的同名連結，執行前確認沒有要保留的同名個人 skill。
+
+在 Claude Code 用 `/skills` 確認 `ask-sdet` 與 `setup-sdet` 可見，再從 `/ask-sdet` 說明需求。目前 [官方載入規則](https://code.claude.com/docs/en/skills#edit-a-skill-during-a-session) 支援 session 內偵測 skill 變更，不必一律重開；若 `~/.claude/skills/` 在 session 開始時尚不存在，執行 `/reload-skills`。外掛安裝的入口以 `/skills` 顯示的名稱為準。
+
+完整的版本核對、兩套 Playwright CLI 與設定產物驗收，見 [Day 03 新讀者流程](docs/series-reader-guide.md#day-03-%E6%96%B0%E8%AE%80%E8%80%85%E6%B5%81%E7%A8%8B)。
+
 ## 第一步
 
-```
-/setup-sdet
+```text
+/ask-sdet 我要設定這個專案，之後探索找 bug
 ```
 
-它會一次問一個主題（受測產品、登入、CI、issue tracker、Playwright、門檻），把答案寫進 `config/`。**帳密只記變數名（`env:VAR`），不記值**，祕密走環境變數。跑完之後其他 skill 才知道要對誰工作。
+ask-sdet 是共同入口：純諮詢會直接給建議；明確要設定時接入 setup-sdet，設定完成後回到原任務。已有足夠設定就依任務引導流程，不重跑訪談。熟悉設定流程或跟做舊文章時，仍可直接用 `/setup-sdet`。
+
+setup-sdet 會一次問一個主題（受測產品、登入、CI、issue tracker、Playwright、門檻），把答案寫進 `config/`。**帳密只記變數名（`env:VAR`），不記值**，祕密走環境變數。跑完之後其他 skill 才知道要對誰工作。
 
 `config/` 與 `knowledge/` 的真檔都不進版控，repo 裡只有 `*.example.md` 與 `*.example.yaml` 範本。
+
+多專案目前只接入探索與 agents 流程，接線範圍見 [設定解析契約](references/config-resolution.md)。`maintain/` 仍使用平面預設專案；`test-author`、`api-test-author` 與 `test-heal` 的風格檔讀 `config/test-style.md`，具名 project 的請求先停手核對，不混用設定。
 
 跑完可以從這裡開始：
 
 ```
 /exploration-charter          # 把一個目標談成有邊界的探索章程
 /bug-hunter                   # 照章程獵一輪，交回已判定、已去重的候選
-/ask-sdet 我這個情況該用哪支    # 不確定用哪支的時候問它
+/ask-sdet 我這個情況該用哪支    # 共同入口：諮詢、設定與任務引導
 ```
 
 ## Skill 目錄（依 bucket）
@@ -78,7 +111,9 @@ Codex／ChatGPT 可載入同一份 `SKILL.md` 與 `agents/openai.yaml`。Codex �
 **infra/**（顧好整條生產線） ci-pipeline · test-parallelize · test-env · pipeline-read · pipeline-triage · flaky-manager · quality-gate(user) · pipeline-observability · governance(config)
 **economics/** route-by-risk · sdet-economics(ref)
 **workflow/**（把 SDET 接進團隊/SDLC） test-planning · traceability · status-report · release-signoff(user)
-**meta/** ask-sdet(user)
+**meta/** ask-sdet(user，共同入口；需要設定時接入 setup-sdet)
+**writing/**（跟 SDET 無關的通用文字工具） unslop(user)
+**technical-writing/**（技術文件結構與寫作規則） technical-writing(user)
 
 標 `(user)` 的只在你叫它的時候才動，其餘由模型視情況自己呼叫；`(ref)` 是給其他 skill 讀的參考文件，不是流程。各 bucket 負責什麼、為什麼這樣切，見 [`architecture/sdet-skills-architecture.md`](architecture/sdet-skills-architecture.md)。
 
@@ -114,13 +149,15 @@ verifier 確認問題可重現，gate 判斷能否開單，triage 才建立 Issu
 
 | 路徑 | 放什麼 |
 | --- | --- |
-| `skills/` | 37 支 skill，每支有 `SKILL.md` 與 `agents/openai.yaml` |
+| `skills/` | 可安裝的 skill，每支有 `SKILL.md` 與 `agents/openai.yaml` |
 | `config/` | 後端設定（CI / issue-tracker / product / governance / test-style），只 commit 範本，祕密走 env |
 | `knowledge/` | 受測產品的事實，只 commit 範本 |
 | `charters/` | 探索章程，一份一個任務，可重跑、可人審 |
 | `references/` | test-design / tours / heuristics / confidence / bug-fingerprint / test-health-metrics（**演算法放這裡**）|
 | `state-templates/` | 狀態檔範本，複製到 `output/` 成同名真檔使用 |
 | `tests/` | Playwright 測試與 `maintain/` 的實測基準（見 [`tests/README.md`](tests/README.md)）|
+| `architecture/` | 架構、bucket 邊界與設計原則 |
+| `scripts/` | 安裝輔助、manifest 與文件檢查、證據與成本工具 |
 | `docs/` | 每支 skill 的設計理念，加上 `state-files.md` 這份跨 skill 資料流 |
 | `output/` | 所有執行期產物，不進版控 |
 

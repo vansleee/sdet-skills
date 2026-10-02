@@ -8,6 +8,8 @@ disable-model-invocation: true
 
 一次問一個主題訪談使用者，把答案寫進 `config/<project>/`。可重複執行：先讀現有 config，只問缺的。多專案、範例與驗證步驟見 `docs/foundation/setup-sdet.md`。
 
+可由 ask-sdet 在使用者要設定時接入，也可直接呼叫本 skill；兩個入口都遵守同一份訪談、寫入確認與讀回驗收。由 ask-sdet 接入時保留原任務與已確認的 project，完成後交回設定結果與缺漏，讓它返回原任務。
+
 ## 鐵律
 - 祕密不落地：帳密/token 只記變數名（`env:VAR`），不記值，不在對話裡索取。
 - 寫檔前先列給使用者確認。

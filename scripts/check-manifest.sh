@@ -1,37 +1,51 @@
 #!/usr/bin/env bash
-# 檢查 .claude-plugin/plugin.json 的 skills 清單與檔案系統是否一致。
-#
-# plugin 安裝法要手動維護清單(symlink 時代是掃描出來的),所以新增或改名 skill
-# 很容易忘記改 manifest —— 忘了就是那支 skill 悄悄不存在。這支把兩個方向都比對:
-#   1. manifest 宣告了但目錄沒有 SKILL.md → 改名或刪除後沒同步
-#   2. 有 SKILL.md 但 manifest 沒宣告     → 新增 skill 後沒同步
+# 檢查登錄、重複名稱與必要入口；只依賴既有文風檢查所需的 Python 3。
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
+python3 - <<'PYTHON'
+import json
+import re
+import sys
+from collections import Counter
+from pathlib import Path
 
-declared="$(jq -r '.skills[]' .claude-plugin/plugin.json | sed 's#^\./##' | sort)"
-actual="$(find skills -maxdepth 3 -name SKILL.md -print0 \
-  | xargs -0 -n1 dirname | sort)"
-
-missing="$(comm -23 <(printf '%s\n' "$declared") <(printf '%s\n' "$actual"))"
-undeclared="$(comm -13 <(printf '%s\n' "$declared") <(printf '%s\n' "$actual"))"
-
-status=0
-if [ -n "$missing" ]; then
-  status=1
-  echo "plugin.json 宣告了這些 skill,但找不到 SKILL.md:" >&2
-  printf '  %s\n' $missing >&2
-fi
-if [ -n "$undeclared" ]; then
-  status=1
-  echo "這些 skill 有 SKILL.md,但 plugin.json 沒宣告:" >&2
-  printf '  %s\n' $undeclared >&2
-fi
-
-if [ "$status" -ne 0 ]; then
-  echo >&2
-  echo "修正 .claude-plugin/plugin.json 的 skills 陣列後重跑。" >&2
-  exit 1
-fi
-
-echo "manifest 一致:$(printf '%s\n' "$declared" | wc -l | tr -d ' ') 支 skill"
+manifest = json.loads(Path('.claude-plugin/plugin.json').read_text())
+declared = manifest['skills']
+actual = {'./' + str(p.parent) for p in Path('skills').rglob('SKILL.md')}
+problems = []
+for path, count in Counter(declared).items():
+    if count > 1:
+        problems.append(f'重複登錄：{path}')
+for path in sorted(set(declared) - actual):
+    problems.append(f'找不到 SKILL.md：{path}')
+for path in sorted(actual - set(declared)):
+    problems.append(f'尚未登錄：{path}')
+names = []
+for path in sorted(actual):
+    skill = Path(path) / 'SKILL.md'
+    content = skill.read_text()
+    frontmatter = re.match(r'\A---\s*\n(.*?)\n---(?:\n|$)', content, re.S)
+    name = re.search(r'^name:\s*([a-z0-9-]+)\s*$', frontmatter[1], re.M) if frontmatter else None
+    if not name or name[1] != skill.parent.name:
+        problems.append(f'name 必須符合目錄名稱：{skill}')
+    else:
+        names.append(name[1])
+    agent = skill.parent / 'agents/openai.yaml'
+    if not agent.is_file():
+        problems.append(f'缺少 agents/openai.yaml：{path}')
+        continue
+    explicit = bool(frontmatter and re.search(r'^disable-model-invocation:\s*true\s*$', frontmatter[1], re.M))
+    policy = re.search(r'^  allow_implicit_invocation:\s*(true|false)\s*$', agent.read_text(), re.M)
+    if explicit and (not policy or policy[1] != 'false'):
+        problems.append(f'user-invoked skill 必須停用隱含呼叫：{agent}')
+    elif not explicit and policy:
+        problems.append(f'model-invoked skill 應省略 invocation policy：{agent}')
+for name, count in Counter(names).items():
+    if count > 1:
+        problems.append(f'重複 skill 名稱：{name}')
+if problems:
+    print('\n'.join(problems), file=sys.stderr)
+    sys.exit(1)
+print(f'manifest 與 skill 入口一致：{len(declared)} 支 skill')
+PYTHON

@@ -1,7 +1,7 @@
 {
   "name": "sdet-skills",
   "version": "0.3.0",
-  "description": "Shared SDET workflows for Claude Code, Codex, and ChatGPT: project-aware discovery, blind verification, issue gating, and authorized fixes with GitHub Actions and Playwright",
+  "description": "Shared SDET workflows for Claude Code, Codex, and ChatGPT: a unified entry for setup and task routing, project-aware discovery, blind verification, issue gating, and authorized fixes",
   "author": {
     "name": "vansleee",
     "url": "https://github.com/vansleee"
@@ -45,6 +45,8 @@
     "./skills/workflow/traceability",
     "./skills/workflow/status-report",
     "./skills/workflow/release-signoff",
-    "./skills/meta/ask-sdet"
+    "./skills/meta/ask-sdet",
+    "./skills/writing/unslop",
+    "./skills/technical-writing"
   ]
 }
