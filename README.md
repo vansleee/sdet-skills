@@ -115,7 +115,7 @@ setup-sdet 會一次問一個主題（受測產品、登入、CI、issue tracker
 
 標 `(user)` 的只在你叫它的時候才動，其餘由模型視情況自己呼叫；`(ref)` 是給其他 skill 讀的參考文件，不是流程。各 bucket 負責什麼、為什麼這樣切，見 [`architecture/sdet-skills-architecture.md`](architecture/sdet-skills-architecture.md)。
 
-technical-writing 與 unslop 都放在 `skills/writing/`，原本的 `skills/technical-writing/` 保留相容連結；skill 名稱與指令不變。
+technical-writing 與 unslop 都放在 `skills/writing/`；skill 名稱與指令不變。
 
 setup-sdet 與 ask-sdet 都放在 `skills/meta/`，設計文件放在 `docs/meta/`。更新 checkout 後，重跑 `bash scripts/link-skills.sh`，讓既有安裝連到新位置。
 
