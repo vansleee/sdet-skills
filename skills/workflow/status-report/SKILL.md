@@ -5,7 +5,7 @@ description: 把近期活動彙整成 standup / 測試報告 / release-readiness
 
 # Status Report
 
-輸入一段期間，輸出**對人的摘要**：測了什麼、發現什麼、卡在哪、風險在哪。設計理念見 `docs/workflow/status-report.md`。
+輸入一段期間，輸出**對人的摘要**：測了什麼、發現什麼、卡在哪、風險在哪。設計理念見 `docs/workflow.md#status-report`。
 
 > **只彙整，不重算。** 每個數字都引用既有狀態檔並附出處。這裡重算一次 flaky rate，團隊就有兩個版本的真相。
 

@@ -117,7 +117,7 @@ setup-sdet 會一次問一個主題（受測產品、登入、CI、issue tracker
 
 technical-writing 與 unslop 都放在 `skills/writing/`；skill 名稱與指令不變。
 
-setup-sdet 與 ask-sdet 都放在 `skills/meta/`，設計文件放在 `docs/meta/`。更新 checkout 後，重跑 `bash scripts/link-skills.sh`，讓既有安裝連到新位置。
+setup-sdet 與 ask-sdet 都放在 `skills/meta/`，設計文件放在 `docs/meta.md`。更新 checkout 後，重跑 `bash scripts/link-skills.sh`，讓既有安裝連到新位置。
 
 ## 設計原則
 

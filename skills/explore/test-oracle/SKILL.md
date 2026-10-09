@@ -4,7 +4,7 @@ description: 判斷一個 anomaly 到底是不是 bug：拿產品行為比對 or
 ---
 # Test Oracle
 
-輸入一個 anomaly / fail 候選（來自 `explore` / `classify-anomaly`，需附證據），輸出 verdict：命中哪條 oracle → `bug`；找不到 oracle → `needs-spec` / `inconclusive`。**沒有 oracle 就沒有 bug，只能說「怪」，不能說「錯」。** 設計理念見 `docs/explore/test-oracle.md`。
+輸入一個 anomaly / fail 候選（來自 `explore` / `classify-anomaly`，需附證據），輸出 verdict：命中哪條 oracle → `bug`；找不到 oracle → `needs-spec` / `inconclusive`。**沒有 oracle 就沒有 bug，只能說「怪」，不能說「錯」。** 設計理念見 `docs/explore.md#test-oracle`。
 
 ## Oracle 來源（由強到弱、依可得性挑用）
 

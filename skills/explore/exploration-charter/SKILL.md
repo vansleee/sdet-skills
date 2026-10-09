@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Exploration Charter
 
-跟使用者把探索任務談清楚，產出 `charters/<slug>.yaml`，作為 `explore` 的輸入。**動手前先談，不要急著跑。** 設計理念見 `docs/explore/exploration-charter.md`。
+跟使用者把探索任務談清楚，產出 `charters/<slug>.yaml`，作為 `explore` 的輸入。**動手前先談，不要急著跑。** 設計理念見 `docs/explore.md#exploration-charter`。
 
 ## 訪談（一次問一個主題，不要一次丟整張表單）
 0. **project**（只在 `config/` 底下有專案子目錄時才問）— 這次探索打哪個常態受測產品的 slug，寫進 `charter.project`，`explore` 據此決定讀哪組 `config/<project>/`（規則見 `references/config-resolution.md`）。一次性探索（練習站、demo 站）不填，改由 `target` 自己帶網址。

@@ -5,7 +5,7 @@ description: 修好一支「測試自己壞掉」的測試：只改測試、不�
 
 # Test Heal
 
-輸入一筆被 `failure-analysis` 判為 **test-defect** 的失敗，輸出修好的測試 patch。設計理念見 `docs/maintain/test-heal.md`。
+輸入一筆被 `failure-analysis` 判為 **test-defect** 的失敗，輸出修好的測試 patch。設計理念見 `docs/maintain.md#test-heal`。
 
 > 只吃 test-defect。`product-regression`（走 bug 流程）、`environment`（重試/查 infra）、`flaky`（`flaky-manager`）一律**拒絕修**。硬修只會把真問題蓋掉。
 

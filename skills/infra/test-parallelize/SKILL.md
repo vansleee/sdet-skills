@@ -5,7 +5,7 @@ description: 用分片與平行讓一大包測試在時限內跑完：先驗獨�
 
 # Test Parallelize
 
-輸入套件規模與時限目標，輸出分片策略 + Actions matrix + 報告合併步驟。設計理念見 `docs/infra/test-parallelize.md`。
+輸入套件規模與時限目標，輸出分片策略 + Actions matrix + 報告合併步驟。設計理念見 `docs/infra.md#test-parallelize`。
 
 > **平行不是加速鍵，是放大鏡。** 測試若彼此不獨立，開平行只會把「偶爾紅」放大成「天天紅」。所以前置檢查不過就先擋下，不給分片。
 

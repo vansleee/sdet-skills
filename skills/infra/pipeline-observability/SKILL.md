@@ -5,7 +5,7 @@ description: 算測試健康指標（MTTR、flaky rate、首次通過率、派�
 
 # Pipeline Observability
 
-輸入一段期間的 run 歷史，輸出指標 + 趨勢 + **行動建議**。infra 迴圈的收尾與回饋。設計理念見 `docs/infra/pipeline-observability.md`。
+輸入一段期間的 run 歷史，輸出指標 + 趨勢 + **行動建議**。infra 迴圈的收尾與回饋。設計理念見 `docs/infra.md#pipeline-observability`。
 
 > **指標要導向行動，不是儀表板自嗨。** 每個超標指標都必須指名「接下來交給哪支 skill」，否則這份報告只是好看的數字。
 

@@ -5,7 +5,7 @@ description: 開單前檢查六條必要條件，依專案與 UI／API 證據分
 
 # Issue Quality Gate
 
-輸入一批候選（含 verdict、confidence、evidence），輸出 `output/sessions/<date>_<slug>/gate.yaml`。設計理念見 `docs/agents/issue-quality-gate.md`。
+輸入一批候選（含 verdict、confidence、evidence），輸出 `output/sessions/<date>_<slug>/gate.yaml`。設計理念見 `docs/agents.md#issue-quality-gate`。
 
 > **好習慣會被跳過，硬閘門不會。** 前面立的規矩——證據、oracle、信心、誤報、去重、獨立重現——在這裡從「最好有」變成「沒有就開不了」。這是 **AND**：全過才放行。
 

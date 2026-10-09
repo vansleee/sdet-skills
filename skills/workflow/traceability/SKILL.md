@@ -5,7 +5,7 @@ description: 維護「需求 ↔ 測試 ↔ finding」的覆蓋對照，指出�
 
 # Traceability
 
-輸入需求 + 測試 + findings，輸出**覆蓋對照表 + gap 清單 + 孤兒清單**。設計理念見 `docs/workflow/traceability.md`。
+輸入需求 + 測試 + findings，輸出**覆蓋對照表 + gap 清單 + 孤兒清單**。設計理念見 `docs/workflow.md#traceability`。
 
 > **覆蓋不等於測得好。** 這份表回答「有沒有東西在守」，不回答「守得夠不夠」。報告裡要明說這個限制，不要讓它變成一個好看的百分比。
 > 狀態檔：`output/traceability.yaml`（範本 `state-templates/traceability.example.yaml`）。對應規則見 `references/traceability-mapping.md`。

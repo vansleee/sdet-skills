@@ -5,7 +5,7 @@ description: 用風險決定要不要測、先測什麼，放在 pipeline 最前
 
 # Route by Risk
 
-輸入一批候選測試/探索目標，輸出每一項的風險分數與 route 決定（`must-test` / `sample` / `skip`），供上游排序、下游收斂範圍。**放在最前面**：先決定值不值得測，再決定怎麼測。設計理念見 `docs/economics/route-by-risk.md`。
+輸入一批候選測試/探索目標，輸出每一項的風險分數與 route 決定（`must-test` / `sample` / `skip`），供上游排序、下游收斂範圍。**放在最前面**：先決定值不值得測，再決定怎麼測。設計理念見 `docs/economics.md#route-by-risk`。
 
 ## 輸入 / 輸出
 - **輸入**：一批候選項（模組、路由、feature、PR 變更檔案清單，或 `test-planning` 圈出的範圍），可選：本輪預算上限（讀 `config/sdet-config.yaml` 的 `budget`）。

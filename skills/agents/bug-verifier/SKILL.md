@@ -5,7 +5,7 @@ description: 在乾淨 context 盲驗候選，只收重現步驟、原始證據�
 
 # Bug Verifier
 
-輸入 `blind/manifest.yaml` 與包內原始證據，輸出獨立 verdict。先讀 `references/agent-handoff.md` 的識別、盲驗與證據契約；設計理念見 `docs/agents/bug-verifier.md`。
+輸入 `blind/manifest.yaml` 與包內原始證據，輸出獨立 verdict。先讀 `references/agent-handoff.md` 的識別、盲驗與證據契約；設計理念見 `docs/agents.md#bug-verifier`。
 
 由呼叫端用當前平台的獨立 subagent／session 啟動，關閉對話繼承；不能建立乾淨 context 就退回待驗，不在原 context 自稱盲驗。
 

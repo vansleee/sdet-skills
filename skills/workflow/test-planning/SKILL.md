@@ -5,7 +5,7 @@ description: 把一張 ticket / PRD 轉成「這次要測什麼」的範圍 + �
 
 # Test Planning
 
-輸入一張 ticket / PRD，輸出**測試範圍 + 風險排序 + 每項怎麼測**。workflow 迴圈的入口。設計理念見 `docs/workflow/test-planning.md`。
+輸入一張 ticket / PRD，輸出**測試範圍 + 風險排序 + 每項怎麼測**。workflow 迴圈的入口。設計理念見 `docs/workflow.md#test-planning`。
 
 > **規劃不是列一堆 test case。** 產出是「這輪測什麼、不測什麼、為什麼」。怎麼走留給 `explore`，逐步腳本留給 `test-author`。
 

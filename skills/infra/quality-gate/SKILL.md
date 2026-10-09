@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Quality Gate（pipeline 層）
 
-輸入一個候選（PR / commit / release build），輸出放行裁決 + 逐條證據 + 留痕。設計理念見 `docs/infra/quality-gate.md`。
+輸入一個候選（PR / commit / release build），輸出放行裁決 + 逐條證據 + 留痕。設計理念見 `docs/infra.md#quality-gate`。
 
 > **三層閘門分工**：`issue-quality-gate` 管「一張 issue 能不能開」→ **本 skill** 管「這個 build 能不能放行」→ `release-signoff` 管「整個 release 對需求能不能簽出去」。本 skill 的輸出是上層的證據，不重複做上層的判斷。
 > 狀態檔：`output/pipeline-gate.yaml`（**注意**：與 `issue-quality-gate` 的 `output/sessions/<date>_<slug>/gate.yaml` 是不同檔案，別混用）。

@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Ask SDET
 
-先辨識使用者想諮詢、設定專案，還是執行具體任務。設定訪談與寫檔契約只維護在 setup-sdet，本 skill 負責接入與返回原任務。設計理念見 `docs/meta/ask-sdet.md`。
+先辨識使用者想諮詢、設定專案，還是執行具體任務。設定訪談與寫檔契約只維護在 setup-sdet，本 skill 負責接入與返回原任務。設計理念見 `docs/meta.md#ask-sdet`。
 
 > 只列「你要自己打」的 user-invoked 入口。其餘 model-invoked skill（evidence-package、explore、bug-hunter、triage、failure-analysis…）agent 遇到對的任務會自己觸發，不用你記；你想手動指定時照樣可以直接打名字。
 

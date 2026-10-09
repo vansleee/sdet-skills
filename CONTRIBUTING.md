@@ -19,7 +19,7 @@ npm run test:list
 1. 確認能力屬於哪個 bucket。手段相同、判準不同時，擴充既有 skill 的判準表。
 2. 維護 `SKILL.md` 與 `agents/openai.yaml`。使用者呼叫的 skill 要同時設定 `disable-model-invocation: true` 與 `policy.allow_implicit_invocation: false`。
 3. 新增、改名或改行為時，同步 [.claude-plugin/plugin.json](.claude-plugin/plugin.json)、[README](README.md) 與 [ask-sdet](skills/meta/ask-sdet/SKILL.md)。
-4. 設計理由放 `docs/<bucket>/`；共用判準與演算法放 `references/`。產品事實與設定只提交範本。
+4. 設計理由放 `docs/<bucket>.md`，一支 skill 一節；共用判準與演算法放 `references/`。產品事實與設定只提交範本。
 5. 執行 `npm run check`。涉及測試行為時，再依 [測試指南](tests/README.md) 選受影響的測試。
 
 設定與路由入口放 `skills/meta/`，文字工具放 `skills/writing/`。每支 skill 只登錄正式路徑，不要複製成另一支同名 skill。

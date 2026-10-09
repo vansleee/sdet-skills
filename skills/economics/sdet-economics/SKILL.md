@@ -5,7 +5,7 @@ description: 成本紀律 reference：省 token、重用 context、模型分級�
 
 # SDET Economics（reference，被 bug-hunter / explore / duty-oncall 讀）
 
-成本紀律 reference。**token 是稀缺資源**，燒在低風險探索上等於燒真錢；本文件定規則，不自己跑東西。設計理念見 `docs/economics/sdet-economics.md`。
+成本紀律 reference。**token 是稀缺資源**，燒在低風險探索上等於燒真錢；本文件定規則，不自己跑東西。設計理念見 `docs/economics.md#sdet-economics`。
 
 ## 省 token / 重用 context
 - 同一 session 內已經看過的畫面/證據不要重新截圖重新讀；`exploration-log.yaml` 記過的路徑不要重走（見 `explore`）。

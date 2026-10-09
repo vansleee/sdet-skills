@@ -5,7 +5,7 @@ description: 用 GitHub Actions 建/改測試 pipeline：產 workflow、掛分�
 
 # CI Pipeline
 
-輸入一個 repo 的測試設定，輸出可用的 GitHub Actions workflow：跑測試、留證據、把 artifact 命名成下游讀得懂的樣子。infra 迴圈的**產生端**。設計理念見 `docs/infra/ci-pipeline.md`。
+輸入一個 repo 的測試設定，輸出可用的 GitHub Actions workflow：跑測試、留證據、把 artifact 命名成下游讀得懂的樣子。infra 迴圈的**產生端**。設計理念見 `docs/infra.md#ci-pipeline`。
 
 ## 輸入 / 輸出
 - **輸入**：repo（測試框架設定，如 `playwright.config.ts`）、觸發時機（PR / nightly / manual）、可選的 `route-by-risk` 範圍決定、可選的時限目標。

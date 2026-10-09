@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # API Test Author
 
-輸入一條驗收條件（或一次成功的端點探索路徑），輸出**一支**可重跑、可維護的 API 測試。`test-author` 的姊妹 skill，共用 `references/test-design.md` 的原則，差異在第 3、4 條（見該文件第 9 節）。設計理念見 `docs/maintain/api-test-author.md`。
+輸入一條驗收條件（或一次成功的端點探索路徑），輸出**一支**可重跑、可維護的 API 測試。`test-author` 的姊妹 skill，共用 `references/test-design.md` 的原則，差異在第 3、4 條（見該文件第 9 節）。設計理念見 `docs/maintain.md#api-test-author`。
 
 > user-invoked：跟 `test-author` 同一個理由，多一支測試就是多一份要養一輩子的資產。
 

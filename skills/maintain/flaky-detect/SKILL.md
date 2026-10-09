@@ -5,7 +5,7 @@ description: 判定一支測試是真的 flaky 還是穩定壞掉：同碼同環
 
 # Flaky Detect（一筆）
 
-輸入一支可疑測試，輸出「是不是 flaky＋重現率＋疑似根因＋下一步」。設計理念見 `docs/maintain/flaky-detect.md`。
+輸入一支可疑測試，輸出「是不是 flaky＋重現率＋疑似根因＋下一步」。設計理念見 `docs/maintain.md#flaky-detect`。
 
 > 一筆 vs 一批：這支只定性**一支**測試。跨 run 的 flaky 趨勢、隔離名單與治理交 `flaky-manager`。
 

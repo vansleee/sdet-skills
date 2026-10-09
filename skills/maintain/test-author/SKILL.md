@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Test Author
 
-輸入一條使用者故事／驗收條件（或一次成功的探索路徑），輸出**一支**可重跑、可維護的 Playwright 測試。設計理念見 `docs/maintain/test-author.md`，設計原則見 `references/test-design.md`。
+輸入一條使用者故事／驗收條件（或一次成功的探索路徑），輸出**一支**可重跑、可維護的 Playwright 測試。設計理念見 `docs/maintain.md#test-author`，設計原則見 `references/test-design.md`。
 
 > user-invoked：多一支測試就是多一份要養一輩子的資產，該不該加是人的決定，不讓模型在背景自行新增。
 

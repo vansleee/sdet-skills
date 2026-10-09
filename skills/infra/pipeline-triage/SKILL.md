@@ -5,7 +5,7 @@ description: 一次 run 紅一片時，先把幾十個失敗 fan-in 合併成少
 
 # Pipeline Triage（一批）
 
-輸入一個有失敗的 GitHub Actions run，輸出：合併後的根因群 + 每群的負責人 + 開好的 Issue。設計理念見 `docs/infra/pipeline-triage.md`。
+輸入一個有失敗的 GitHub Actions run，輸出：合併後的根因群 + 每群的負責人 + 開好的 Issue。設計理念見 `docs/infra.md#pipeline-triage`。
 
 > 與 `failure-analysis` 的分工：那支處理**一筆**；這支處理**一批**。80 筆各自分析＝80 倍成本且結論還錯。**必須先合併根因再分析**。
 > 後端指令讀 `config/ci-backend-github-actions.md`（讀 run）與 `config/issue-tracker-github.md`（開單）；token 走 env。開單受 `config/governance.yaml` 管制。

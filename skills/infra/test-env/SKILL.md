@@ -5,7 +5,7 @@ description: 決定整套測試的環境策略：ephemeral 還是共享+namespac
 
 # Test Env（一批）
 
-輸入一套測試的環境需求，輸出環境策略 + seeding/teardown 步驟 + smoke check。設計理念見 `docs/infra/test-env.md`。
+輸入一套測試的環境需求，輸出環境策略 + seeding/teardown 步驟 + smoke check。設計理念見 `docs/infra.md#test-env`。
 
 > 一支 vs 整環境：`test-data` 管**一支測試**自備自清它要的資料；本 skill 管**整套測試**跑在哪、怎麼隔離。兩者共用同一套唯一標記慣例（見下）。
 

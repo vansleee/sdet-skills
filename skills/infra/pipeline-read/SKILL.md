@@ -5,7 +5,7 @@ description: 從 GitHub Actions run 拉失敗、artifact、annotation（用 gh�
 
 # Pipeline Read
 
-輸入一個 GitHub Actions run，輸出**結構化失敗清單**。infra 迴圈的感官：只讀不寫，把 raw run 變成下游吃得下的資料。設計理念見 `docs/infra/pipeline-read.md`。
+輸入一個 GitHub Actions run，輸出**結構化失敗清單**。infra 迴圈的感官：只讀不寫，把 raw run 變成下游吃得下的資料。設計理念見 `docs/infra.md#pipeline-read`。
 
 > 只負責「讀出來、整理好」。合併根因是 `pipeline-triage`、分類單筆是 `failure-analysis`、判 flaky 是 `flaky-detect`。**本 skill 不下任何結論。**
 

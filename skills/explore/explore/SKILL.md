@@ -6,7 +6,7 @@ description: 依照一份 Exploration Charter 自主探索產品：觀察現況�
 
 # Explore (v0.1)
 
-輸入一份 charter（`charters/<slug>.yaml`，或 inline 的：目標 / 範圍 / oracles / 邊界），自主探索並產出 findings。設計理念見 `docs/explore/explore.md`。
+輸入一份 charter（`charters/<slug>.yaml`，或 inline 的：目標 / 範圍 / oracles / 邊界），自主探索並產出 findings。設計理念見 `docs/explore.md#explore`。
 
 > v0.1：本版把三大失敗模式的防呆寫死（見下方鐵則）。跑過真實 session 後再依表現收緊。charter 由 `exploration-charter` 產生；判定交 `test-oracle` / `classify-anomaly`；留證畫面側交 `evidence-package`、端點側交 `api-evidence`。
 
@@ -47,7 +47,7 @@ description: 依照一份 Exploration Charter 自主探索產品：觀察現況�
 - **防幻覺**：沒有證據不宣稱「已完成 / 是 bug」；只描述看到的，判定留給 oracle。
 
 ## 覆蓋鐵則（防漏檢）
-上面三條管「別亂跑」，這五條管「別漏看」。收工前逐條自檢，任何一條沒過就別宣告走完。校準依據見 `docs/explore/explore.md`。
+上面三條管「別亂跑」，這五條管「別漏看」。收工前逐條自檢，任何一條沒過就別宣告走完。校準依據見 `docs/explore.md#explore`。
 
 - **每條相對判準配一條絕對判準。** 「跟其他 N 個一樣」只抓得到離群值，整批一致地錯就沒有訊號。內部一致性 oracle 一律再補一條不靠比對的判準（量圖高等不等於容器高，別問它跟其他張一不一樣高）。
 - **靜態解析只用來選目標，不用來下結論。** `fetch` 加 DOM 屬性讀取可以快速圈出候選，但行為改寫藏在事件處理器裡。判「這個連結沒問題」之前，點過它。

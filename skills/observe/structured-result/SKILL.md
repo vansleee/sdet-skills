@@ -4,7 +4,7 @@ description: 把測試/觀察結果表達成超越 Pass/Fail 的結構化狀態�
 ---
 # Structured Result
 
-每一次探索都會產生一份 `results.yaml`，每一個檢查點都會產生一筆，並且它會放到當次的 evidence package，設計理念見 `docs/observe/structured-result.md`
+每一次探索都會產生一份 `results.yaml`，每一個檢查點都會產生一筆，並且它會放到當次的 evidence package，設計理念見 `docs/observe.md#structured-result`
 
 ## 狀態（status，必填，六選一）
 

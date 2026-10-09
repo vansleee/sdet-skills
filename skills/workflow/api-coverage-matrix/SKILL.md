@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # API Coverage Matrix
 
-輸入一份 API 設計文件，輸出**一張逐端點 × 逐方法 × 正負向情境的優先序案例矩陣**，附代表性 payload、回應與可重現的 cURL。設計理念見 `docs/workflow/api-coverage-matrix.md`。
+輸入一份 API 設計文件，輸出**一張逐端點 × 逐方法 × 正負向情境的優先序案例矩陣**，附代表性 payload、回應與可重現的 cURL。設計理念見 `docs/workflow.md#api-coverage-matrix`。
 
 > **不是 test-planning 的替代品。** 範圍與「值不值得測」由 `test-planning`／`route-by-risk` 決定；本 skill 只在已經判定要枚舉某段 API surface 之後動手。枚舉出來的優先序回答「先做哪個、先自動化哪個」，不是「要不要做」，兩者是不同問題，不衝突。
 > **每一列是需求單位，不是操作手冊。** 近似 `traceability` 的 `req_id`：可獨立驗證、有優先序、有覆蓋狀態，但不是要人照著跑的逐步腳本。長期回歸交 `api-test-author` 固化。

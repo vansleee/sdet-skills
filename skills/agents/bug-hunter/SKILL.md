@@ -5,7 +5,7 @@ description: 依一份 charter 獵一輪 bug，交回已判定、已去重、標
 
 # Bug Hunter
 
-輸入一份 charter（`charters/<slug>.yaml`），輸出一份**候選 issue 清單**。設計理念見 `docs/agents/bug-hunter.md`。
+輸入一份 charter（`charters/<slug>.yaml`），輸出一份**候選 issue 清單**。設計理念見 `docs/agents.md#bug-hunter`。
 
 > **它只找、只整理，不開單、不定罪。** 交回的叫「候選」，不叫 bug。蓋章是 `bug-verifier`（獨立重現），能不能開單是 `issue-quality-gate`，開單是 `triage`。
 > model-invoked：`duty-oncall` 要能在值班中直接調用它。授權管制不靠「叫不到」，靠 `config/governance.yaml` 與各站自己的確認規則。

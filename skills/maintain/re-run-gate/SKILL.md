@@ -5,7 +5,7 @@ description: 測試修好後重跑，確認是「穩定的綠」而不是「剛�
 
 # Re-run Gate
 
-輸入一支剛被 `test-heal` 修好的測試（或要驗穩的測試），重跑後給裁決：pass / flaky / escalate。設計理念見 `docs/maintain/re-run-gate.md`。
+輸入一支剛被 `test-heal` 修好的測試（或要驗穩的測試），重跑後給裁決：pass / flaky / escalate。設計理念見 `docs/maintain.md#re-run-gate`。
 
 ## 什麼才算過（green criteria）
 「綠」的定義來自 `config/sdet-config.yaml`（預設：連續 N 次全綠，N=3）。**過一次不算過。**

@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Duty Oncall
 
-輸入一份 charter（`charters/<slug>.yaml`），輸出一輪完整值勤 ＋ `output/sessions/<date>_<slug>/runs/<date>.yaml` ＋ 值班摘要。設計理念見 `docs/agents/duty-oncall.md`。
+輸入一份 charter（`charters/<slug>.yaml`），輸出一輪完整值勤 ＋ `output/sessions/<date>_<slug>/runs/<date>.yaml` ＋ 值班摘要。設計理念見 `docs/agents.md#duty-oncall`。
 
 > **它不發明能力，它把 `agents/` 的代理人排成一次可重複、可稽核的值班。** 授權不是放手：發起交給排程，**不可逆的最後一下（merge、拍板）永遠留給人**。
 

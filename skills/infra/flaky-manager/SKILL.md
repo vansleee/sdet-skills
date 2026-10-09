@@ -5,7 +5,7 @@ description: 跨 run 的 flaky 治理：維護 flaky 名單、決定隔離（qua
 
 # Flaky Manager（一批）
 
-輸入跨 run 的失敗歷史，輸出 flaky 名單 + 隔離決策 + 到期升級。設計理念見 `docs/infra/flaky-manager.md`。
+輸入跨 run 的失敗歷史，輸出 flaky 名單 + 隔離決策 + 到期升級。設計理念見 `docs/infra.md#flaky-manager`。
 
 > 一筆 vs 一批：`flaky-detect` 對**一支**測試重跑 N 次定性；本 skill 管**一批**的名單、政策與退場。
 > 狀態檔：`output/flaky-registry.yaml`（範本 `state-templates/flaky-registry.example.yaml`，見 `docs/state-files.md`）。

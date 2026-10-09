@@ -5,7 +5,7 @@ description: 判斷一支測試該留、該合併、還是該刪，並寫清楚�
 
 # Test Prune
 
-輸入一支測試，輸出 `keep` / `merge` / `remove` 的**建議**與理由。設計理念見 `docs/maintain/test-prune.md`。
+輸入一支測試，輸出 `keep` / `merge` / `remove` 的**建議**與理由。設計理念見 `docs/maintain.md#test-prune`。
 
 > **只給建議。** 刪除不可逆，本 skill 不自行刪檔、不加 `.skip`；輸出一律帶 `needs_human_approval: true`（比照 `config/governance.yaml` 的 needs_review 精神）。
 

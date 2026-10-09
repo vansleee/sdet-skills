@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Release Sign-off（專案層級）
 
-輸入一個候選版本，輸出 `go` / `no-go` / `conditional-go` + 逐條證據 + 可稽核的簽核紀錄。設計理念見 `docs/workflow/release-signoff.md`。
+輸入一個候選版本，輸出 `go` / `no-go` / `conditional-go` + 逐條證據 + 可稽核的簽核紀錄。設計理念見 `docs/workflow.md#release-signoff`。
 
 > **三層閘門分工**：`issue-quality-gate`（一張單能不能開）→ `infra/quality-gate`（一個 build 能不能放行）→ **本 skill**（整個 release 對需求與風險能不能簽出去）。本層**吃下層產物當證據，不重跑下層**。
 > 狀態檔：`output/signoffs/<version>.yaml`（範本 `state-templates/signoff.example.yaml`）。

@@ -4,7 +4,7 @@ description: 只修可重現的 issue：先重現、用先紅後綠的回歸測�
 ---
 # Bug Fixer
 
-輸入過了 gate 的 Issue、證據及交接識別，輸出待 review 的 PR。先讀 `references/agent-handoff.md`、`references/config-resolution.md` 與 `references/agent-governance.md`；後端讀該 project 的設定，本地 Issue 依交接路徑讀取。設計理念見 `docs/agents/bug-fixer.md`。
+輸入過了 gate 的 Issue、證據及交接識別，輸出待 review 的 PR。先讀 `references/agent-handoff.md`、`references/config-resolution.md` 與 `references/agent-governance.md`；後端讀該 project 的設定，本地 Issue 依交接路徑讀取。設計理念見 `docs/agents.md#bug-fixer`。
 
 > **順序就是紀律：先重現、先寫會紅的測試、才改碼。** 測試轉綠不是目的，行為對了才是。
 

@@ -5,7 +5,7 @@ description: 直接打 API 驗證或探索端點時，蒐集並整理 API 證據
 
 # API Evidence
 
-`evidence-package` 的姊妹 skill：沒有畫面可截時，證據是**請求與回應本身**。輸出形狀比照 `evidence-package`，供 `test-oracle` / `bug-verifier` / `triage` 直接讀。設計理念見 `docs/observe/api-evidence.md`。
+`evidence-package` 的姊妹 skill：沒有畫面可截時，證據是**請求與回應本身**。輸出形狀比照 `evidence-package`，供 `test-oracle` / `bug-verifier` / `triage` 直接讀。設計理念見 `docs/observe.md#api-evidence`。
 
 ## 用哪一支
 - 操作經過畫面（點按鈕、送表單）→ `evidence-package`，它的 `network.log` 已經涵蓋。

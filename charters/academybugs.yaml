@@ -25,7 +25,7 @@ charter:
     - "使用者期待：連結不死鏈；圖片與商品相符；不得有佔位／範例資料外洩"
   # 2026-08-01 校準後補：站方植入 25 支，探索兩輪獨立命中 17 支（0.68）。
   # 漏掉的 8 支收斂成四個根因，逐條轉成本 charter 的具體判準。
-  # 通用版見 skills/explore/explore/SKILL.md 的「覆蓋鐵則」，來由見 docs/explore/explore.md。
+  # 通用版見 skills/explore/explore/SKILL.md 的「覆蓋鐵則」，來由見 docs/explore.md#explore。
   coverage_rules:
     - rule: "每條相對判準配一條絕對判準"
       why: "18 張列表圖比對只抓到唯一離群那張，14 張一致地沒填滿容器的沒有訊號"

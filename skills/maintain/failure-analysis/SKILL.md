@@ -5,7 +5,7 @@ description: 一支自動化測試紅了，分析根因並分流：選擇器/等
 
 # Failure Analysis（一筆）
 
-輸入一筆失敗測試（nodeid、error、traceback + evidence：trace/screenshot/console/network），輸出分類 + 依據 + 分流。**紅了先別急著修，先搞清楚是誰的錯。** 設計理念見 `docs/maintain/failure-analysis.md`。
+輸入一筆失敗測試（nodeid、error、traceback + evidence：trace/screenshot/console/network），輸出分類 + 依據 + 分流。**紅了先別急著修，先搞清楚是誰的錯。** 設計理念見 `docs/maintain.md#failure-analysis`。
 
 > 一筆 vs 一批：這支處理**一筆**。CI 一次紅一片時，由 `pipeline-triage` 先 fan-in 合併成根因群，再對**每群呼叫本 skill 一次**（不要逐筆）。
 

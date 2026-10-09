@@ -5,7 +5,7 @@ description: 把過閘門的 product-bug finding 寫成可重現報告，依專�
 
 # Triage
 
-輸入 `product-bug` finding、證據與 gate，輸出可重現報告及 Issue；重複項可在授權後補充舊單。先讀 `references/agent-handoff.md`、`references/config-resolution.md` 與 `references/agent-governance.md`。後端只從該 project 的設定選取，憑證走 env。設計理念見 `docs/agents/triage.md`。
+輸入 `product-bug` finding、證據與 gate，輸出可重現報告及 Issue；重複項可在授權後補充舊單。先讀 `references/agent-handoff.md`、`references/config-resolution.md` 與 `references/agent-governance.md`。後端只從該 project 的設定選取，憑證走 env。設計理念見 `docs/agents.md#triage`。
 
 新單資格由 `issue-quality-gate` 判，修復交 `bug-fixer`；重複項只補舊單，不重新開單。CI 級的批次開單見 `pipeline-triage`。
 

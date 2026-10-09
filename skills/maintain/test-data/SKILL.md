@@ -5,7 +5,7 @@ description: 讓一支測試自己準備、自己清掉它要的資料：fixture
 
 # Test Data（一支）
 
-輸入一支測試對資料的需求（或一筆被 `failure-analysis` 判為 `test-data` 的失敗），輸出 fixture（建立＋清理）與一份「這支測試建立了什麼」的 annotation。設計理念見 `docs/maintain/test-data.md`。
+輸入一支測試對資料的需求（或一筆被 `failure-analysis` 判為 `test-data` 的失敗），輸出 fixture（建立＋清理）與一份「這支測試建立了什麼」的 annotation。設計理念見 `docs/maintain.md#test-data`。
 
 > 原則：**測試要用的資料，測試自己生、自己收。** 「環境裡本來就有那筆資料」是 flaky 的主要來源之一。
 
