@@ -23,14 +23,14 @@
 - 一次 CI 紅了三十支，哪幾支是同一個根因，該找誰修？
 - 哪些事它可以自己做，哪些要你點頭，哪些永遠不准？
 
-這個 repo 把上面每一題做成一支 skill，彼此用名稱互相呼叫（`bug-hunter` 交給 `issue-quality-gate`，過了才輪到 `triage` 開單）。**產品知識與專案設定是輸入，不寫死在 skill 裡**，所以換一個受測產品只換 `knowledge/` 與 `config/`，能力本身帶著走。
+這個 repo 把上面每一題做成一支 skill，彼此用名稱互相呼叫（`bug-hunter` 交給 `issue-quality-gate`，過了才輪到 `triage` 開單）。**產品知識與專案設定是輸入，不寫死在 skill 裡**，所以換一個受測產品只換 `projects/<project>/` 這個資料夾，能力本身帶著走。
 
 ## 需要什麼
 
 - Claude Code、Codex 或具備 skills 的 ChatGPT 執行環境；實際操作需可用的瀏覽器／API 工具與專案檔案存取權
 - Node.js 20 以上（Playwright 用）
 - `gh` CLI 並已登入，如果要用 GitHub Issues 那條路
-- 一個受測產品。想先試跑的話，`charters/` 裡有幾份現成的 charter，打的是公開練習站（Toolshop、SauceDemo、TodoMVC）
+- 一個受測產品。想先試跑的話，`projects/*/charters/` 裡有幾份現成的 charter，打的是公開練習站（Toolshop、SauceDemo、TodoMVC）
 
 ## 安裝
 
@@ -53,7 +53,7 @@ bash scripts/link-skills.sh
 ```
 </details>
 
-Codex／ChatGPT 可載入同一份 `SKILL.md` 與 `agents/openai.yaml`。Codex 以 `$skill-name` 指定，ChatGPT 從 `@` 選取已安裝 skill；載入方式見 [OpenAI skills 文件](https://learn.chatgpt.com/docs/build-skills)。安裝時保留套件共用的 `references/`、`docs/`、`state-templates/` 與 `scripts/`，執行時另提供受測專案的 config、knowledge 與 output 工作目錄。
+Codex／ChatGPT 可載入同一份 `SKILL.md` 與 `agents/openai.yaml`。Codex 以 `$skill-name` 指定，ChatGPT 從 `@` 選取已安裝 skill；載入方式見 [OpenAI skills 文件](https://learn.chatgpt.com/docs/build-skills)。安裝時保留套件共用的 `references/`、`docs/` 與 `scripts/`，執行時另提供受測專案的 `projects/<project>/` 與 `output/` 工作目錄。
 
 `agents/` 的資料與授權契約共用；獨立驗證須由平台建立不繼承對話的 context。現有 `token-ledger.py` 仍使用 Claude transcript 格式，Codex／ChatGPT 的 duty-oncall 成本記帳尚需接入對應用量來源，不能宣稱已完成該平台的記帳驗收。
 
@@ -87,11 +87,11 @@ claude
 
 ask-sdet 是共同入口：純諮詢會直接給建議；明確要設定時接入 setup-sdet，設定完成後回到原任務。已有足夠設定就依任務引導流程，不重跑訪談。熟悉設定流程或跟做舊文章時，仍可直接用 `/setup-sdet`。
 
-setup-sdet 會一次問一個主題（受測產品、登入、CI、issue tracker、Playwright、門檻），把答案寫進 `config/`。**帳密只記變數名（`env:VAR`），不記值**，祕密走環境變數。跑完之後其他 skill 才知道要對誰工作。
+setup-sdet 會一次問一個主題（受測產品、登入、CI、issue tracker、Playwright、門檻），把答案寫進 `projects/<project>/config/`。**帳密只記變數名（`env:VAR`），不記值**，祕密走環境變數。跑完之後其他 skill 才知道要對誰工作。
 
-`config/` 與 `knowledge/` 的真檔都不進版控，repo 裡只有 `*.example.md` 與 `*.example.yaml` 範本。
+每個受測產品一個資料夾 `projects/<project>/`，底下是 `config/`、`knowledge/`、`charters/`。`config/` 與 `knowledge/` 的真檔不進版控，新專案從 `projects/_template/` 複製起手。
 
-多專案目前只接入探索與 agents 流程，接線範圍見 [設定解析契約](references/config-resolution.md)。`maintain/` 仍使用平面預設專案；`test-author`、`api-test-author` 與 `test-heal` 的風格檔讀 `config/test-style.md`，具名 project 的請求先停手核對，不混用設定。
+所有 skill 照同一份 [設定解析契約](references/config-resolution.md) 找專案，缺檔就停手，不回退讀其他專案。
 
 跑完可以從這裡開始：
 
@@ -123,13 +123,13 @@ setup-sdet 與 ask-sdet 都放在 `skills/meta/`，設計文件放在 `docs/meta
 
 三條原則決定了東西該放哪、什麼時候該開新 skill，完整說明都在架構文件：
 
-- **四層分工** —— `skills/` 能力、`knowledge/` 產品事實、`skills/workflow/` 專案流程、`config/` 設定。skill 讀後三者，不內嵌。
+- **四層分工** —— `skills/` 能力、`projects/<project>/knowledge/` 產品事實、`skills/workflow/` 專案流程、`projects/<project>/config/` 設定。skill 讀後三者，不內嵌。
 - **一筆 vs 一批** —— `maintain/` 修一支測試，`infra/` 顧整批 pipeline。一批必須先合併根因再分析。
 - **畫面 vs 端點** —— 手段不同才成對開 skill，判準不同只加一張表。不為 API 另立一套平行體系。
 
 三層閘門 `issue-quality-gate`（一張單）→ `quality-gate`（一個 build）→ `release-signoff`（一版 release），上層吃下層產物當證據，不重跑下層。
 
-會產生副作用的動作（開 issue、開 PR、改測試、重置環境、放行 release）一律先確認，並受 `config/governance.yaml` 的授權分級管制：可自主、要人審、永遠禁止。**合併 PR 不在任何 agent 的權限內。**
+會產生副作用的動作（開 issue、開 PR、改測試、重置環境、放行 release）一律先確認，並受 `projects/governance.yaml` 的授權分級管制：可自主、要人審、永遠禁止。**合併 PR 不在任何 agent 的權限內。**
 
 ## 找問題到修復
 
@@ -152,11 +152,11 @@ verifier 確認問題可重現，gate 判斷能否開單，triage 才建立 Issu
 | 路徑 | 放什麼 |
 | --- | --- |
 | `skills/` | 可安裝的 skill，每支有 `SKILL.md` 與 `agents/openai.yaml` |
-| `config/` | 後端設定（CI / issue-tracker / product / governance / test-style），只 commit 範本，祕密走 env |
-| `knowledge/` | 受測產品的事實，只 commit 範本 |
-| `charters/` | 探索章程，一份一個任務，可重跑、可人審 |
+| `projects/<project>/` | 一個受測產品一個資料夾：`config/` 後端設定（CI / issue-tracker / product / test-style）、`knowledge/` 產品事實、`charters/` 探索章程。`config/` 與 `knowledge/` 不進版控，祕密走 env |
+| `projects/_template/` | 新專案範本 |
+| `projects/governance.yaml` | 跨專案共用的授權分級表，不進版控 |
 | `references/` | test-design / tours / heuristics / confidence / bug-fingerprint / test-health-metrics（**演算法放這裡**）|
-| `state-templates/` | 狀態檔範本，複製到 `output/` 成同名真檔使用 |
+| `references/state/` | 狀態檔範本，複製到 `output/` 成同名真檔使用 |
 | `tests/` | Playwright 測試與 `maintain/` 的實測基準（見 [`tests/README.md`](tests/README.md)）|
 | `scripts/` | 安裝輔助、manifest 與文件檢查、證據與成本工具 |
 | `docs/` | 架構（`architecture.md`）、詞彙表（`glossary.md`）、跨 skill 資料流（`state-files.md`），以及每支 skill 的設計理念 |

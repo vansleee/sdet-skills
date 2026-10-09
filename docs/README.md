@@ -27,4 +27,4 @@
 | 成本與模型選擇 | [route-by-risk](economics.md#route-by-risk)、[sdet-economics](economics.md#sdet-economics) |
 | 不確定入口 | [ask-sdet](meta.md#ask-sdet) |
 
-`skills/` 是執行指令，這裡是設計理由。測試教材與歷史實測在 [tests/README.md](../tests/README.md)，狀態範本用法在 [state-templates/README.md](../state-templates/README.md)。
+`skills/` 是執行指令，這裡是設計理由。測試教材與歷史實測在 [tests/README.md](../tests/README.md)，狀態範本用法在 [references/state/README.md](../references/state/README.md)。

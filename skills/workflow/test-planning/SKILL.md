@@ -10,14 +10,14 @@ description: 把一張 ticket / PRD 轉成「這次要測什麼」的範圍 + �
 > **規劃不是列一堆 test case。** 產出是「這輪測什麼、不測什麼、為什麼」。怎麼走留給 `explore`，逐步腳本留給 `test-author`。
 
 ## 輸入 / 輸出
-- **輸入**：ticket / PRD（連結或內文；GitHub issue 用 `gh issue view <n> --json title,body,labels`）＋ `knowledge/` 產品事實 ＋ 可選：`output/traceability.yaml` 上一輪的 gap 清單。
+- **輸入**：ticket / PRD（連結或內文；GitHub issue 用 `gh issue view <n> --json title,body,labels`）＋ `projects/<project>/knowledge/` 產品事實 ＋ 可選：`output/traceability.yaml` 上一輪的 gap 清單。
 - **輸出**：`output/plans/<slug>.md`，包含 in-scope（含怎麼測）、out-of-scope（**含理由**）、風險排序、開放問題。
 
 ## 步驟
 1. **讀需求**：抽出「改了什麼、影響誰、驗收條件是什麼」。驗收條件缺失就列進開放問題，不自己補一個。
-2. **對照 `knowledge/`**：找出這次變更碰到的既有業務規則。
-   - 需求與 `knowledge/` **衝突** → 標 `spec-conflict` 列進開放問題。這是 `test-oracle` 之後的判準素材，**現在就要標出來**，不要等測到一半才發現兩份規格打架。
-   - `knowledge/` **沒有**相關事實 → 明寫「本規劃基於假設」，並建議補 `knowledge/`。
+2. **對照 `projects/<project>/knowledge/`**：找出這次變更碰到的既有業務規則。
+   - 需求與 `projects/<project>/knowledge/` **衝突** → 標 `spec-conflict` 列進開放問題。這是 `test-oracle` 之後的判準素材，**現在就要標出來**，不要等測到一半才發現兩份規格打架。
+   - `projects/<project>/knowledge/` **沒有**相關事實 → 明寫「本規劃基於假設」，並建議補 `projects/<project>/knowledge/`。
 3. **圈範圍**：列候選項（改動的流程、被影響的相鄰流程、資料遷移、權限、跨裝置/瀏覽器）。
 4. **評風險**：把候選項整批交 `route-by-risk`，拿回 `score` / `route` / `level` / `reason`。**不自己發明第二套評分**。
 5. **決定怎麼測**：依 route 與 `level` 決定形式（見下表）。`level: unknown` 的項目列進開放問題，不預設用 UI 測。
@@ -30,7 +30,7 @@ description: 把一張 ticket / PRD 轉成「這次要測什麼」的範圍 + �
 
 | route | 怎麼測 | plan 記什麼 |
 |---|---|---|
-| `must-test` + 行為未知/需求模糊 | 自主探索 | `how: explore`，`next` 指向要產的 `charters/<slug>.yaml`（由 `exploration-charter` 產）|
+| `must-test` + 行為未知/需求模糊 | 自主探索 | `how: explore`，`next` 指向要產的 `projects/<project>/charters/<slug>.yaml`（由 `exploration-charter` 產）|
 | `must-test` + 行為明確、要長期守 + `level: api` | 固化成 API 回歸 | `how: api-test-author`，`next` 寫要幾支。分支多的規則（過期／額度／幣別／疊加上限）全放這一層 |
 | `must-test` + 行為明確、要長期守 + `level: ui` | 固化成 UI 回歸 | `how: test-author`，`next` 寫要幾支測試。**由人發動**（多一支測試就是多一份長期資產）|
 | `must-test` + `level: both` | 兩層都要 | API 寫分支、UI 只留一條把主線接起來的代表路徑 |
@@ -38,7 +38,7 @@ description: 把一張 ticket / PRD 轉成「這次要測什麼」的範圍 + �
 | `skip` | 本輪不測 | 不進 in_scope，列 out-of-scope **並寫理由** |
 
 ## 鐵則
-- **產品知識只從 `knowledge/` 讀，不內嵌。** 把產品事實寫進本 skill，reuse 就死了。
+- **產品知識只從 `projects/<project>/knowledge/` 讀，不內嵌。** 把產品事實寫進本 skill，reuse 就死了。
 - **out-of-scope 一定要寫理由。** 「沒測到」和「決定不測」差別很大；三個月後有人問「這塊為什麼沒測」，要查得到。這和 `route-by-risk`「skip 不是丟掉，是留痕」是同一條紀律。
 - **風險評分委給 `route-by-risk`。** 兩套評分＝兩個答案＝沒有答案。
 - **不寫 test case、不寫程式、不開單。** 本 skill 只決定「測什麼」。
@@ -53,7 +53,7 @@ in_scope:
     route: must-test
     score: 0.85
     how: explore
-    next: "charters/checkout-coupon.yaml"
+    next: "projects/<project>/charters/checkout-coupon.yaml"
   - target: "折扣碼過期 / 無效 / 重複套用"
     route: must-test
     score: 0.72
@@ -68,11 +68,11 @@ out_of_scope:
   - target: "後台折扣碼管理介面"
     reason: "本次未改動；route-by-risk score 0.18 → skip"
   - target: "IE11 相容性"
-    reason: "產品已停止支援（knowledge/browser-support.md）"
+    reason: "產品已停止支援（projects/<project>/knowledge/browser-support.md）"
 open_questions:
   - "折扣碼與會員點數可否同時使用？PRD 未寫，knowledge/ 也無 → spec-conflict，需 PM 確認"
 knowledge_gaps:
-  - "knowledge/ 無折扣相關業務規則，本規劃基於 PRD 假設，建議補 knowledge/domains/discount.md"
+  - "knowledge/ 無折扣相關業務規則，本規劃基於 PRD 假設，建議補 projects/<project>/knowledge/domains/discount.md"
 ```
 
 ## 上下游

@@ -1,7 +1,7 @@
 # 測試健康指標：算式與資料來源
 
 `pipeline-observability` 讀本檔計算指標。**演算法放這裡，資料放狀態檔**，沿用 `docs/state-files.md` 的慣例。
-閾值不在這裡，在 `config/sdet-config.yaml` 的 `observability.thresholds`（專案可調）。
+閾值不在這裡，在 `projects/<project>/config/sdet-config.yaml` 的 `observability.thresholds`（專案可調）。
 
 ## 通則
 - **能引用就不重算。** 下游狀態檔已有的值（flaky rate、gate 裁決）直接引用；重算會產生第二個版本的真相。

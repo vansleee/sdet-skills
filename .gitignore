@@ -1,15 +1,6 @@
 node_modules/
 .env
 .env.*
-config/product-context.md
-config/sdet-config.yaml
-config/governance.yaml
-config/test-style.md
-config/ci-backend-github-actions.md
-config/issue-tracker-github.md
-config/issue-tracker-local-md.md
-# 多專案佈局：config/<project>/ 底下全是真檔（含 base URL、帳密變數名），整個目錄不進版控
-config/*/
 test-results/
 playwright-report/
 .pw-mcp-traces/
@@ -19,14 +10,16 @@ playwright-report/
 .playwright-cli/
 .fuse_hidden*
 
-# 產品知識：只 commit 範本（*.example.md）與 README，真實產品事實留本地
-knowledge/**
-!knowledge/**/
-!knowledge/README.md
-!knowledge/**/*.example.md
+# 受測專案：projects/<slug>/ 的 config 與 knowledge 是真檔，不進版控。
+# 只 commit projects/_template/（新專案範本）與各專案的 charters/（探索章程是教材）。
+/projects/*/config/
+/projects/*/knowledge/
+/projects/governance.yaml
+!/projects/_template/config/
+!/projects/_template/knowledge/
 
 # 所有執行期產物與狀態檔都集中在 output/（2026-07-30 起），整個 gitignore。
-# 只 commit state-templates/ 下的 *.example.yaml 範本。真檔（evidence、verdicts、issues-index、
+# 只 commit references/state/ 下的 *.example.yaml 範本。真檔（evidence、verdicts、issues-index、
 # calibration、gate、runs、reports…）全留本地。
 # Playwright MCP 的 trace/snapshot 暫存也走 output/evidence/_traces/（見 README 的 MCP 設定）。
 /output/

@@ -18,7 +18,7 @@ disable-model-invocation: true
 2. 明確要初次設定、換工具或改門檻：讀取 setup-sdet 的完整指令後，直接依它的流程訪談，不要求使用者再打一遍指令。
 3. 要執行具體任務：先選下表的流程，再讀該 skill 的前置要求。依 `references/config-resolution.md` 確認目標 project；不明或交接衝突時先核對，不猜專案。只檢查任務需要的設定，不因無關欄位缺漏擋住任務。
 4. 設定足夠：推薦或接入所選流程。使用者只問建議時，不擅自執行；已明確要求執行時沿用該授權，仍遵守所選 skill 與 governance 的界線。
-5. 必要設定缺漏：列出缺漏與影響。使用者已要求設定時接入 setup-sdet；否則先確認是否要補設定，再進訪談。具名專案缺檔不得回退到平面預設專案，尚未支援多專案的流程先停手核對。
+5. 必要設定缺漏：列出缺漏與影響。使用者已要求設定時接入 setup-sdet；否則先確認是否要補設定，再進訪談。專案缺檔不得回退讀其他專案，解析規則見 `references/config-resolution.md`。
 
 ## 接入 setup-sdet 後返回
 
@@ -58,7 +58,7 @@ verifier 的 confirmed 是「問題重現」，修復後的先紅後綠由 fixer
 
 **三層閘門**（各管一層，上層吃下層產物）：issue-quality-gate（一張單能不能開）→ `/quality-gate`（一個 build 能不能放行）→ `/release-signoff`（一版 release 能不能簽）
 
-**串起來**：`/duty-oncall` 在授權（`config/governance.yaml`）內把上面整條排程跑完。
+**串起來**：`/duty-oncall` 在授權（`projects/governance.yaml`）內把上面整條排程跑完。
 
 **看校準**：sdet-economics 分開讀人工 precision 與 verifier 重現率；未裁定、驗不完與來源不明的舊資料不算成人工否定。現有 token-ledger 的 Claude 格式限制見 README，不能把其他平台缺用量的結果填成零成本。
 
@@ -68,4 +68,4 @@ verifier 的 confirmed 是「問題重現」，修復後的先紅後綠由 fixer
 
 ## 設定範圍
 
-多專案接線範圍見 `references/config-resolution.md`。`maintain/` 仍讀扁平預設專案；`test-author`、`api-test-author` 與 `test-heal` 的產品設定與風格檔使用同一個 `config/` 根目錄。具名 project 的請求先停手核對，不路由成已支援的多專案操作。
+所有流程都照 `references/config-resolution.md` 解析 `projects/<project>/`；只有 `charters/` 沒有 `config/` 的專案只能跑 `explore`，其他流程先接 setup-sdet。

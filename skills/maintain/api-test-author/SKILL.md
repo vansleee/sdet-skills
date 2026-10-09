@@ -12,11 +12,11 @@ disable-model-invocation: true
 
 ## 前置（缺了就停手回報，不要自己編）
 
-目前只支援扁平佈局的預設專案，產品設定與測試風格都讀同一個 `config/` 根目錄。收到具名 `project` 的請求或交接時，先停手核對，不得自行改讀預設專案；多專案尚未接線，範圍見 `references/config-resolution.md`。
+產品設定與測試風格都讀同一個專案的 `projects/<project>/config/`，project 照 `references/config-resolution.md` 解析。缺檔就停手，不得改讀其他專案的設定或風格檔。
 
-- `config/product-context.md` 的「API」段：API base URL、認證方式與取憑證端點、契約來源、API testDir、版本策略。
+- `projects/<project>/config/product-context.md` 的「API」段：API base URL、認證方式與取憑證端點、契約來源、API testDir、版本策略。
 - 憑證一律走環境變數（變數名由 product-context 指定），**不得寫進測試檔**。
-- `config/test-style.md`：這個專案的測試碼風格。**動筆前先讀**；沒有這個檔就沿用 `references/test-design.md` 的預設，不要自己另立一套。
+- `projects/<project>/config/test-style.md`：這個專案的測試碼風格。**動筆前先讀**；沒有這個檔就沿用 `references/test-design.md` 的預設，不要自己另立一套。
 - 契約來源填「無」時照樣可以寫，但 schema 斷言降級成逐欄位明寫，並在測試裡註明「無契約可比」。
 
 ## 先確認層級對不對

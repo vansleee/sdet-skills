@@ -10,12 +10,12 @@
 | 名稱                | 說明             | 檔案位置               | 備註                                       |
 | ----------------- | -------------- | ------------------ | ---------------------------------------- |
 | **技能（how）**       | 描述如何做某件事       | `skills/`          | 與產品知識無關，主要是將 SDET 的技能包裝起來，可以重複使用在不同的專案裡。 |
-| **產品知識（what）**    | 測試產品知識         | `knowledge/`       | 產品專屬的知識或流程                               |
+| **產品知識（what）**    | 測試產品知識         | `projects/<project>/knowledge/`       | 產品專屬的知識或流程                               |
 | **專案流程（process）** | 串接專案的流程與管理     | `skills/workflow/` | 主要是與專案有關，包含整個專案開發流程或事件                   |
-| **規範與設定**         | 後端設定、授權規範、其他參數 | `config/`          | 規定需要遵守的規範和其他需要的設定                        |
+| **規範與設定**         | 後端設定、授權規範、其他參數 | `projects/<project>/config/`          | 規定需要遵守的規範和其他需要的設定                        |
 
 
-> 原則：`skills/` 裡的設計必須與產品無關，當需要產品知識或專案設定都是由 skill 去讀 `knowledge/` 或 `config/`，並且不將資料放置在 skills，保持 skills 可以使用在其他專案的狀態。
+> 原則：`skills/` 裡的設計必須與產品無關，當需要產品知識或專案設定都是由 skill 去讀 `projects/<project>/knowledge/` 或 `projects/<project>/config/`，並且不將資料放置在 skills，保持 skills 可以使用在其他專案的狀態。
 
 ## Skill bucket 總表
 
@@ -54,15 +54,15 @@
 
 哪一條規則該在哪一層驗，判準在 `references/test-design.md` 第 0 節；覆蓋對照用 `level: api|ui` 記在 `output/traceability.yaml`。
 
-## `knowledge/` — 依照規模的大小，分層產品知識
+## 產品知識：`projects/<project>/knowledge/` 依規模分層
 
-主要是使用 skill 讀取相關知識，這也 `test-oracle` 的**規格 oracle 來源**，例如：購物網站 ，並不需規格的 oracle 說明；但如果公司的產品，就必須根據規格才能判斷是否有 Bug，我們可以把產品規格定義在 `knowledge/`，我們可以根據規格書的大小，分為下列三種：
+主要是使用 skill 讀取相關知識，這也 `test-oracle` 的**規格 oracle 來源**，例如：購物網站 ，並不需規格的 oracle 說明；但如果公司的產品，就必須根據規格才能判斷是否有 Bug，我們可以把產品規格定義在 `projects/<project>/knowledge/`，我們可以根據規格書的大小，分為下列三種：
 
 1. **小型：只需要建立** 一份 `product-overview.md`
 2. **中型**：根據模組或是功能分類在 `domains` 下面，並且每個模組一份 `domains/<module>.md` 每模組一份，根據漸進式揭露（progressive disclosure）相關的知識
 3. **大型 / 易於變動** ：使用 RAG 檢索或 MCP resource 指向活文件（live document)，避免文件過期與增加維護成本。
 
-> 這些檔案不需要 commit，只需要 commit `*.example.md` 範立，記得新增對應的檔案，需要將檔案增加到 gitignore 清單中，
+> 這些檔案不進版控，範本在 `projects/_template/knowledge/`。
 
 ## `workflow/` — 專案活動
 
@@ -78,8 +78,8 @@
 ## 資料流
 
 ```
-knowledge/               產品知識與規格
-charters/<slug>.yaml     由人設定目標與邊界（可由 test-planning 產生）
+projects/<project>/knowledge/            產品知識與規格
+projects/<project>/charters/<slug>.yaml  由人設定目標與邊界（可由 test-planning 產生）
   └─> output/sessions/<date>_<slug>
         └─> /findings/F-*.yaml   explore 發現可能的 bug 與問題（包含 oracle 判斷）
         └─> /verdicts/V-*.yaml   使用 bug-verifier 能夠獨立重現並且增加信心指數

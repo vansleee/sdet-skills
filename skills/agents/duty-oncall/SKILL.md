@@ -6,13 +6,13 @@ disable-model-invocation: true
 
 # Duty Oncall
 
-輸入一份 charter（`charters/<slug>.yaml`），輸出一輪完整值勤 ＋ `output/sessions/<date>_<slug>/runs/<date>.yaml` ＋ 值班摘要。設計理念見 `docs/agents.md#duty-oncall`。
+輸入一份 charter（`projects/<project>/charters/<slug>.yaml`），輸出一輪完整值勤 ＋ `output/sessions/<date>_<slug>/runs/<date>.yaml` ＋ 值班摘要。設計理念見 `docs/agents.md#duty-oncall`。
 
 > **它不發明能力，它把 `agents/` 的代理人排成一次可重複、可稽核的值班。** 授權不是放手：發起交給排程，**不可逆的最後一下（merge、拍板）永遠留給人**。
 
 ## 前置（缺了就停手回報，不硬跑）
 - 五站全數就緒：`bug-hunter` / `bug-verifier` / `issue-quality-gate` / `triage` / `bug-fixer`。
-- 讀 `references/agent-handoff.md` 與 `references/config-resolution.md`，解析 charter 的 project 與預算設定；全域 `config/governance.yaml` 可讀。保留本輪唯一 session，逐筆傳遞 project、session、finding_id。
+- 讀 `references/agent-handoff.md` 與 `references/config-resolution.md`，解析 charter 的 project 與預算設定；全域 `projects/governance.yaml` 可讀。保留本輪唯一 session，逐筆傳遞 project、session、finding_id。
 - 分派時依解析後的 Issue／PR 後端檢查工具與登入；本地 Issue 不要求 gh。副作用依 `references/agent-governance.md`，先確認已授權範圍。
 
 ## 記帳打點（每一站開始前先打，這是逐階段成本的唯一依據）
@@ -42,9 +42,9 @@ python3 scripts/token-ledger.py --mark --run <date>_<slug> --stage <setup|hunt|v
 ```yaml
 # output/sessions/<date>_<slug>/runs/<date>.yaml
 date: <date>
-project: null
+project: toolshop
 session: <date>_<slug>
-charter: charters/<slug>.yaml
+charter: projects/<project>/charters/<slug>.yaml
 ledger_run: <date>_<slug>     # 對到 output/token-ledger 的 by_run，逐階段明細在那裡
 tokens: { input: <n>, output: <n>, cache_write: <n>, cache_read: <n> }
 cost_usd: <n>                 # 這輪總額，取自 --report

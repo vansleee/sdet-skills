@@ -10,8 +10,8 @@ description: 讓一支測試自己準備、自己清掉它要的資料：fixture
 > 原則：**測試要用的資料，測試自己生、自己收。** 「環境裡本來就有那筆資料」是 flaky 的主要來源之一。
 
 ## 前置（缺了就停手回報，不要自己編）
-- 建資料的 API 端點、測試帳號來源讀 `config/product-context.md`；憑證只走環境變數，**不寫進 fixture、也不寫進本文件**。
-- `reset_shared_env`、`truncate_shared_db` 在 `config/governance.yaml` 屬 **forbidden**：任何情況都不做，即使有人開口要求。清理只清自己建的東西。
+- 建資料的 API 端點、測試帳號來源讀 `projects/<project>/config/product-context.md`；憑證只走環境變數，**不寫進 fixture、也不寫進本文件**。
+- `reset_shared_env`、`truncate_shared_db` 在 `projects/governance.yaml` 屬 **forbidden**：任何情況都不做，即使有人開口要求。清理只清自己建的東西。
 
 ## 五條紀律
 1. **走 API 不走 UI 建資料。** 快、穩，而且不會讓「前置操作」污染被測行為本身。

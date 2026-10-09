@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Setup SDET
 
-一次問一個主題訪談使用者，把答案寫進 `config/<project>/`。可重複執行：先讀現有 config，只問缺的。多專案、範例與驗證步驟見 `docs/meta.md#setup-sdet`。
+一次問一個主題訪談使用者，把答案寫進 `projects/<project>/config/`。可重複執行：先讀現有 config，只問缺的。多專案、範例與驗證步驟見 `docs/meta.md#setup-sdet`。
 
 可由 ask-sdet 在使用者要設定時接入，也可直接呼叫本 skill；兩個入口都遵守同一份訪談、寫入確認與讀回驗收。由 ask-sdet 接入時保留原任務與已確認的 project，完成後交回設定結果與缺漏，讓它返回原任務。
 
@@ -16,12 +16,12 @@ disable-model-invocation: true
 - 一次一個主題。
 
 ## 0. 專案（project）
-先掃 `config/` 底下已有哪些專案子目錄，列出來問是新建還是重跑既有的；新建就問專案 slug（小寫連字號，如 `toolshop`）。
-- 只有一個常態受測產品：沿用既有 `config/*.md` 扁平佈局，視為預設專案，不強迫搬遷。
-- 第二個常態受測產品出現：後續步驟一律寫進 `config/<project>/`。
-- `knowledge/<project>/` 用同一個 slug，由人工維護，本 skill 不寫入，收尾時提醒使用者確認兩邊 slug 一致。
+先列出 `projects/` 底下已有的專案資料夾（跳過 `_template/`），問是新建還是重跑既有的；新建就問專案 slug（小寫連字號，如 `toolshop`）。
+- 新專案從 `projects/_template/` 複製 `config/` 與 `knowledge/` 起手，再依訪談改寫。
+- 資料夾已有 `charters/` 但沒有 `config/`（只拿來探索的練習站），一樣在原資料夾補 `config/`，不另開 slug。
+- `projects/<project>/knowledge/` 由人工維護，本 skill 只建範本，不寫入產品事實。
 
-## 產出（路徑前綴 `config/<project>/`；單一預設專案沿用扁平 `config/`）
+## 產出（`projects/<project>/config/`）
     product-context.md          # 產品、環境、登入、Playwright、trace 來源、API（base URL／認證／契約來源）
     ci-backend-github-actions.md
     issue-tracker-github.md     # 有 GitHub issue repo 時
@@ -29,7 +29,7 @@ disable-model-invocation: true
     sdet-config.yaml             # confidence / dedup / budget / models / risk
     test-style.md                # 測試碼風格（test-author / api-test-author / test-heal 讀它）
 
-不產出 `config/governance.yaml`——這份是跨專案共用的授權分級表，放 `config/` 根目錄，由需要副作用的 skill（triage、bug-fixer、test-heal…）沿途寫入╱參照，不是一次性訪談表單。
+`projects/governance.yaml` 是跨專案共用的授權分級表，不在訪談範圍。不存在時從 `projects/_template/governance.yaml` 複製一份，由需要副作用的 skill（triage、bug-fixer、test-heal…）沿途參照。
 
 ## 訪談 → 寫入
 1. 受測產品：各環境 base URL、一句話說明 → product-context.md。
@@ -44,5 +44,5 @@ disable-model-invocation: true
 
 ## 收尾
 1. 重新 `Read` 一次剛寫入的 config（不是複誦訪談答案），在摘要裡逐項覆誦讀回的值；讀不回來代表路徑或 slug 有誤，當場攔下重寫。
-2. 印出摘要（各 config 寫了什麼、哪些祕密需使用者自設 env）、提醒 `knowledge/<project>/` 是否已用同一個 slug 建好。
+2. 印出摘要（各 config 寫了什麼、哪些祕密需使用者自設 env）、提醒使用者補 `projects/<project>/knowledge/` 的產品事實。
 3. 提示下一步 `/exploration-charter` 或 `/triage`；必填缺漏（如 gh 未登入）列出請補後重跑。

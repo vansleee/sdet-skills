@@ -70,7 +70,7 @@ ask-sdet 會讀取 setup-sdet，接入同一份訪談；完成後回到原任務
 
 依訪談指定產品、環境、issue tracker 與前一步選擇的 Playwright 工具。GitHub 流程需要 `gh auth status` 成功；沒有 GitHub issue repo 時可選本地 Markdown tracker。祕密只提供環境變數名稱，值留在環境中。
 
-完成後要求 agent 依 [setup 契約](../skills/meta/setup-sdet/SKILL.md) 重新讀回產物，核對工作目錄、專案 slug、base URL、Playwright config 與 trace 來源。單一既有預設專案沿用 `config/`，多專案使用 `config/<project>/`：
+完成後要求 agent 依 [setup 契約](../skills/meta/setup-sdet/SKILL.md) 重新讀回產物，核對工作目錄、專案 slug、base URL、Playwright config 與 trace 來源。產物寫在 `projects/<project>/config/`：
 
 - `product-context.md`
 - `ci-backend-github-actions.md`
@@ -78,7 +78,7 @@ ask-sdet 會讀取 setup-sdet，接入同一份訪談；完成後回到原任務
 - `sdet-config.yaml`
 - `test-style.md`
 
-`governance.yaml` 不是 setup 的訪談產物，`knowledge/<project>/` 由人工維護。必要設定缺漏或讀不回產物時，補齊後重跑，不能只憑對話摘要宣稱完成。
+`governance.yaml` 不是 setup 的訪談產物，`projects/<project>/knowledge/` 由人工維護。必要設定缺漏或讀不回產物時，補齊後重跑，不能只憑對話摘要宣稱完成。
 
 ### 5. 驗收安裝與 repo 檢查
 
@@ -109,7 +109,7 @@ manifest 應與檔案一致，文風檢查應通過，runner 應能列出測試�
 
 依 [AGENTS.md](../AGENTS.md)，書稿維護於獨立 private repo `vansleee/agentic-sdet-book`，不在本 repo 發布。公開讀者從上方系列連結閱讀文章。
 
-文章或測試教材引用的 `output/` 是作者本地證據，受 gitignore 保護，clone 後不會取得。請用 [測試指南](../tests/README.md) 與 [狀態範本](../state-templates/README.md) 重跑自己的案例；文中的歷史實測日期與結果不保證公開練習站今日仍有相同行為。
+文章或測試教材引用的 `output/` 是作者本地證據，受 gitignore 保護，clone 後不會取得。請用 [測試指南](../tests/README.md) 與 [狀態範本](../references/state/README.md) 重跑自己的案例；文中的歷史實測日期與結果不保證公開練習站今日仍有相同行為。
 
 既有 `tests/`、`references/` 與架構文件路徑維持原位。setup-sdet 的 skill 與設計文件已移至 `meta/`；舊目錄已移除，文章檔案連結請使用新位置，`/setup-sdet` 指令仍可直接使用。後續文章審查若發現舊連結或名稱差異，先補對照，再評估改名。
 

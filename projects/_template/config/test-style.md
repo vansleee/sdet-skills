@@ -1,4 +1,4 @@
-# 測試碼風格（範本 — 複製成 test-style.md 後填寫；真檔已 gitignore）
+# 測試碼風格（範本：複製到 projects/<project>/config/ 後填寫）
 
 `test-author`、`api-test-author`、`test-heal` 動筆前讀這份。沒有這份檔就沿用
 `references/test-design.md` 的預設，不要自己猜一套。

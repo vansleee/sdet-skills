@@ -7,7 +7,7 @@
 #   pipeline-gate.yaml  = 一個 build 能不能放行    （infra/quality-gate）
 #   signoffs/<v>.yaml   = 整個 release 能不能簽出去（本檔）
 #
-# 準則門檻（high_risk_threshold / max_expired）放 config/sdet-config.yaml 的 signoff 區塊。
+# 準則門檻（high_risk_threshold / max_expired）放 projects/<project>/config/sdet-config.yaml 的 signoff 區塊。
 # 裁決：全 pass → go；任一 fail → no-go；有 inconclusive 或下層 OVERRIDE → conditional-go。
 # inconclusive 一律不得當 pass。
 

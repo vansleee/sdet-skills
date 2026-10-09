@@ -1,6 +1,6 @@
 # 探索章程（exploration charter）
 # 由 exploration-charter 產生、供 explore 讀取的輸入。
-# 位置慣例：charters/<slug>.yaml（committed；evidence/ 才是每次跑的輸出、被 gitignore）
+# 位置慣例：projects/toolshop/charters/<slug>.yaml（committed；evidence/ 才是每次跑的輸出、被 gitignore）
 # 加 tour 只需多一行，例如：tours: [data]（鏡頭清單見 references/tours.md）
 charter:
   goal: "在 Bug Hunting build（with-bugs.practicesoftwaretesting.com）獵一輪 bug，含註冊/付款/API/安全類（非破壞性）"
@@ -13,7 +13,7 @@ charter:
   endpoints:
     # 來源＝觀察（前幾輪 network 紀錄反推），非契約，**這份清單一定不完整**。
     # 更正（2026-08-08）：這站其實有 OpenAPI 契約 https://api-with-bugs.practicesoftwaretesting.com/docs?api-docs.json，
-    # 契約 / schema oracle 可用（見 config/product-context.md 的「API」段與 charters/toolshop-api-oracles.yaml）。
+    # 契約 / schema oracle 可用（見 projects/toolshop/config/product-context.md 的「API」段與 projects/toolshop/charters/toolshop-api-oracles.yaml）。
     - "POST /users/login"
     - "POST /users/register"
     - "GET /users/me"

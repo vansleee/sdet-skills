@@ -27,7 +27,7 @@ description: 在乾淨 context 盲驗候選，只收重現步驟、原始證據�
 
 ## 輸出
 ```yaml
-project: null
+project: toolshop
 session: <date>_<slug>
 finding_id: F-001
 level: api

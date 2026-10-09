@@ -14,7 +14,7 @@ description: 判定一支測試是真的 flaky 還是穩定壞掉：同碼同環
 - **N 次全紅** → 不是 flaky，是壞了 → 交 `failure-analysis`。
 - **N 次全綠** → `not-reproduced`：記錄後結案，不要一直重跑到它紅為止。
 
-N（`reruns`）與 `flake_rate` 門檻讀 `config/sdet-config.yaml`，**不寫死**。
+N（`reruns`）與 `flake_rate` 門檻讀 `projects/<project>/config/sdet-config.yaml`，**不寫死**。
 
 ## 硬性要求：量化重現率
 **沒有重現率的 flaky 回報不算數。** 必記「幾次紅／總共幾次」，並保留每次的失敗訊息。不同次紅的原因不同，通常代表有多個問題疊在一起，要拆開報。

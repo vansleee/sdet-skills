@@ -93,7 +93,7 @@ CI 上 `login.spec.ts` 的成功登入那支會 skip，因為 repo 沒設
 
 - **「紅了先別修」不是格言。** 這裡判錯兩次，兩次都是證據把方向拉回來的。
 - **測試抄捷徑會被當成機器人。** 使用者不會把 `/checkout` 貼進網址列，
-  測試也不該。這條後來寫進 `config/test-style.example.md` 的「導頁方式」。
+  測試也不該。這條後來寫進 `projects/_template/config/test-style.md` 的「導頁方式」。
 
 完整紀錄：`output/sessions/2026-08-02_ci-e2e-first-run/`
 （`failure-analysis.yaml` 含被推翻的初判與 revision、`runs/reruns-2026-08-02.yaml` 含裁決）。

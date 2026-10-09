@@ -8,14 +8,14 @@ description: 測試修好後重跑，確認是「穩定的綠」而不是「剛�
 輸入一支剛被 `test-heal` 修好的測試（或要驗穩的測試），重跑後給裁決：pass / flaky / escalate。設計理念見 `docs/maintain.md#re-run-gate`。
 
 ## 什麼才算過（green criteria）
-「綠」的定義來自 `config/sdet-config.yaml`（預設：連續 N 次全綠，N=3）。**過一次不算過。**
+「綠」的定義來自 `projects/<project>/config/sdet-config.yaml`（預設：連續 N 次全綠，N=3）。**過一次不算過。**
 
 ## 重跑與裁決
 1. 重跑該測試，最多 `max_retries` 次（config，預設 3）。
 2. 依結果裁決：
    - **穩定綠**（達 green criteria）→ `pass`：修復成立，關閉該筆、寫回修復完成。
    - **間歇綠**（過但不穩，例如 3 次過 1）→ `flaky`：**不放行**，交 `flaky-detect` / `flaky-manager`，別假裝修好了。
-   - **max_retries 仍紅** → `escalate`：留 issue 開著、標 `escalated: max retries reached`、交人（依 `config/governance.yaml`）。
+   - **max_retries 仍紅** → `escalate`：留 issue 開著、標 `escalated: max retries reached`、交人（依 `projects/governance.yaml`）。
 
 ## 鐵則
 - **1/N 不是 pass。** 「一直重跑到剛好過一次」是綠色作弊（`references/green-cheating.md` 最後一列）：達 green criteria 才算過。

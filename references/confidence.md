@@ -53,7 +53,7 @@
 
 ```yaml
 - id: F-01
-  project: null
+  project: toolshop
   session: "<date>_<slug>"
   finding_id: F-01
   finding: "checkout 進入時 console 噴 TypeError: cart_items undefined"
@@ -70,7 +70,7 @@
 
 ## 校準：`output/calibration.yaml`
 
-格式依 `state-templates/calibration.example.yaml` 與 `docs/state-files.md`。每筆預測以 `(project, session, finding_id)` 唯一定位；fingerprint 用於跨輪關聯，不用來選取要覆寫的列。
+格式依 `references/state/calibration.example.yaml` 與 `docs/state-files.md`。每筆預測以 `(project, session, finding_id)` 唯一定位；fingerprint 用於跨輪關聯，不用來選取要覆寫的列。
 
 1. hunter 寫入 `predicted`、`score`、`predicted_at`，連同識別與 fingerprint。同輪續跑保留原始預測；新一輪另增一列。
 2. 獨立 verifier 只產 verdict。呼叫端（通常是 duty-oncall，單獨送驗時為該次編排者）或 gate 核對識別後，寫 `verifier_verdict`、`verifier_verdict_at` 與 `verifier_evidence`；不得把 confidence 或 calibration 傳給 verifier。

@@ -9,10 +9,10 @@ disable-model-invocation: true
 輸入一個候選版本，輸出 `go` / `no-go` / `conditional-go` + 逐條證據 + 可稽核的簽核紀錄。設計理念見 `docs/workflow.md#release-signoff`。
 
 > **三層閘門分工**：`issue-quality-gate`（一張單能不能開）→ `infra/quality-gate`（一個 build 能不能放行）→ **本 skill**（整個 release 對需求與風險能不能簽出去）。本層**吃下層產物當證據，不重跑下層**。
-> 狀態檔：`output/signoffs/<version>.yaml`（範本 `state-templates/signoff.example.yaml`）。
+> 狀態檔：`output/signoffs/<version>.yaml`（範本 `references/state/signoff.example.yaml`）。
 
 ## 輸入 / 輸出
-- **輸入**：版本識別（tag / milestone）＋ `output/traceability.yaml`（覆蓋）＋ open issue（`gh issue list --milestone <m>`，分 blocker / 非 blocker）＋ `output/pipeline-gate.yaml`（build 層裁決）＋ `output/flaky-registry.yaml`（關掉的覆蓋）＋ `knowledge/`（風險基準）＋ 準則（`config/sdet-config.yaml` 的 `signoff`）。
+- **輸入**：版本識別（tag / milestone）＋ `output/traceability.yaml`（覆蓋）＋ open issue（`gh issue list --milestone <m>`，分 blocker / 非 blocker）＋ `output/pipeline-gate.yaml`（build 層裁決）＋ `output/flaky-registry.yaml`（關掉的覆蓋）＋ `projects/<project>/knowledge/`（風險基準）＋ 準則（`projects/<project>/config/sdet-config.yaml` 的 `signoff`）。
 - **輸出**：裁決 ＋ 逐條評估表 ＋ no-go 時的最短補完清單 ＋ 寫入 `output/signoffs/<version>.yaml`。
 
 ## 準則（門檻讀 config，不寫死）
@@ -40,7 +40,7 @@ disable-model-invocation: true
 7. **標記 AI 身分**：報告開頭加 `> *This assessment was compiled by AI. The sign-off decision belongs to a human.*`
 
 ## 鐵則
-- **只裁決與留痕，不執行 release。** 不打 tag、不 deploy、不 merge（`merge_pr` 在 `config/governance.yaml` 的 `forbidden` 名單）。
+- **只裁決與留痕，不執行 release。** 不打 tag、不 deploy、不 merge（`merge_pr` 在 `projects/governance.yaml` 的 `forbidden` 名單）。
 - **`inconclusive` 不得當 pass**（理由同 `infra/quality-gate`）。
 - **簽核人是人。** 本 skill 產的是評估與紀錄；`signed_by` 一欄由人填，agent 不代簽。
 - **不重跑下層。** build 綠不綠問 `output/pipeline-gate.yaml`，不自己再跑一次測試。重跑會得到不同結果，然後沒人知道該信哪個。

@@ -1,4 +1,4 @@
-# 受測產品總覽（範本 — 複製成 product-overview.md 後填寫；真檔已 gitignore）
+# 受測產品總覽（範本：複製到 projects/<project>/knowledge/ 後填寫）
 
 ## 一句話
 <這個產品是做什麼的、給誰用>
@@ -16,7 +16,7 @@
 - <例：未付款訂單保留 30 分鐘後釋放庫存>
 
 ## API 事實
-> 「怎麼連上 API」（base URL、憑證變數名、契約檔位置）屬於設定，寫在 `config/product-context.md`。
+> 「怎麼連上 API」（base URL、憑證變數名、契約檔位置）屬於設定，寫在 `projects/<project>/config/product-context.md`。
 > 這裡只寫**事實**：這個 API 承諾什麼、錯誤怎麼表達、誰能看什麼。`test-oracle` 的 API oracle 讀它。
 
 - 錯誤回應的統一結構：<例：`{ error: { code, message, fields } }`；HTTP 狀態碼與 `code` 的對應表>

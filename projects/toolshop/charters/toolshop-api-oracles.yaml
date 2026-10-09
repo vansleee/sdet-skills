@@ -1,7 +1,7 @@
 # 探索章程（exploration charter）
 # 由 exploration-charter 產生、供 explore 讀取的輸入。
 # 這一份專打端點側：目的是把 test-oracle 的 API 專屬 oracle 逐條實跑一次。
-# 不填 project → 照 references/config-resolution.md 讀扁平的 config/product-context.md（預設專案＝Toolshop）。
+# project 由所在資料夾決定（toolshop），照 references/config-resolution.md 讀 projects/toolshop/config/product-context.md。
 charter:
   goal: "只走端點、不經畫面，把 test-oracle 的 API 專屬 oracle 逐條實跑：狀態碼語意、error envelope、冪等重放、分頁排序、授權邊界、契約 schema、header 與 content-type"
   target: "https://api-with-bugs.practicesoftwaretesting.com"
@@ -45,7 +45,7 @@ charter:
   out_of_bounds:
     - "不得對正式站 api.practicesoftwaretesting.com 做任何操作，只打 with-bugs 這個 build"
     - "不得送出任何寫入請求（POST / PUT / PATCH / DELETE），本輪唯一的例外是 POST /users/login"
-    - "不得打 config/product-context.md 列為『不得碰』的端點"
+    - "不得打 projects/toolshop/config/product-context.md 列為『不得碰』的端點"
     - "不得註冊新帳號、不得改動任何既有資料"
     - "不得寫迴圈連打端點；單發、手動節奏"
     - "越權只驗存在性：命中一次就停手記錄，不得逐一列舉 id 把他人資料撈成清單"

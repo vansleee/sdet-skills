@@ -35,7 +35,7 @@ locator('[data-test=id-8f3a2]') 逾時 30000ms at line 42
 - **由粗到細。** 先 summary、再失敗 log、最後才 artifact。整包 log 進 context 是本 skill 最容易犯、也最貴的錯（見 `sdet-economics`）。
 - **不下結論。** 判「這是 flaky 還是壞了」不是本 skill 的事。輸出事實，讓下游判。
 - **驗數不可省**（防靜默失蹤，見 `references/artifact-contract.md`）。
-- 後端指令讀 `config/ci-backend-github-actions.md`；token 走 `GH_TOKEN` env，不落地。
+- 後端指令讀 `projects/<project>/config/ci-backend-github-actions.md`；token 走 `GH_TOKEN` env，不落地。
 
 ## 輸出（格式，非某次執行結果）
 ```yaml

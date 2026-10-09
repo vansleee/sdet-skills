@@ -21,7 +21,7 @@
 - 下載同一次嘗試：`gh run download <run_id> --pattern "*-attempt-<n>"`。`gh run download` 沒有 `--attempt` 參數，只能靠名稱篩選。
 - 沒有 matrix、也不需要分辨重跑的 workflow，照用基本名。解析時先去掉後綴再對表。
 
-保留天數讀 `config/sdet-config.yaml` 的 `ci.artifact_retention_days`（預設 7；trace 佔空間，別無腦設 90）。
+保留天數讀 `projects/<project>/config/sdet-config.yaml` 的 `ci.artifact_retention_days`（預設 7；trace 佔空間，別無腦設 90）。
 
 ## `if: always()` 不能省
 

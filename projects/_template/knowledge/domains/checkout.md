@@ -1,4 +1,4 @@
-# 領域知識範本：結帳（範本 — 複製成 checkout.md 後填寫）
+# 領域知識範本：結帳（範本：複製到 projects/<project>/knowledge/domains/ 後填寫）
 
 > 中大型產品時，每個模組一份，skill 只載入相關的那份（progressive disclosure），不整包塞進 context。
 

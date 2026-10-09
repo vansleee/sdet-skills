@@ -5,14 +5,14 @@ description: 依一份 charter 獵一輪 bug，交回已判定、已去重、標
 
 # Bug Hunter
 
-輸入一份 charter（`charters/<slug>.yaml`），輸出一份**候選 issue 清單**。設計理念見 `docs/agents.md#bug-hunter`。
+輸入一份 charter（`projects/<project>/charters/<slug>.yaml`），輸出一份**候選 issue 清單**。設計理念見 `docs/agents.md#bug-hunter`。
 
 > **它只找、只整理，不開單、不定罪。** 交回的叫「候選」，不叫 bug。蓋章是 `bug-verifier`（獨立重現），能不能開單是 `issue-quality-gate`，開單是 `triage`。
-> model-invoked：`duty-oncall` 要能在值班中直接調用它。授權管制不靠「叫不到」，靠 `config/governance.yaml` 與各站自己的確認規則。
+> model-invoked：`duty-oncall` 要能在值班中直接調用它。授權管制不靠「叫不到」，靠 `projects/governance.yaml` 與各站自己的確認規則。
 
 ## 前置（缺了就停手回報，不要自己編）
 - charter 檔存在且可讀（沒有 → 先叫 `exploration-charter` 產一份）。
-- `output/known-false-positives.yaml`、`output/issues-index.yaml` 存在（沒有 → 從 `state-templates/` 對應範本複製一份空的，並在回報中說明「本輪未做去重／未濾誤報」）。
+- `output/known-false-positives.yaml`、`output/issues-index.yaml` 存在（沒有 → 從 `references/state/` 對應範本複製一份空的，並在回報中說明「本輪未做去重／未濾誤報」）。
 - 讀 `references/config-resolution.md` 解析 project 與 `sdet-config.yaml` 的門檻、預算。交接前讀 `references/agent-handoff.md`，全程保留 `project`、`session`、`finding_id` 與介面欄位。
 
 ## 執行順序（順序本身就是規格，不得跳號）
@@ -40,13 +40,13 @@ description: 依一份 charter 獵一輪 bug，交回已判定、已去重、標
 
 ## 輸出
 ```yaml
-project: null                   # 有專案時填 slug，全鏈沿用
+project: toolshop               # 專案 slug，全鏈沿用
 session: <date>_<slug>
-charter: charters/<slug>.yaml
+charter: projects/<project>/charters/<slug>.yaml
 run: <evidence 目錄>
 candidates:                      # 依 confidence 排序,尚未開單
   - finding_id: F-001
-    project: null
+    project: toolshop
     session: <date>_<slug>
     level: ui
     evidence_levels: [ui]

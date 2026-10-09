@@ -29,7 +29,7 @@ description: 直接打 API 驗證或探索端點時，蒐集並整理 API 證據
 
    `-w` 那行進 `requests.jsonl`（一行一請求、可直接 grep 非 2xx），headers 與 body 進 `raw/`。**失敗的請求照留**，它們往往才是發現。
 5. 同步把這一行的可重放版本追加進 `$D/repro.sh`（同一條指令，憑證維持 `$VAR`）。
-6. 有副作用的請求（`POST` / `PUT` / `PATCH` / `DELETE`、寄信、扣款）**送出前先列給使用者確認**，並照 `config/governance.yaml` 的分級走。product-context 標為「不得碰」的端點一律不打。
+6. 有副作用的請求（`POST` / `PUT` / `PATCH` / `DELETE`、寄信、扣款）**送出前先列給使用者確認**，並照 `projects/governance.yaml` 的分級走。product-context 標為「不得碰」的端點一律不打。
 
 ## 對照
 7. 掃 `requests.jsonl` 的 `status`，非 2xx 全部標記；同時檢查「`200` 但 body 是錯誤訊息」這種狀態碼與語意不符的情形。判定交 `test-oracle` 的 API 專屬 oracle，本 skill 只留證、不定罪。

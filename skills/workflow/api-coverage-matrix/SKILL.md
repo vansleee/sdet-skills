@@ -12,7 +12,7 @@ disable-model-invocation: true
 > **每一列是需求單位，不是操作手冊。** 近似 `traceability` 的 `req_id`：可獨立驗證、有優先序、有覆蓋狀態，但不是要人照著跑的逐步腳本。長期回歸交 `api-test-author` 固化。
 
 ## 輸入 / 輸出
-- **輸入**：API 設計文件（連結或內文）＋ `config/product-context.md` 的「API」段（base URL、認證方式）＋ `knowledge/`（RBAC/LBAC、旗標語意等商業規則）＋ 可選：既有自動化測試清單或 suite 名稱（用來標覆蓋狀態）。
+- **輸入**：API 設計文件（連結或內文）＋ `projects/<project>/config/product-context.md` 的「API」段（base URL、認證方式）＋ `projects/<project>/knowledge/`（RBAC/LBAC、旗標語意等商業規則）＋ 可選：既有自動化測試清單或 suite 名稱（用來標覆蓋狀態）。
 - **輸出**：`output/api-coverage-matrix/<slug>.csv`（單一事實來源，git 可 diff），可選再產 `.xlsx`／`.html` 給非技術關係人審閱或簽核用；三者一律由同一份產生腳本輸出，**不手動改其中一份**，否則格式之間會失真。
 
 ## 步驟
@@ -64,4 +64,4 @@ NPLAN-XXXX-TC-002,P0,RBAC,/v2/x/rules/*,multiple,403,Negative,"最低權限擋�
 ```
 
 ## 上下游
-上游：人／`test-planning`（決定要枚舉的 API surface）、API 設計文件、`knowledge/`（RBAC/LBAC、旗標語意等商業規則）、`config/product-context.md`。下游：`api-test-author`（把 Gap 且高優先序的列固化成自動化測試）、`traceability`（把每一列當成一個 `req_id` 併入覆蓋對照表）、`release-signoff`（拿矩陣當簽核證據）。
+上游：人／`test-planning`（決定要枚舉的 API surface）、API 設計文件、`projects/<project>/knowledge/`（RBAC/LBAC、旗標語意等商業規則）、`projects/<project>/config/product-context.md`。下游：`api-test-author`（把 Gap 且高優先序的列固化成自動化測試）、`traceability`（把每一列當成一個 `req_id` 併入覆蓋對照表）、`release-signoff`（拿矩陣當簽核證據）。

@@ -1,6 +1,6 @@
 # Agent 副作用授權
 
-`triage`、`bug-fixer` 與編排者在執行副作用前讀本文件及全域 `config/governance.yaml`。動作名稱定義在 `config/governance.example.yaml`；同一動作不因換成 CLI、MCP 或本地檔案就改名。
+`triage`、`bug-fixer` 與編排者在執行副作用前讀本文件及全域 `projects/governance.yaml`。動作名稱定義在 `projects/_template/governance.yaml`；同一動作不因換成 CLI、MCP 或本地檔案就改名。
 
 1. 先備好可檢視的內容與精確目標：project、repository／檔案、Issue／PR、變更範圍。讀取與草稿準備可以先做。
 2. 確認設定可讀、分級為清單。同一動作出現在多級時採較嚴格的一級：`forbidden` 優先，其次 `needs_review`，再來 `autonomous`。

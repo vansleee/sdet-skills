@@ -31,7 +31,7 @@ description: 開單前檢查六條必要條件，依專案與 UI／API 證據分
 ## 輸出
 ```yaml
 # output/sessions/<date>_<slug>/gate.yaml
-- project: null
+- project: toolshop
   session: <date>_<slug>
   finding_id: F-001
   level: ui
@@ -49,7 +49,7 @@ description: 開單前檢查六條必要條件，依專案與 UI／API 證據分
 - **AND，不是加權平均。** 五條滿分救不了一條 fail。
 - 不放行 ≠ 丟掉：每筆 hold / block 都要寫 `blocked_on`，讓「要人來判」變成看得到的佇列，不是默默消失。
 - 閘門本身**不開單、不修、不改候選內容**；它只做決定、留紀錄。
-- override 走 `config/governance.yaml` 並留誰／何時／理由；不得藉此把重複項改成新單 pass，也不能取代缺少的獨立驗證與證據。補齊或修正判定後重跑六條檢查，副作用仍另查權限。
+- override 走 `projects/governance.yaml` 並留誰／何時／理由；不得藉此把重複項改成新單 pass，也不能取代缺少的獨立驗證與證據。補齊或修正判定後重跑六條檢查，副作用仍另查權限。
 - 依 `references/confidence.md` 用完整識別回填驗證結果、`gate_result` 與 gate 路徑；人工結果只在收到實際人判時記入，不把 block 當成 `not-a-bug`。缺 calibration 對應列或識別不唯一就回報，不猜測回填。
 
 ## 驗收（跑完自己對一次）

@@ -12,7 +12,7 @@ description: 成本紀律 reference：省 token、重用 context、模型分級�
 - 能交給便宜模型做的重複性工作（大量掃描、格式化、分類）不要用強模型；強模型留給需要判斷力的步驟。
 - 一次探索的 context 能被下一步直接用（如已讀的 snapshot、已抓的 network log）就不要重新呼叫工具重抓。
 
-## 模型分級（讀 `config/sdet-config.yaml` 的 `models.cheap` / `models.strong`）
+## 模型分級（讀 `projects/<project>/config/sdet-config.yaml` 的 `models.cheap` / `models.strong`）
 
 | 用途 | 模型 | 為什麼 |
 |---|---|---|
@@ -21,7 +21,7 @@ description: 成本紀律 reference：省 token、重用 context、模型分級�
 
 沒設定時兩者都退回預設 session 模型；不准為了省錢把判定步驟也降級。
 
-## 預算與停止條件（讀 `config/sdet-config.yaml` 的 `budget`）
+## 預算與停止條件（讀 `projects/<project>/config/sdet-config.yaml` 的 `budget`）
 - `budget.max_tokens_per_run`：單次執行（一次 hunt / 一次 duty-oncall 值班）的 token 上限。
 - `budget.max_actions_per_explore`：`explore` 單次探索的最大步數（呼應 `explore` 自己的 `max_steps` 停止條件，兩者取小）。
 - **超過就停手回報，不硬撐。** 停在哪一步、為什麼停、還剩什麼沒探完，要寫進交回的紀錄。這是 `explore` 停止條件的成本版本，不是另一套邏輯。

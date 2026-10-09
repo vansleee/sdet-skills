@@ -8,15 +8,15 @@ description: 維護「需求 ↔ 測試 ↔ finding」的覆蓋對照，指出�
 輸入需求 + 測試 + findings，輸出**覆蓋對照表 + gap 清單 + 孤兒清單**。設計理念見 `docs/workflow.md#traceability`。
 
 > **覆蓋不等於測得好。** 這份表回答「有沒有東西在守」，不回答「守得夠不夠」。報告裡要明說這個限制，不要讓它變成一個好看的百分比。
-> 狀態檔：`output/traceability.yaml`（範本 `state-templates/traceability.example.yaml`）。對應規則見 `references/traceability-mapping.md`。
+> 狀態檔：`output/traceability.yaml`（範本 `references/state/traceability.example.yaml`）。對應規則見 `references/traceability-mapping.md`。
 
 ## 輸入 / 輸出
-- **輸入**：需求（`knowledge/` 的業務規則 ＋ `output/plans/<slug>.md` 的 in-scope）＋ 測試（掃 `tests/**/*.spec.ts`）＋ findings（`output/sessions/**/findings/F-*.yaml`）＋ issues（`output/issues-index.yaml`）。
+- **輸入**：需求（`projects/<project>/knowledge/` 的業務規則 ＋ `output/plans/<slug>.md` 的 in-scope）＋ 測試（掃 `tests/**/*.spec.ts`）＋ findings（`output/sessions/**/findings/F-*.yaml`）＋ issues（`output/issues-index.yaml`）。
 - **輸出**：`output/traceability.yaml`（對照表）＋ gap 清單（依風險排序）＋ 層級錯配清單 ＋ 孤兒清單（附處置建議）。
 
 ## 步驟
-1. **收需求**：從 `knowledge/` 抽業務規則，每條給一個穩定的 `req_id`（規則見 `references/traceability-mapping.md`）。
-2. **收測試**：掃測試檔，依對應規則（annotation / tag / 命名 / 對照檔）找出它宣告覆蓋哪些 `req_id`，並依檔案位置標 `level`（`config/product-context.md` 的 API testDir 底下＝`api`，其餘＝`ui`；判準見 `references/traceability-mapping.md`）。
+1. **收需求**：從 `projects/<project>/knowledge/` 抽業務規則，每條給一個穩定的 `req_id`（規則見 `references/traceability-mapping.md`）。
+2. **收測試**：掃測試檔，依對應規則（annotation / tag / 命名 / 對照檔）找出它宣告覆蓋哪些 `req_id`，並依檔案位置標 `level`（`projects/<project>/config/product-context.md` 的 API testDir 底下＝`api`，其餘＝`ui`；判準見 `references/traceability-mapping.md`）。
 3. **收 finding / issue**：每筆 finding 與 issue 試著對到 `req_id`。
 4. **建對應**：產生三欄關係。對不確定的標 `uncertain`，**不猜**。
 5. **標 gap**：沒有任何測試或 finding 對到的需求 → gap。把 gap 整批交 `route-by-risk` 排序（先補高風險的洞）。
@@ -28,14 +28,14 @@ description: 維護「需求 ↔ 測試 ↔ finding」的覆蓋對照，指出�
 
 | 孤兒類型 | 意思 | 處置 |
 |---|---|---|
-| 測試孤兒 | 測試對不到任何需求 | 交 `test-prune` 評估（**只是候選，不是判死刑**；也可能是需求沒寫進 `knowledge/`，那就補 knowledge）|
-| finding 孤兒 | finding 對不到任何需求 | 需求外的意外收穫。**這是好事**（探索本來就該找到規格沒寫的東西），建議補 `knowledge/` 或確認是否為隱性需求 |
+| 測試孤兒 | 測試對不到任何需求 | 交 `test-prune` 評估（**只是候選，不是判死刑**；也可能是需求沒寫進 `projects/<project>/knowledge/`，那就補 knowledge）|
+| finding 孤兒 | finding 對不到任何需求 | 需求外的意外收穫。**這是好事**（探索本來就該找到規格沒寫的東西），建議補 `projects/<project>/knowledge/` 或確認是否為隱性需求 |
 
 ## 鐵則
 - **層級錯配不是 gap，也不能無視。** 它的 `status` 留 `covered`，但要單獨列出來。把它併進 gap，會讓「完全沒守」的數字灌水；不列出來，套件會一路長成一堆慢又脆的 UI 測試在驗後端規則，而對照表看起來完全健康。
 - **不猜對應，不確定就標 `uncertain`。** 灌水的覆蓋率比沒有覆蓋率危險，它會讓人以為有安全網。
 - **不算單一覆蓋率數字。** 輸出的是對照表與 gap 清單。一個「覆蓋率 82%」會立刻變成 KPI，然後有人靠寫廢測試把它衝到 95%。
-- **測試孤兒不等於該刪。** 先問「是不是需求沒寫進 `knowledge/`」，再談 prune；順序反了會把有用的測試砍掉。
+- **測試孤兒不等於該刪。** 先問「是不是需求沒寫進 `projects/<project>/knowledge/`」，再談 prune；順序反了會把有用的測試砍掉。
 - **對應規則放 `references/traceability-mapping.md`，資料放 `output/traceability.yaml`。** 狀態檔只存資料、不存演算法（見 `docs/state-files.md`）。
 - **純讀分析、無副作用：它是對照表，不是執行者。** 指出哪裡有洞，補洞交下游。
 
@@ -45,7 +45,7 @@ description: 維護「需求 ↔ 測試 ↔ finding」的覆蓋對照，指出�
 generated_at: 2026-07-29
 requirements:
   - req_id: REQ-CHECKOUT-005
-    source: "knowledge/domains/checkout.md#折扣碼"
+    source: "projects/<project>/knowledge/domains/checkout.md#折扣碼"
     statement: "過期折扣碼不得套用,並顯示明確錯誤"
     covered_by:
       tests:
@@ -53,7 +53,7 @@ requirements:
       findings: ["F-2026-07-24-003"]
     status: covered            # covered | gap | uncertain
   - req_id: REQ-CHECKOUT-006
-    source: "knowledge/domains/checkout.md#折扣碼"
+    source: "projects/<project>/knowledge/domains/checkout.md#折扣碼"
     statement: "折扣碼與會員點數不得同時使用"
     covered_by: { tests: [], findings: [] }
     status: gap
@@ -76,4 +76,4 @@ caveat: "本表只回答『有沒有東西在守』,不回答『守得夠不夠�
 ```
 
 ## 上下游
-上游：`knowledge/`、`test-planning`（in-scope 範圍）、`explore`（findings）、`triage`（issues）。下游：gap 回饋 `test-planning`（排下輪）、測試孤兒交 `test-prune`、覆蓋表交 `release-signoff`（放行證據）、`pipeline-observability`（`coverage_gap` 指標）。
+上游：`projects/<project>/knowledge/`、`test-planning`（in-scope 範圍）、`explore`（findings）、`triage`（issues）。下游：gap 回饋 `test-planning`（排下輪）、測試孤兒交 `test-prune`、覆蓋表交 `release-signoff`（放行證據）、`pipeline-observability`（`coverage_gap` 指標）。

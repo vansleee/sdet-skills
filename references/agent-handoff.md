@@ -4,9 +4,9 @@
 
 ## 識別與設定
 
-- 每筆交接帶 `project`、`session`、`finding_id`、`level`。`project: null` 明確表示預設專案；`level` 只用 `ui` 或 `api`，同時需要兩者時填 `evidence_levels: [ui, api]`。
+- 每筆交接帶 `project`、`session`、`finding_id`、`level`。`project` 一定是 slug，沒有預設專案；`level` 只用 `ui` 或 `api`，同時需要兩者時填 `evidence_levels: [ui, api]`。
 - `session` 是 `output/sessions/<date>_<slug>/` 的目錄名，同一工作目錄內不得重複；同日重跑加序號。`finding_id` 對到該輪的 finding 檔，跨輪不得沿用同一組識別。
-- 設定依 `references/config-resolution.md` 解析。交接欄位與 charter 不一致就退回修正，不把同一 finding 改掛到另一個專案。缺識別的舊資料先查來源，無法確認時不得猜成預設專案。
+- 設定依 `references/config-resolution.md` 解析。交接欄位與 charter 不一致就退回修正，不把同一 finding 改掛到另一個專案。缺識別的舊資料先查來源，無法確認時不得猜成任何專案。
 - 指紋用於同專案去重，校準用 `(project, session, finding_id)` 精確回填；兩者不可互代。
 
 ## 盲驗輸入
@@ -14,7 +14,7 @@
 由 hunter 或呼叫 verifier 的編排者，從完整證據包另外建立 `output/evidence/<YYYYMMDD>-<任務代號>/blind/`。保留原包給 gate 與人複核，verifier 只收到 `blind/manifest.yaml`，不收到原包路徑或候選清單。
 
 ```yaml
-project: null
+project: toolshop
 session: "<date>_<slug>"
 finding_id: F-001
 level: api

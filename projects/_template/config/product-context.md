@@ -1,4 +1,4 @@
-# 受測產品（範本 — 複製成 product-context.md 後填寫；真檔已 gitignore）
+# 受測產品（範本：複製到 projects/<project>/config/ 後填寫）
 
 - 產品：<一句話說明>
 - base URL:staging=<...> / prod=<...>

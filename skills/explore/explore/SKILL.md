@@ -6,12 +6,12 @@ description: 依照一份 Exploration Charter 自主探索產品：觀察現況�
 
 # Explore (v0.1)
 
-輸入一份 charter（`charters/<slug>.yaml`，或 inline 的：目標 / 範圍 / oracles / 邊界），自主探索並產出 findings。設計理念見 `docs/explore.md#explore`。
+輸入一份 charter（`projects/<project>/charters/<slug>.yaml`，或 inline 的：目標 / 範圍 / oracles / 邊界），自主探索並產出 findings。設計理念見 `docs/explore.md#explore`。
 
 > v0.1：本版把三大失敗模式的防呆寫死（見下方鐵則）。跑過真實 session 後再依表現收緊。charter 由 `exploration-charter` 產生；判定交 `test-oracle` / `classify-anomaly`；留證畫面側交 `evidence-package`、端點側交 `api-evidence`。
 
 ## 開跑前：解析 project
-讀 charter 的 `charter.project`，照 `references/config-resolution.md` 解析出這一輪要讀的 `config/<project>/product-context.md` 與 `sdet-config.yaml`，取 base URL、登入方式、trace 來源、API 段與門檻。**解析不到就停手回報，不得回退讀扁平 `config/`**，否則會拿別的產品的設定去打這一站。第一次讀完在輸出裡覆誦一次 slug 與 base URL。charter 沒有 `project` 時不查 config，target URL 由 charter 的 `target` 自己帶。解析出的 slug 往下傳給 `evidence-package`、`api-evidence`、`test-oracle`，下游不重新解析。
+照 `references/config-resolution.md` 從 charter 所在的 `projects/<project>/` 解析 project，讀這一輪的 `projects/<project>/config/product-context.md` 與 `sdet-config.yaml`，取 base URL、登入方式、trace 來源、API 段與門檻。**缺檔就停手回報，不得改讀其他專案的設定**，否則會拿別的產品的設定去打這一站。第一次讀完在輸出裡覆誦一次 slug 與 base URL。專案沒有 `config/` 時只用 charter 的 `target` 與 `max_steps`。解析出的 slug 往下傳給 `evidence-package`、`api-evidence`、`test-oracle`，下游不重新解析。
 
 ## 探索迴圈（每一步）
 1. **讀 charter**：目標、範圍、oracles、out-of-bounds。

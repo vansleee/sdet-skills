@@ -1,4 +1,4 @@
-# 門檻與預算（範本 — 複製成 sdet-config.yaml；真檔已 gitignore）
+# 門檻與預算（範本：複製到 projects/<project>/config/ 後填寫）
 confidence:
   min_to_file: 0.7
 dedupe:

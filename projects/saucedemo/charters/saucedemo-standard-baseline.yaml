@@ -1,15 +1,14 @@
 # 探索章程（exploration charter）
 # 由 exploration-charter 產生、供 explore 讀取的輸入。
-# 位置慣例：charters/<slug>.yaml（committed；output/ 才是每次跑的輸出、被 gitignore）
-# project 欄位的解析規則見 references/config-resolution.md
+# 位置慣例：projects/<project>/charters/<slug>.yaml（committed；output/ 才是每次跑的輸出、被 gitignore）
+# project 由所在資料夾決定，解析規則見 references/config-resolution.md
 charter:
-  project: saucedemo          # 對應 config/saucedemo/ 與 knowledge/saucedemo/
   goal: "用 standard_user 走完 saucedemo 主流程，建立『正常行為長什麼樣』的基準線，並抓出真正未被刻意植入的缺陷"
   target: "https://www.saucedemo.com/"
   scope: [登入頁, 登入失敗路徑, 商品列表, 排序下拉, 商品詳情, 購物車, 結帳資訊表單, 結帳總覽, 完成頁, 側邊選單]
 
   # --- 端點側 ---
-  # 純前端 demo，無後端 API；契約 / schema / 狀態碼語意 oracle 全部停用（見 config/saucedemo/product-context.md 的「API」段）
+  # 純前端 demo，無後端 API；契約 / schema / 狀態碼語意 oracle 全部停用（見 projects/saucedemo/config/product-context.md 的「API」段）
   api_base: null
   endpoints: []
 
@@ -20,7 +19,7 @@ charter:
     - "使用者期待：登入失敗要有看得懂的錯誤訊息；登出後不得靠上一頁或直接改網址回到已登入頁；重新整理後購物車不應無故清空"
 
   test_account: standard_user   # env:SAUCEDEMO_USER / env:SAUCEDEMO_PASS
-  max_steps: 40                 # 沿用 config/saucedemo/sdet-config.yaml 的 budget.max_actions_per_explore
+  max_steps: 40                 # 沿用 projects/saucedemo/config/sdet-config.yaml 的 budget.max_actions_per_explore
 
   # --- 授權分級（2026-08-01 由人拍板；subagent 必須逐條遵守）---
   authorization:

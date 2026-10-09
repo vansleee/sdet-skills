@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""檢查維護 skill 的既有平面設定契約，避免產品與風格跨專案混用。"""
+"""檢查維護 skill 的設定契約：照 config-resolution 解析專案，產品與風格不跨專案混用。"""
 from pathlib import Path
 import re
 import sys
@@ -9,12 +9,14 @@ ROOT = Path(__file__).resolve().parent.parent
 
 def check_skill(name, content):
     problems = []
-    if "`config/test-style.md`" not in content:
-        problems.append(f"{name}: 缺少預設專案的 config/test-style.md")
-    if re.search(r"config/[^/\s`]+/(?:product-context|test-style)\.md", content):
-        problems.append(f"{name}: maintain 尚未接多專案，不得混入具名專案設定")
-    if name in {"test-author", "api-test-author"} and "`config/product-context.md`" not in content:
-        problems.append(f"{name}: 缺少預設專案的 config/product-context.md")
+    if "`projects/<project>/config/test-style.md`" not in content:
+        problems.append(f"{name}: 缺少 projects/<project>/config/test-style.md")
+    if "references/config-resolution.md" not in content:
+        problems.append(f"{name}: 沒有指向 references/config-resolution.md")
+    if re.search(r"projects/(?!<project>/)[^/\s`]+/config/", content):
+        problems.append(f"{name}: 不得寫死具名專案的設定路徑")
+    if name in {"test-author", "api-test-author"} and "`projects/<project>/config/product-context.md`" not in content:
+        problems.append(f"{name}: 缺少 projects/<project>/config/product-context.md")
     return problems
 
 
@@ -26,7 +28,7 @@ def main():
     if problems:
         print("\n".join(problems), file=sys.stderr)
         return 1
-    print("維護設定契約通過：3 支 skill 使用同一個平面預設專案")
+    print("維護設定契約通過：3 支 skill 照 config-resolution 解析同一個專案")
     return 0
 
 

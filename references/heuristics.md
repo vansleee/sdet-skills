@@ -29,4 +29,4 @@ Happy path = 一連串沒說出口的假設。Heuristic = 「常見隱形假設 
 | 請求標頭 | 客戶端會送對的標頭 | 改 `Content-Type`、拿掉它、送不支援的 `Accept` | 表單編碼冒充 JSON |
 | 併發與順序 | 請求會照順序到 | 同一筆同時送兩次、先刪再改、分頁途中改資料 | 同時扣同一份庫存 |
 
-用法：搭配 tour。tour 給路線（error / configuration…），heuristic 給「到了那裡戳哪個假設」。不必每次全跑，用風險挑最相關的幾個（呼應 `route-by-risk`）。端點側的挑選另外受 `config/product-context.md` 的「不得碰的端點」與 charter `out_of_bounds` 限制，破壞性的變化一律不做，只記「需人工授權才驗」。
+用法：搭配 tour。tour 給路線（error / configuration…），heuristic 給「到了那裡戳哪個假設」。不必每次全跑，用風險挑最相關的幾個（呼應 `route-by-risk`）。端點側的挑選另外受 `projects/<project>/config/product-context.md` 的「不得碰的端點」與 charter `out_of_bounds` 限制，破壞性的變化一律不做，只記「需人工授權才驗」。

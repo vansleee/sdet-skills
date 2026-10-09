@@ -8,7 +8,7 @@
 REQ-<AREA>-<NNN>
 例：REQ-CHECKOUT-005、REQ-AUTH-012
 ```
-- `AREA` 用 `knowledge/domains/<area>.md` 的檔名（大寫）；單檔 `knowledge/` 時用小節標題。
+- `AREA` 用 `projects/<project>/knowledge/domains/<area>.md` 的檔名（大寫）；單檔 `projects/<project>/knowledge/` 時用小節標題。
 - **`req_id` 一旦發出就不再變動。** 需求改寫內容可以，換號不行。換號會讓所有既有對應斷掉，而且斷掉時不會有錯誤訊息。
 - 需求被移除：標 `status: retired`，保留 id，不回收再利用。
 
@@ -29,7 +29,7 @@ REQ-<AREA>-<NNN>
 
 | level | 判準 |
 |---|---|
-| `api` | 測試檔位在 `config/product-context.md` 記的 API testDir 底下 |
+| `api` | 測試檔位在 `projects/<project>/config/product-context.md` 記的 API testDir 底下 |
 | `ui` | 其餘 |
 
 位置優先於內容：一支放在 UI testDir 底下、內部卻只打 API 的測試，仍記 `ui` 並在 `note` 標「位置與內容不符，建議搬家」。用內容猜層級會讓同一支測試在不同輪被判成不同的 level，對照表就失去可比性。product-context 沒有 API testDir（或 API 段寫「無」）時，全部記 `ui`，不做推測。
@@ -47,9 +47,9 @@ REQ-<AREA>-<NNN>
 **錯配的 `status` 仍是 `covered`。** 它確實有東西在守，只是守錯層。併進 `gap` 會讓「完全沒守」的數字灌水，而不列出來，套件會一路長成一堆慢又脆的 UI 測試在驗後端規則，對照表卻一片健康。分不出來該歸哪類就不標，跟 `uncertain` 同一個道理：不猜。
 
 ## finding 怎麼對到需求
-- finding 的 `oracle` 欄若引用了 `knowledge/` 的某條規則 → 直接對到該 `req_id`（high）。
+- finding 的 `oracle` 欄若引用了 `projects/<project>/knowledge/` 的某條規則 → 直接對到該 `req_id`（high）。
 - 只有區域相符（同一個 area）→ `uncertain`。
-- 對不到 → **finding 孤兒**，這是正常且有價值的訊號：探索找到了規格沒寫的行為。建議補 `knowledge/`。
+- 對不到 → **finding 孤兒**，這是正常且有價值的訊號：探索找到了規格沒寫的行為。建議補 `projects/<project>/knowledge/`。
 
 ## status 判定
 

@@ -6,26 +6,27 @@ Agentic SDET 技能組：GitHub Actions · Playwright (TypeScript) · GitHub Iss
 **架構、bucket 分層、心智模型的完整說明在 `docs/architecture.md`，這份只寫動手時要遵守的規則。**
 
 ## 鐵則
-- **產品知識與專案設定是「輸入」，skill 讀它、不內嵌**，否則 reuse 就死了。四層分工（`skills/` 能力、`knowledge/` 事實、`skills/workflow/` 流程、`config/` 設定）見架構文件的「心智模型」。
+- **產品知識與專案設定是「輸入」，skill 讀它、不內嵌**，否則 reuse 就死了。四層分工（`skills/` 能力、`projects/<project>/knowledge/` 事實、`skills/workflow/` 流程、`projects/<project>/config/` 設定）見架構文件的「心智模型」。
 - **新增 skill 的門檻：手段不同才開新的，判準不同只加一張表。** 依據見架構文件的「介面層：畫面與端點」。不准為 API 另立一套平行體系。
 - **一筆 vs 一批不要混。** `maintain/` 一支測試、`infra/` 一整批；一批必須先 fan-in 合併根因再分析。對照表見架構文件的「一筆 vs 一批」。
 
 ## 每支 skill 的規範
 - 一定要有 `SKILL.md` 與 `agents/openai.yaml`。
 - 宣告 invocation：user-invoked（`disable-model-invocation: true` + openai.yaml `policy.allow_implicit_invocation: false`）或 model-invoked（兩者都省略）。
-- 後端相依（GitHub / 網址 / 帳密）不寫死在 SKILL.md，放 `config/`；產品知識放 `knowledge/`；祕密只用環境變數。
+- 後端相依（GitHub / 網址 / 帳密）不寫死在 SKILL.md，放 `projects/<project>/config/`；產品知識放 `projects/<project>/knowledge/`；祕密只用環境變數。
 - SKILL.md 保持短（祈使句），rationale 放 `docs/`。
-- 副作用動作（開 issue/PR、改測試、reset env、release 放行）一律先確認，並受 `config/governance.yaml` 授權分級管制。
+- 副作用動作（開 issue/PR、改測試、reset env、release 放行）一律先確認，並受 `projects/governance.yaml` 授權分級管制。
 - skill 之間用「skill 名稱」互相指涉（如「交給 test-oracle」），不要用外部章節/週次。
 - 新增/改名/改行為的 skill，要同步更新 `README.md`、`.claude-plugin/plugin.json`、`meta/ask-sdet`。
 - 中文行文照 de-ai-tone：標點全形、破折號只當插入語、不用中國用語與空轉話語標記。CI 跑 `scripts/check-de-ai-tone.py` 擋，本機可先跑一次。
 
 ## 產品知識與設定
-- `knowledge/`、`config/` 的真檔一律 gitignore，**只 commit 範本**（`*.example.md`、`*.example.yaml`）。`knowledge/` 依規模分層的做法見架構文件的「`knowledge/`」。
-- `config/test-style.md` — 這個專案的測試碼風格，由 `setup-sdet` 訪談產出，`test-author` / `api-test-author` / `test-heal` 動筆前讀它。**只收需要判斷的規則**（Page Object、選擇器優先序、導頁方式、斷言與命名慣例）；縮排、引號、import 順序交 eslint／prettier。風格是設定不是能力，不准為它另開 skill。
+- **一個受測產品一個資料夾 `projects/<project>/`**，底下 `config/`、`knowledge/`、`charters/`；跨專案的授權分級在 `projects/governance.yaml`。路徑只有一條，解析規則見 `references/config-resolution.md`，不准另寫一套，也不准缺檔時回退讀其他專案。
+- `config/`、`knowledge/` 與 `governance.yaml` 的真檔一律 gitignore，**只 commit `projects/_template/`** 與各專案的 `charters/`。`knowledge/` 依規模分層的做法見架構文件的「產品知識」。
+- `projects/<project>/config/test-style.md` — 這個專案的測試碼風格，由 `setup-sdet` 訪談產出，`test-author` / `api-test-author` / `test-heal` 動筆前讀它。**只收需要判斷的規則**（Page Object、選擇器優先序、導頁方式、斷言與命名慣例）；縮排、引號、import 順序交 eslint／prettier。風格是設定不是能力，不准為它另開 skill。
 
 ## 執行期產物
-- **除了 `charters/` 與 `tests/` 之外，所有執行期產物一律寫在 `output/` 底下。** 不准在 repo 根目錄留 `findings/`、`evidence/`、截圖或 JSON。
+- **除了 `projects/<project>/charters/` 與 `tests/` 之外，所有執行期產物一律寫在 `output/` 底下。** 不准在 repo 根目錄留 `findings/`、`evidence/`、截圖或 JSON。
 - **書稿不在這個 repo 裡。** 鐵人賽的書稿是獨立 private repo（`vansleee/agentic-sdet-book`），實體放在 `/Users/wclee/workspace/books-and-courses/agentic-sdet-book`，跟這裡完全分開，不共用 `.gitignore` 或版控。要動書稿就去那邊自己 commit。書稿引用的競品觀察、成本量測留這裡的 `output/ithome-2026/`（不進版控），從書稿引用時寫成本 repo 根算起的路徑，例如 `sdet-skills/output/ithome-2026/…`。
 - 單輪產物進 `output/sessions/<date>_<slug>/`，跨輪累積的登錄簿留 `output/` 根，證據走 `output/evidence/<YYYYMMDD>-<slug>/`。**切進單輪就失去去重與校準的能力。**
 - 完整檔案清單與欄位規範見 `docs/state-files.md`；不可以自創狀態詞彙。

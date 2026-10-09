@@ -13,7 +13,7 @@ generated_at: 2026-07-29
 
 requirements:
   - req_id: REQ-CHECKOUT-005
-    source: "knowledge/domains/checkout.md#折扣碼"
+    source: "projects/<project>/knowledge/domains/checkout.md#折扣碼"
     statement: "過期折扣碼不得套用，並顯示明確錯誤"
     covered_by:
       tests:
@@ -25,14 +25,14 @@ requirements:
     status: covered            # covered | gap | uncertain | retired
 
   - req_id: REQ-CHECKOUT-006
-    source: "knowledge/domains/checkout.md#折扣碼"
+    source: "projects/<project>/knowledge/domains/checkout.md#折扣碼"
     statement: "折扣碼與會員點數不得同時使用"
     covered_by: { tests: [], findings: [] }
     status: gap
     risk_score: 0.71           # 由 route-by-risk 給，用來排補洞順序
 
   - req_id: REQ-AUTH-012
-    source: "knowledge/domains/auth.md#SSO"
+    source: "projects/<project>/knowledge/domains/auth.md#SSO"
     statement: "SSO 登入失敗需退回本地登入並保留原始導向目標"
     covered_by:
       tests:
@@ -43,7 +43,7 @@ requirements:
     note: "建議把 REQ-AUTH-012 加成 test annotation/tag，升成 high"
 
   - req_id: REQ-CART-003
-    source: "knowledge/domains/cart.md#匿名購物車"
+    source: "projects/<project>/knowledge/domains/cart.md#匿名購物車"
     statement: "（已下線）匿名購物車保留 30 天"
     status: retired            # id 保留供歷史追溯，不回收再利用
 

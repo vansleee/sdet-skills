@@ -1,6 +1,6 @@
 # Issue tracker：本地 Markdown 檔案（備援）
 
-還沒有指定 GitHub issue repo，或離線、沒有 gh 權限時用這份。`triage` 開單這一步改為在本機留痕，不呼叫任何外部 API。之後要接 GitHub Issues 時，填好 `config/issue-tracker-github.md` 即可自動切換，不必改 `triage` 本身。它讀的是「這個專案目前有哪份 `config/issue-tracker-*.md`」，不是寫死哪一種後端。
+還沒有指定 GitHub issue repo，或離線、沒有 gh 權限時用這份。`triage` 開單這一步改為在本機留痕，不呼叫任何外部 API。之後要接 GitHub Issues 時，填好 `projects/<project>/config/issue-tracker-github.md` 即可自動切換，不必改 `triage` 本身。它讀的是「這個專案目前有哪份 `projects/<project>/config/issue-tracker-*.md`」，不是寫死哪一種後端。
 
 ## 對應規則（取代 `gh issue create` 那一步）
 
@@ -22,7 +22,7 @@
 
 ## 之後要換成真的 GitHub repo 時
 
-1. 跑一次 `setup-sdet`，把 issue repo、canonical→實際 label 對應填進 `config/issue-tracker-github.md`。
+1. 跑一次 `setup-sdet`，把 issue repo、canonical→實際 label 對應填進 `projects/<project>/config/issue-tracker-github.md`。
 2. 確認 `gh auth status` 已登入。
-3. 之後 `triage` 開單就會照 `config/issue-tracker-github.md` 走，不再寫 `output/reports/issues/*.md`。
+3. 之後 `triage` 開單就會照 `projects/<project>/config/issue-tracker-github.md` 走，不再寫 `output/reports/issues/*.md`。
 4. 這份檔案（`issue-tracker-local-md.md`）可以留著當備援，不用刪。
