@@ -95,7 +95,7 @@ artifact 名稱也必須分開。混用同一個名字，`pipeline-read` 解析�
 - **隔離中的紅不擋，但一定要列出來。** 讓被 quarantine 的測試擋住放行，等於隔離機制失效；但不告訴放行的人「這版有 3 支測試是關掉的」，就是拿假的安全感換過關。所以列出來是硬性欄位，不是選填。
 - **只裁決，不執行。** `merge_pr` 在 governance 的 forbidden 名單。理由不是技術上做不到，而是：一個能自己判「可以放行」又能自己執行 merge 的 agent，錯誤成本沒有任何緩衝。留給人按下最後那顆按鈕。
 - **override 必須留痕，而且不能事後補。** 現實中一定會有「今天非上不可」的時刻，堵死它只會逼人繞過整個閘門。所以給出口，但出口有代價：誰、何時、硬推了哪幾條、為什麼。這份紀錄之後會變成 `pipeline-observability` 的 override 次數指標。override 變多本身就是訊號。
-- **`output/pipeline-gate.yaml` 不是 `output/sessions/<date>_<slug>/gate.yaml`。** 兩支 skill、兩個層級、兩個檔案。共用檔名會讓兩邊互相覆寫，而且覆寫的當下不會有人發現。
+- **`output/<project>/pipeline-gate.yaml` 不是 `output/<project>/sessions/<date>_<slug>/gate.yaml`。** 兩支 skill、兩個層級、兩個檔案。共用檔名會讓兩邊互相覆寫，而且覆寫的當下不會有人發現。
 
 ## pipeline-observability
 
@@ -104,7 +104,7 @@ artifact 名稱也必須分開。混用同一個名字，`pipeline-read` 解析�
 ### 設計理念
 - **每個指標都要綁行動，否則不要量。** 測試健康度儀表板的典型下場是：做得很漂亮、每週貼在頻道裡、沒有人因為它做過任何事。所以本 skill 的輸出格式強制每個 alert 附一個 `route`（哪支 skill）＋ 一句 `why`。指標的價值不在數字本身，在它縮短了「發現問題 → 知道該做什麼」的距離。
 - **這是 infra 迴圈的回饋邊。** `ci-pipeline` 產 run → `pipeline-read` 讀 → `pipeline-triage` 分派 → `flaky-manager` / `quality-gate` 治理 → 本 skill 觀測，然後把結論送回 `flaky-manager` / `test-parallelize` / `test-prune`。沒有這條回饋邊，前面幾支就只是各自處理眼前那批紅，整條產線不會隨時間變好。
-- **不重算，只引用。** flaky rate 的真相在 `output/flaky-registry.yaml`、放行的真相在 `output/pipeline-gate.yaml`。本 skill 若自己重算一遍，團隊就會有兩個數字，接著開始爭論哪個對。單一真相比精確更重要。
+- **不重算，只引用。** flaky rate 的真相在 `output/<project>/flaky-registry.yaml`、放行的真相在 `output/<project>/pipeline-gate.yaml`。本 skill 若自己重算一遍，團隊就會有兩個數字，接著開始爭論哪個對。單一真相比精確更重要。
 - **`no-data` 不是 0。** 這條和 `route-by-risk`「資料源缺不等於低風險」是同一條紀律的兩個化身。用 0 填補缺失資料，會讓「沒人量過」在報表上長得像「表現完美」。
 - **趨勢優先於絕對值。** flaky rate 5% 在某些專案是常態；從 1% 漲到 5% 則在任何專案都是事件。閾值告訴你「現在痛不痛」，趨勢告訴你「要不要現在動手」。
 - **中位數優於平均。** 一次拖了三天的紅燈會把 MTTR 平均值毀掉，讓指標失去可比性。

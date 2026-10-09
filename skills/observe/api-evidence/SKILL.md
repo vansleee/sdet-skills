@@ -14,7 +14,7 @@ description: 直接打 API 驗證或探索端點時，蒐集並整理 API 證據
 
 ## 開工前
 1. 讀 `product-context.md`（哪一份由呼叫端傳來的 project slug 決定，規則見 `references/config-resolution.md`）的「API」段取 API base URL、認證方式、憑證的 env 變數名、契約來源、速率限制、**不得碰的端點**。缺這段就停手回報，不要自己猜 base URL。
-2. 建資料夾 `output/evidence/<YYYYMMDD>-<任務代號>/`（以下用 `$D`）與 `$D/raw/`。
+2. 建資料夾 `output/<project>/evidence/<YYYYMMDD>-<任務代號>/`（以下用 `$D`）與 `$D/raw/`。
 3. 憑證只從環境變數取，**指令裡一律寫 `$VAR`，不展開成值**。
 
 ## 執行中
@@ -40,7 +40,7 @@ description: 直接打 API 驗證或探索端點時，蒐集並整理 API 證據
 10. 寫 `notes.md`：目標、每個請求做了什麼（引 `requests.jsonl` 的序號）、觀察（只寫看到的）、結論（每條至少一項證據）。
 
 ## 產出物
-    output/evidence/<YYYYMMDD>-<任務代號>/
+    output/<project>/evidence/<YYYYMMDD>-<任務代號>/
     ├── manifest.md
     ├── notes.md
     ├── requests.jsonl     # 一行一請求：n / method / path / status / ms / bytes

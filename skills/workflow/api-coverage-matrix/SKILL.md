@@ -13,7 +13,7 @@ disable-model-invocation: true
 
 ## 輸入 / 輸出
 - **輸入**：API 設計文件（連結或內文）＋ `projects/<project>/config/product-context.md` 的「API」段（base URL、認證方式）＋ `projects/<project>/knowledge/`（RBAC/LBAC、旗標語意等商業規則）＋ 可選：既有自動化測試清單或 suite 名稱（用來標覆蓋狀態）。
-- **輸出**：`output/api-coverage-matrix/<slug>.csv`（單一事實來源，git 可 diff），可選再產 `.xlsx`／`.html` 給非技術關係人審閱或簽核用；三者一律由同一份產生腳本輸出，**不手動改其中一份**，否則格式之間會失真。
+- **輸出**：`output/<project>/api-coverage-matrix/<slug>.csv`（單一事實來源，git 可 diff），可選再產 `.xlsx`／`.html` 給非技術關係人審閱或簽核用；三者一律由同一份產生腳本輸出，**不手動改其中一份**，否則格式之間會失真。
 
 ## 步驟
 1. **列端點清單**：從設計文件抽出每個 endpoint × method，連同對應的請求／回應 schema。
@@ -22,7 +22,7 @@ disable-model-invocation: true
 4. **排優先序**：套用下方「優先序判準」表，逐列標 P0～P3。
 5. **標覆蓋狀態**：對照既有自動化測試清單或 suite 名稱，能對上的標「已覆蓋」＋出處；對不上的標 `Gap`。**查不到就是 Gap，不得用合理推測算已覆蓋。**
 6. **補代表性 payload／回應與 cURL**：每個乾淨、單一方法、單一端點的案例都補一組請求 payload、預期回應與可重現的 cURL；`multiple`／組合方法／跨端點彙整的列留質化描述即可，不必硬湊一支 cURL。**cURL 與 payload 一律用 `<TENANT>`／`<API_TOKEN>` 佔位符，不得寫入真實租戶或金鑰**；要在輸出的 HTML 版本做本機互動代填時，值只能存瀏覽器 `localStorage`、不得外送或寫回檔案。
-7. **輸出並確認**：把矩陣摘要（案例數、正負向比例、Gap 數）列給使用者，確認後寫入 `output/api-coverage-matrix/<slug>.csv`（與可選的 `.xlsx`／`.html`）。
+7. **輸出並確認**：把矩陣摘要（案例數、正負向比例、Gap 數）列給使用者，確認後寫入 `output/<project>/api-coverage-matrix/<slug>.csv`（與可選的 `.xlsx`／`.html`）。
 
 ## 優先序判準（P0～P3）
 

@@ -52,7 +52,7 @@
 
 反過來，判定與分類**不成對**：`test-oracle` 與 `failure-analysis` 各自多一張 API 專屬的表就夠了，因為它們的流程一模一樣，只是判準多幾條。這條界線就是新增 skill 的門檻：**手段不同才開新的，判準不同只加一張表。**
 
-哪一條規則該在哪一層驗，判準在 `references/test-design.md` 第 0 節；覆蓋對照用 `level: api|ui` 記在 `output/traceability.yaml`。
+哪一條規則該在哪一層驗，判準在 `references/test-design.md` 第 0 節；覆蓋對照用 `level: api|ui` 記在 `output/<project>/traceability.yaml`。
 
 ## 產品知識：`projects/<project>/knowledge/` 依規模分層
 
@@ -80,7 +80,7 @@
 ```
 projects/<project>/knowledge/            產品知識與規格
 projects/<project>/charters/<slug>.yaml  由人設定目標與邊界（可由 test-planning 產生）
-  └─> output/sessions/<date>_<slug>
+  └─> output/<project>/sessions/<date>_<slug>
         └─> /findings/F-*.yaml   explore 發現可能的 bug 與問題（包含 oracle 判斷）
         └─> /verdicts/V-*.yaml   使用 bug-verifier 能夠獨立重現並且增加信心指數
               └─> /gate.yaml     是否可以重現？移除重複的 Bug？
@@ -90,7 +90,7 @@ tests/*.spec.ts          使用 test-author（畫面）或 api-test-author（端
   └─> 使用 CI run 或是 Local 機器執行
 ```
 
-session 資料夾一輪一個，裝的是「這一輪的判斷」；跨輪累積的登錄簿（`output/issues-index.yaml`、`output/calibration.yaml`、`output/known-false-positives.yaml`、`output/flaky-registry.yaml`）留在 `output/` 根，切進單輪就失去去重與校準的能力。完整清單見 `docs/state-files.md`。
+session 資料夾一輪一個，裝的是「這一輪的判斷」；跨輪累積的登錄簿（`output/<project>/issues-index.yaml`、`output/<project>/calibration.yaml`、`output/<project>/known-false-positives.yaml`、`output/<project>/flaky-registry.yaml`）留在 `output/<project>/` 根，切進單輪就失去去重與校準的能力。完整清單見 `docs/state-files.md`。
 
 > 需要跨 skill 的狀態檔規範可以參考 `docs/state-files.md`。`results.yaml`（skill 會有各自的狀態）並貫穿其他 skill，記得不可以自己新創狀態相關的詞彙。
 

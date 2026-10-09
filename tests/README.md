@@ -51,7 +51,7 @@ Expected: 14.15
 Received: 0
 ```
 
-對應的人工發現與盲驗紀錄在 `output/reports/issues/2026-07-30-cart-line-total-zero.md`。
+對應的人工發現與盲驗紀錄在 `output/toolshop/reports/issues/2026-07-30-cart-line-total-zero.md`。
 
 ### CI（GitHub Actions，2026-08-02）
 
@@ -95,7 +95,7 @@ CI 上 `login.spec.ts` 的成功登入那支會 skip，因為 repo 沒設
 - **測試抄捷徑會被當成機器人。** 使用者不會把 `/checkout` 貼進網址列，
   測試也不該。這條後來寫進 `projects/_template/config/test-style.md` 的「導頁方式」。
 
-完整紀錄：`output/sessions/2026-08-02_ci-e2e-first-run/`
+完整紀錄：`output/toolshop/sessions/2026-08-02_ci-e2e-first-run/`
 （`failure-analysis.yaml` 含被推翻的初判與 revision、`runs/reruns-2026-08-02.yaml` 含裁決）。
 
 ### broken（2026-08-02，連跑三次）

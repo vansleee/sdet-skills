@@ -21,7 +21,7 @@
 - 禁用：<xpath / nth-child / 綁 CSS class / 自動產生的 ID>
 - 導頁方式：<用畫面點擊 / 允許 page.goto 直達深層路由>
   （受測站有 bot 防護時，直達深層路由會被擋 —— 這不是假設，見
-  `output/sessions/2026-08-02_ci-e2e-first-run/failure-analysis.yaml`）
+  `output/<project>/sessions/2026-08-02_ci-e2e-first-run/failure-analysis.yaml`）
 
 ## 斷言
 

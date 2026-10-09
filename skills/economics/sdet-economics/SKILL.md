@@ -28,7 +28,7 @@ description: 成本紀律 reference：省 token、重用 context、模型分級�
 - 沒有 `sdet-config.yaml` 或欄位缺漏時，用保守預設（寧可提早停、事後被問「怎麼停這麼快」，不要燒穿預算才發現）。
 
 ## ROI：一個確認 bug 花多少成本
-**token 與成本讀 `output/token-ledger/`（hook 自動記，見 `docs/state-files.md`），不要拿模型自己報的數字。** `rollup.yaml` 有依 skill 與依動作（hunt / verify / rerun / file / fix）的 `cost_usd` 與 token；`<session_id>.yaml` 有逐次呼叫的明細。`findings` / `confirmed` / `duration` 仍從各輪的 `output/sessions/**/runs/*.yaml`（`duty-oncall` 寫）取，算：
+**token 與成本讀 `output/token-ledger/`（hook 自動記，見 `docs/state-files.md`），不要拿模型自己報的數字。** `rollup.yaml` 有依 skill 與依動作（hunt / verify / rerun / file / fix）的 `cost_usd` 與 token；`<session_id>.yaml` 有逐次呼叫的明細。`findings` / `confirmed` / `duration` 仍從各輪的 `output/<project>/sessions/**/runs/*.yaml`（`duty-oncall` 寫）取，算：
 
 ```
 cost_per_confirmed_bug = Σ tokens(該輪所有 run) ÷ Σ confirmed(該輪所有 run)
@@ -36,7 +36,7 @@ cost_per_confirmed_bug = Σ tokens(該輪所有 run) ÷ Σ confirmed(該輪所�
 
 `confirmed` 只算 `bug-verifier` 蓋章或人複核為真的，候選 findings 不算。分母膨脹會讓 ROI 好看但失真。
 
-## 績效：`output/calibration.yaml` 算得準不準
+## 績效：`output/<project>/calibration.yaml` 算得準不準
 先讀 `references/confidence.md` 的校準規則，只用識別完整、裁定來源明確的列；按 project 與報告期間篩選，分開計算：
 - `precision_high = high 且 human_verdict=confirmed 的筆數 ÷ high 且已有明確人工裁定的筆數`。
 - `reproduction_rate_high = high 且 verifier_verdict=confirmed 的筆數 ÷ high 且 verifier_verdict 為 confirmed 或 not-reproduced 的筆數`。
@@ -52,7 +52,7 @@ tokens_total: 1_240_000
 runs: 6
 confirmed_bugs: 9
 cost_per_confirmed_bug: 137_778
-precision_high: 0.78          # output/calibration.yaml 算出
+precision_high: 0.78          # output/<project>/calibration.yaml 算出
 human_reviewed_high: 9
 reproduction_rate_high: 0.90
 verifier_decided_high: 10
@@ -64,4 +64,4 @@ recommendation: "checkout 區域 precision 偏低，檢討 confidence 因子配�
 ```
 
 ## 上下游
-上游資料：`output/sessions/**/runs/*.yaml`（`duty-oncall`）、`output/calibration.yaml`（hunter 寫 predicted；呼叫端／gate 回填 verifier；明確人判另填 human）。與 `economics/route-by-risk` 分工：`route-by-risk` 決定「要不要測」，本文件決定「用什麼成本測、測完值不值得」。
+上游資料：`output/<project>/sessions/**/runs/*.yaml`（`duty-oncall`）、`output/<project>/calibration.yaml`（hunter 寫 predicted；呼叫端／gate 回填 verifier；明確人判另填 human）。與 `economics/route-by-risk` 分工：`route-by-risk` 決定「要不要測」，本文件決定「用什麼成本測、測完值不值得」。

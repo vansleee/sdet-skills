@@ -42,7 +42,7 @@ playwright-cli install-browser
 
 選 CLI 不選 MCP 的理由：權限用一條 `Bash(playwright-cli:*)` 就收斂得掉，不必整包放行 `mcp__playwright`；輸出路徑寫在指令參數裡，不會藏在 `~/.claude.json` 的 `--output-dir`；也省下每個 session 灌 30 幾個工具 schema 的 context。
 
-`tracing-start` / `tracing-stop` 的原始 trace 落在**工作目錄下**的 `.playwright-cli/traces/`，snapshot 落在 `.playwright-cli/`。這個暫存跟 `evidence-package` 自己組的 `output/evidence/<YYYYMMDD>-<任務代號>/` 是兩回事：前者由 `scripts/pack-trace.sh` 打包成 `trace.zip` 搬進後者（見 `docs/state-files.md`）。暫存區位置可用 `PW_TRACE_DIR` 覆寫。
+`tracing-start` / `tracing-stop` 的原始 trace 落在**工作目錄下**的 `.playwright-cli/traces/`，snapshot 落在 `.playwright-cli/`。這個暫存跟 `evidence-package` 自己組的 `output/<project>/evidence/<YYYYMMDD>-<任務代號>/` 是兩回事：前者由 `scripts/pack-trace.sh` 打包成 `trace.zip` 搬進後者（見 `docs/state-files.md`）。暫存區位置可用 `PW_TRACE_DIR` 覆寫。
 
 #### 4. 行為測試（真的跑一次、檢查產物）
 
@@ -53,14 +53,14 @@ playwright-cli install-browser
 跑完回終端機檢查它產出的證據包：
 
 ```bash
-# 有沒有產生 output/evidence/<日期>-<任務>/ 資料夾
-ls -R output/evidence/
+# 有沒有產生 output/<project>/evidence/<日期>-<任務>/ 資料夾
+ls -R output/<project>/evidence/
 
 # manifest 有沒有寫、Trace 狀態欄有沒有填
-cat output/evidence/*/manifest.md
+cat output/<project>/evidence/*/manifest.md
 
 # 開啟 trace 逐步回放（截圖 / network / console 都在裡面）
-npx playwright show-trace output/evidence/*/trace.zip
+npx playwright show-trace output/<project>/evidence/*/trace.zip
 ```
 
 > 判準：打開這包 evidence，一個沒看過操作的人，能不能只靠裡面的證據重現你的結論。能，就算過。

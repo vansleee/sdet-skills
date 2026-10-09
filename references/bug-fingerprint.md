@@ -37,7 +37,7 @@
 
 ## 比對與合併
 
-1. 算出指紋 → 查 `output/issues-index.yaml` 中同 project 的列，以 `(project, fingerprint)` 比對。缺 project 的舊列先確認來源，不跨專案合併，也不直接視為目前專案。
+1. 算出指紋 → 查 `output/<project>/issues-index.yaml` 中同 project 的列，以 `(project, fingerprint)` 比對。缺 project 的舊列先確認來源，不跨專案合併，也不直接視為目前專案。
 2. **完全相同** → 不開新單：本地 index 的 `occurrences += 1`、新證據 append 到 `evidence`、必要時更新 `confidence`。同一 `(session, finding_id)` 只計一次，以 `observations` 留識別，續跑不能重複加總。tracker 留言或改內容交 triage 另查權限，hunter 不碰 tracker。
 3. **`area` + `signature` 相同但 `trigger` 不同** → 標 `related`，**不自動合併**，列給人判（可能是同一根因的兩個入口，也可能真是兩個 bug）。
 4. **找不到** → 才開新單，並把指紋寫進 index。
@@ -47,7 +47,7 @@ gate 對已合併的候選仍記 `not_duplicate: fail`、`result: block`，`exis
 ## 範例（取自 toolshop 四輪真跑）
 
 ```yaml
-# output/issues-index.yaml
+# output/<project>/issues-index.yaml
 - project: toolshop
   fingerprint: "checkout|typeerror:cart_items-undefined|enter-checkout"
   issue: "#<n>"

@@ -11,7 +11,7 @@ import { openFirstProduct, addToCart, gotoCart, money, SUT } from '../fixtures/s
  * 這是判定「產品迴歸」最乾淨的證據：測試沒改，產品改了。
  *
  * 對應的人工發現與盲驗紀錄：
- *   output/reports/issues/2026-07-30-cart-line-total-zero.md
+ *   output/toolshop/reports/issues/2026-07-30-cart-line-total-zero.md
  */
 test('購物車每一列的 Total 應該等於單價乘以數量', async ({ page }) => {
   const { name, price } = await openFirstProduct(page)

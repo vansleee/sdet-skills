@@ -5,13 +5,13 @@ description: 開單前檢查六條必要條件，依專案與 UI／API 證據分
 
 # Issue Quality Gate
 
-輸入一批候選（含 verdict、confidence、evidence），輸出 `output/sessions/<date>_<slug>/gate.yaml`。設計理念見 `docs/agents.md#issue-quality-gate`。
+輸入一批候選（含 verdict、confidence、evidence），輸出 `output/<project>/sessions/<date>_<slug>/gate.yaml`。設計理念見 `docs/agents.md#issue-quality-gate`。
 
 > **好習慣會被跳過，硬閘門不會。** 前面立的規矩——證據、oracle、信心、誤報、去重、獨立重現——在這裡從「最好有」變成「沒有就開不了」。這是 **AND**：全過才放行。
 
 ## 前置
 - 先讀 `references/agent-handoff.md` 與 `references/config-resolution.md`；候選與 verdict 的 `(project, session, finding_id)` 必須一致，project 須符合 charter。沒有 verdict 時，由呼叫端依盲驗契約送 `bug-verifier`，不得傳完整候選與評分；無法送驗就記 `reproducible: fail`、`result: block` 與待驗原因。
-- `output/known-false-positives.yaml`、`output/issues-index.yaml` 與解析後的 `sdet-config.yaml`（`confidence.min_to_file`）可讀。跨輪登錄簿只比對同 project，舊資料歸屬不明先人工核對。
+- `output/<project>/known-false-positives.yaml`、`output/<project>/issues-index.yaml` 與解析後的 `sdet-config.yaml`（`confidence.min_to_file`）可讀。跨輪登錄簿只比對同 project，舊資料歸屬不明先人工核對。
 
 ## 六條檢查（順序固定，逐條記 pass/fail）
 | # | 條件 | 判準 | 來源 |
@@ -20,7 +20,7 @@ description: 開單前檢查六條必要條件，依專案與 UI／API 證據分
 | 2 | has_evidence | hunter 與 verifier 各自通過 UI／API 證據表，檔案齊全且可攜 | `references/agent-handoff.md` |
 | 3 | oracle_passed | `verdict == bug`（非 needs-spec / inconclusive） | `test-oracle` |
 | 4 | confidence_ok | 數值 `score >= confidence.min_to_file`，因子完整且未違反封頂 | `references/confidence.md` |
-| 5 | not_false_pos | 未命中 `output/known-false-positives.yaml` | known-FP |
+| 5 | not_false_pos | 未命中 `output/<project>/known-false-positives.yaml` | known-FP |
 | 6 | not_duplicate | 同 project 的指紋不在 index；已併入舊單仍為 fail | `references/bug-fingerprint.md` |
 
 ## 分流
@@ -30,7 +30,7 @@ description: 開單前檢查六條必要條件，依專案與 UI／API 證據分
 
 ## 輸出
 ```yaml
-# output/sessions/<date>_<slug>/gate.yaml
+# output/<project>/sessions/<date>_<slug>/gate.yaml
 - project: toolshop
   session: <date>_<slug>
   finding_id: F-001

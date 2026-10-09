@@ -68,7 +68,7 @@
   next_step: "自動送 bug-verifier"
 ```
 
-## 校準：`output/calibration.yaml`
+## 校準：`output/<project>/calibration.yaml`
 
 格式依 `references/state/calibration.example.yaml` 與 `docs/state-files.md`。每筆預測以 `(project, session, finding_id)` 唯一定位；fingerprint 用於跨輪關聯，不用來選取要覆寫的列。
 
@@ -85,4 +85,4 @@
 - 打 `high` 卻常被打槍 → **系統性過度自信**，調高門檻或降低「單次複現」的配分。
 - 大量後來確認的真 bug 被壓成 `low` → **太保守**，漏報成本高。
 
-**沒有 calibration，confidence 只是沒人驗證過的自我感覺。** 累積的資料同時餵給各輪 `output/sessions/**/runs/*.yaml` 的績效計量。
+**沒有 calibration，confidence 只是沒人驗證過的自我感覺。** 累積的資料同時餵給各輪 `output/<project>/sessions/**/runs/*.yaml` 的績效計量。

@@ -23,7 +23,7 @@ export async function gotoHome(page: Page) {
  *
  * 為什麼：直接導向深層路由會觸發受測站的 bot 防護（Cloudflare 驗證頁），
  * 在 GitHub Actions 上穩定重現，本機住宅 IP 不會。證據見
- * output/sessions/2026-08-02_ci-e2e-first-run/failure-analysis.yaml。
+ * output/toolshop/sessions/2026-08-02_ci-e2e-first-run/failure-analysis.yaml。
  * 一般使用者不會把 /checkout 貼進網址列，測試也不該。
  */
 export async function gotoCart(page: Page) {

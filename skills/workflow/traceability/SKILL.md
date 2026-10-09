@@ -8,11 +8,11 @@ description: 維護「需求 ↔ 測試 ↔ finding」的覆蓋對照，指出�
 輸入需求 + 測試 + findings，輸出**覆蓋對照表 + gap 清單 + 孤兒清單**。設計理念見 `docs/workflow.md#traceability`。
 
 > **覆蓋不等於測得好。** 這份表回答「有沒有東西在守」，不回答「守得夠不夠」。報告裡要明說這個限制，不要讓它變成一個好看的百分比。
-> 狀態檔：`output/traceability.yaml`（範本 `references/state/traceability.example.yaml`）。對應規則見 `references/traceability-mapping.md`。
+> 狀態檔：`output/<project>/traceability.yaml`（範本 `references/state/traceability.example.yaml`）。對應規則見 `references/traceability-mapping.md`。
 
 ## 輸入 / 輸出
-- **輸入**：需求（`projects/<project>/knowledge/` 的業務規則 ＋ `output/plans/<slug>.md` 的 in-scope）＋ 測試（掃 `tests/**/*.spec.ts`）＋ findings（`output/sessions/**/findings/F-*.yaml`）＋ issues（`output/issues-index.yaml`）。
-- **輸出**：`output/traceability.yaml`（對照表）＋ gap 清單（依風險排序）＋ 層級錯配清單 ＋ 孤兒清單（附處置建議）。
+- **輸入**：需求（`projects/<project>/knowledge/` 的業務規則 ＋ `output/<project>/plans/<slug>.md` 的 in-scope）＋ 測試（掃 `tests/**/*.spec.ts`）＋ findings（`output/<project>/sessions/**/findings/F-*.yaml`）＋ issues（`output/<project>/issues-index.yaml`）。
+- **輸出**：`output/<project>/traceability.yaml`（對照表）＋ gap 清單（依風險排序）＋ 層級錯配清單 ＋ 孤兒清單（附處置建議）。
 
 ## 步驟
 1. **收需求**：從 `projects/<project>/knowledge/` 抽業務規則，每條給一個穩定的 `req_id`（規則見 `references/traceability-mapping.md`）。
@@ -22,7 +22,7 @@ description: 維護「需求 ↔ 測試 ↔ finding」的覆蓋對照，指出�
 5. **標 gap**：沒有任何測試或 finding 對到的需求 → gap。把 gap 整批交 `route-by-risk` 排序（先補高風險的洞）。
 5b. **標層級錯配**：需求講的是商業規則、驗證或權限，卻只有 `level: ui` 的測試在守 → 寫進 `level_mismatches`，建議降到 API 層（交 `api-test-author`，原本那批交 `test-prune` 評估）。**它的 `status` 仍然是 `covered`**：確實有東西在守，只是守在比較貴、比較脆的那一層。跟 gap 分開列，才不會讓「沒有安全網」跟「安全網放錯位置」混成同一個數字。
 6. **標孤兒**（雙向，見下表）。
-7. **輸出**：寫 `output/traceability.yaml`（先給人看）＋ 報告 gap、層級錯配與孤兒。
+7. **輸出**：寫 `output/<project>/traceability.yaml`（先給人看）＋ 報告 gap、層級錯配與孤兒。
 
 ## 孤兒處置
 
@@ -36,12 +36,12 @@ description: 維護「需求 ↔ 測試 ↔ finding」的覆蓋對照，指出�
 - **不猜對應，不確定就標 `uncertain`。** 灌水的覆蓋率比沒有覆蓋率危險，它會讓人以為有安全網。
 - **不算單一覆蓋率數字。** 輸出的是對照表與 gap 清單。一個「覆蓋率 82%」會立刻變成 KPI，然後有人靠寫廢測試把它衝到 95%。
 - **測試孤兒不等於該刪。** 先問「是不是需求沒寫進 `projects/<project>/knowledge/`」，再談 prune；順序反了會把有用的測試砍掉。
-- **對應規則放 `references/traceability-mapping.md`，資料放 `output/traceability.yaml`。** 狀態檔只存資料、不存演算法（見 `docs/state-files.md`）。
+- **對應規則放 `references/traceability-mapping.md`，資料放 `output/<project>/traceability.yaml`。** 狀態檔只存資料、不存演算法（見 `docs/state-files.md`）。
 - **純讀分析、無副作用：它是對照表，不是執行者。** 指出哪裡有洞，補洞交下游。
 
 ## 輸出（格式，非某次執行結果）
 ```yaml
-# output/traceability.yaml（節錄）
+# output/<project>/traceability.yaml（節錄）
 generated_at: 2026-07-29
 requirements:
   - req_id: REQ-CHECKOUT-005

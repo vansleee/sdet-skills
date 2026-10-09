@@ -10,7 +10,7 @@ description: 執行測試、操作產品、驗證功能或探索頁面時，蒐�
 > **只管畫面側。** 不經畫面、直接打端點的請求交 `api-evidence`；兩者共用同一個 `$D`，它把 `requests.jsonl` / `repro.sh` / `raw/` 併進來，manifest 由本 skill 統一寫一份。
 
 ## 開工前
-1. 建資料夾 `output/evidence/<YYYYMMDD>-<任務代號>/`，以下用 `$D` 代稱。
+1. 建資料夾 `output/<project>/evidence/<YYYYMMDD>-<任務代號>/`，以下用 `$D` 代稱。
 2. 開瀏覽器並開錄 trace：
 
        playwright-cli open <url>
@@ -47,7 +47,7 @@ description: 執行測試、操作產品、驗證功能或探索頁面時，蒐�
 9. 寫 `notes.md`：目標、步驟（每步引截圖）、觀察（只寫看到的）、結論（每條至少一項證據）。
 
 ## 產出物
-    output/evidence/<YYYYMMDD>-<任務代號>/
+    output/<project>/evidence/<YYYYMMDD>-<任務代號>/
     ├── manifest.md
     ├── notes.md
     ├── console.log

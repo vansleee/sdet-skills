@@ -3,7 +3,7 @@
 跨 skill 資料流檔的空白範本。用法：複製到 `output/`、去掉 `.example`，就成了真檔。
 
 ```bash
-cp references/state/issues-index.example.yaml output/issues-index.yaml
+cp references/state/issues-index.example.yaml output/<project>/issues-index.yaml
 ```
 
 真檔含實際判斷結果，已 gitignore，不進版控。

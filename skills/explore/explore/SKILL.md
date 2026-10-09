@@ -17,14 +17,14 @@ description: 依照一份 Exploration Charter 自主探索產品：觀察現況�
 1. **讀 charter**：目標、範圍、oracles、out-of-bounds。
 2. **觀察現況**：`playwright-cli snapshot` 看目前畫面與可操作元素，動作用它回傳的 ref（`playwright-cli click e6`）。畫面一變就重新 snapshot，別拿舊 ref 動作。
 3. **宣告下一步**：先寫「我現在看到什麼 + 為什麼選這個下一步（朝 charter 哪個目標）」，**且必須引用當前畫面的具體證據**，再動作。
-4. **記路徑**：動作前查 `output/sessions/<date>_<slug>/exploration-log.yaml`（走過的頁面 / 試過的操作），**做過的不重做**；動作後把這步寫回去。
+4. **記路徑**：動作前查 `output/<project>/sessions/<date>_<slug>/exploration-log.yaml`（走過的頁面 / 試過的操作），**做過的不重做**；動作後把這步寫回去。
 5. **順手留證**：關鍵操作交 `evidence-package`（截圖 / console / network）。疑似問題標成 `anomaly` /「待確認」，**不當場定罪**。
 6. **檢查停止條件**（見下）。
 
 ## API 探索迴圈（charter 有 `endpoints` 時，與上面的迴圈交替跑）
 畫面側用 `snapshot` 取 ref，端點側沒有 ref 可取，觀察的單位換成請求與回應。留證交 `api-evidence`，判定一樣交 `test-oracle`。
 
-1. **列端點**：優先讀解析後的 `product-context.md` 的契約來源（OpenAPI／GraphQL schema）；沒有契約就從既有 `output/evidence/**/network.log` 或畫面操作時實際打出去的請求反推。反推出來的清單要在 log 註明「來源＝觀察，非契約」，它一定不完整。
+1. **列端點**：優先讀解析後的 `product-context.md` 的契約來源（OpenAPI／GraphQL schema）；沒有契約就從既有 `output/<project>/evidence/**/network.log` 或畫面操作時實際打出去的請求反推。反推出來的清單要在 log 註明「來源＝觀察，非契約」，它一定不完整。
 2. **先打一次正常請求**當基準：記下正常的狀態碼、回應結構、耗時。沒有基準就沒得比，後面每個異常都會變成「不確定本來是不是這樣」。
 3. **宣告下一步**：跟畫面側同一條規矩，寫「我打算戳哪個假設」（讀 `references/heuristics.md` 的 API 列），且引用基準回應的具體內容。
 4. **打請求**：交 `api-evidence` 執行與留證。有副作用的請求先確認，`out_of_bounds` 與「不得碰的端點」一律不碰。
@@ -59,11 +59,11 @@ description: 依照一份 Exploration Charter 自主探索產品：觀察現況�
 ## 輸出（路徑固定，全部落在 `output/` 底下）
 
 ```
-    output/sessions/<YYYY-MM-DD>_<slug>/
+    output/<project>/sessions/<YYYY-MM-DD>_<slug>/
     ├── exploration-log.yaml               # 這次走過的路徑（供續跑與人審）；開頭記 project slug 與解析到的 config 路徑
     └── findings/F-NNN-<slug>.yaml         # 一筆一檔，候選發現
 
-    output/evidence/<YYYYMMDD>-<slug>/     # 截圖 / console / network，由 evidence-package 建
+    output/<project>/evidence/<YYYYMMDD>-<slug>/     # 截圖 / console / network，由 evidence-package 建
 ```
 
 - `findings`：每筆附證據、狀態＝fail/anomaly、待確認理由 → 交 `structured-result` / `classify-anomaly`。

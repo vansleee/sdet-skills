@@ -5,13 +5,13 @@
 ## 識別與設定
 
 - 每筆交接帶 `project`、`session`、`finding_id`、`level`。`project` 一定是 slug，沒有預設專案；`level` 只用 `ui` 或 `api`，同時需要兩者時填 `evidence_levels: [ui, api]`。
-- `session` 是 `output/sessions/<date>_<slug>/` 的目錄名，同一工作目錄內不得重複；同日重跑加序號。`finding_id` 對到該輪的 finding 檔，跨輪不得沿用同一組識別。
+- `session` 是 `output/<project>/sessions/<date>_<slug>/` 的目錄名，同一工作目錄內不得重複；同日重跑加序號。`finding_id` 對到該輪的 finding 檔，跨輪不得沿用同一組識別。
 - 設定依 `references/config-resolution.md` 解析。交接欄位與 charter 不一致就退回修正，不把同一 finding 改掛到另一個專案。缺識別的舊資料先查來源，無法確認時不得猜成任何專案。
 - 指紋用於同專案去重，校準用 `(project, session, finding_id)` 精確回填；兩者不可互代。
 
 ## 盲驗輸入
 
-由 hunter 或呼叫 verifier 的編排者，從完整證據包另外建立 `output/evidence/<YYYYMMDD>-<任務代號>/blind/`。保留原包給 gate 與人複核，verifier 只收到 `blind/manifest.yaml`，不收到原包路徑或候選清單。
+由 hunter 或呼叫 verifier 的編排者，從完整證據包另外建立 `output/<project>/evidence/<YYYYMMDD>-<任務代號>/blind/`。保留原包給 gate 與人複核，verifier 只收到 `blind/manifest.yaml`，不收到原包路徑或候選清單。
 
 ```yaml
 project: toolshop
@@ -35,7 +35,7 @@ repro: repro.sh              # 純 UI 可為 null
 - verifier 可讀自身 skill、必要的共用規則、全域 governance 與該 project 的執行設定。charter 的操作限制由編排者傳入；不把 charter 裡的假設或 oracle 內容混進盲驗輸入。
 - 編排者用平台支援的獨立 subagent／session 啟動驗證，明確關閉對話繼承。無法建立乾淨 context 就保留待驗紀錄，不得在 hunter 原 context 自稱獨立驗證。不得在缺乏工具時聲稱已操作產品。
 - 發現推理或結論混入就中止本次盲驗，重新整理輸入並啟動新的乾淨 context；污染過的 context 不再交 verdict。
-- verifier 的產物寫到另一個 `output/evidence/<YYYYMMDD>-<任務代號>-verifier/`，不得覆寫原包。只回報本次重現結果；跨輪合併與 calibration 回填由呼叫端或 gate 處理。
+- verifier 的產物寫到另一個 `output/<project>/evidence/<YYYYMMDD>-<任務代號>-verifier/`，不得覆寫原包。只回報本次重現結果；跨輪合併與 calibration 回填由呼叫端或 gate 處理。
 
 ## 證據驗收
 

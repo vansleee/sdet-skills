@@ -1,6 +1,6 @@
 # 探索章程（exploration charter）
 # 由 exploration-charter 產生、供 explore 讀取的輸入。
-# 位置慣例：projects/<project>/charters/<slug>.yaml（committed；output/evidence/ 才是每次跑的輸出、被 gitignore）
+# 位置慣例：projects/<project>/charters/<slug>.yaml（committed；output/<project>/evidence/ 才是每次跑的輸出、被 gitignore）
 charter:
   goal: "在 with-bugs build 走完 Toolshop 的結帳流程，找付款與金額計算相關的 bug"
   target: "https://with-bugs.practicesoftwaretesting.com/#/?bug-hunting=true"

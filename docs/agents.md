@@ -23,8 +23,8 @@
 
 ### 狀態檔
 
-讀：`output/known-false-positives.yaml`、`output/issues-index.yaml`、`projects/<project>/config/sdet-config.yaml`。
-寫：`output/calibration.yaml`（以 project + session + finding_id 記 predicted）、evidence 目錄、候選清單；已知指紋只在同 project 的本地 index 合併觀察。
+讀：`output/<project>/known-false-positives.yaml`、`output/<project>/issues-index.yaml`、`projects/<project>/config/sdet-config.yaml`。
+寫：`output/<project>/calibration.yaml`（以 project + session + finding_id 記 predicted）、evidence 目錄、候選清單；已知指紋只在同 project 的本地 index 合併觀察。
 **不寫** issue tracker。
 
 ## bug-verifier
@@ -47,7 +47,7 @@ v0.1：單一候選、單輪重現。之後：多輪 / 跨環境重現、自動�
 
 ## issue-quality-gate
 
-開單前的硬閘門：六條 AND 條件全過才放行，輸出 `output/sessions/<date>_<slug>/gate.yaml` 分流 pass / hold / block。
+開單前的硬閘門：六條 AND 條件全過才放行，輸出 `output/<project>/sessions/<date>_<slug>/gate.yaml` 分流 pass / hold / block。
 
 ### 設計理念
 - **把好習慣變成硬條件。** 證據（Day 11）、oracle（Day 20）、confidence（Day 22）、非 FP（Day 23）、去重（Day 24）、獨立重現（Day 26）單獨看都是好習慣，但好習慣會被跳過；閘門讓「最好有」變成「沒有就開不了」。
@@ -110,7 +110,7 @@ v0.1：單一 issue、單一 PR。之後：修復模式庫、與 test-heal 的�
 - **摘要要五分鐘能複核完**，不是要人重跑一遍。
 
 ### 上下游
-輸入：charter ＋ 排程／使用者觸發。內部依序：`bug-hunter` → `bug-verifier` → `issue-quality-gate` → `triage` / `bug-fixer`。輸出：`output/sessions/<date>_<slug>/runs/<date>.yaml`、值班摘要、人工佇列。
+輸入：charter ＋ 排程／使用者觸發。內部依序：`bug-hunter` → `bug-verifier` → `issue-quality-gate` → `triage` / `bug-fixer`。輸出：`output/<project>/sessions/<date>_<slug>/runs/<date>.yaml`、值班摘要、人工佇列。
 
 先獨立確認問題，再判能否開單，接著開 Issue 與修復。bug-verifier 的 confirmed 表示問題重現，不能移到 fixer 後當成修好了；修復的先紅後綠驗證由 fixer 執行。
 

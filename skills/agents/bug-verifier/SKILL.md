@@ -17,12 +17,12 @@ description: 在乾淨 context 盲驗候選，只收重現步驟、原始證據�
 ## 執行順序
 
 1. **檢查隔離**：確認沒有 hunter 對話、推理或結論。讀到污染內容就中止，交呼叫端整理後另開乾淨 context。
-2. **重現與留證**：照步驟自己操作，輸出到新的 `output/evidence/<YYYYMMDD>-<任務代號>-verifier/`。UI 交 `evidence-package`；API 先檢查 `repro.sh` 的請求與副作用，再交 `api-evidence`，使用本輪 env 與新輸出目錄。混合候選兩側都留證。
+2. **重現與留證**：照步驟自己操作，輸出到新的 `output/<project>/evidence/<YYYYMMDD>-<任務代號>-verifier/`。UI 交 `evidence-package`；API 先檢查 `repro.sh` 的請求與副作用，再交 `api-evidence`，使用本輪 env 與新輸出目錄。混合候選兩側都留證。
 3. **判定** — 三選一，不自創詞彙：
    - `confirmed`：照步驟跑、**自己觀察到同一現象**。
    - `not-reproduced`：照步驟跑完、現象未出現。
    - `inconclusive`：步驟跑不完（被擋、環境壞、資料缺），附卡在哪一步。
-4. **寫 verdict**：存 `output/sessions/<session>/verdicts/V-<finding_id>.yaml`，依交接契約驗收本輪證據。相同 finding 再驗時另加序號，不覆寫前次 verdict。
+4. **寫 verdict**：存 `output/<project>/sessions/<session>/verdicts/V-<finding_id>.yaml`，依交接契約驗收本輪證據。相同 finding 再驗時另加序號，不覆寫前次 verdict。
 5. **交回呼叫端**：回傳 verdict 路徑，由呼叫端或 gate 依 `references/confidence.md` 回填 `verifier_verdict`。本 skill 不讀寫 calibration、不計算 hunter 跨輪次數。
 
 ## 輸出
@@ -37,7 +37,7 @@ steps_followed: [ ... ]               # 實際照做的步驟
 observed: "<自己觀察到什麼>"
 verdict: confirmed | not-reproduced | inconclusive
 verified_at: <ISO 時間>
-independent_evidence: [output/evidence/<本輪>-verifier/manifest.md]
+independent_evidence: [output/<project>/evidence/<本輪>-verifier/manifest.md]
 trace: null                          # UI 填本輪 trace 路徑
 trace_reason: "API 驗證不經瀏覽器"     # trace 為 null 時必填
 ```

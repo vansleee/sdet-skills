@@ -1,8 +1,8 @@
 # 全書狀態 / 資料檔（跨 skill 讀寫，非 SKILL.md）
 
-檔案分兩類：**一輪探索自己的產物**收在 `output/sessions/<date>_<slug>/` 底下，一輪一夾、彼此不干擾；**跨輪累積的登錄簿**留在 `output/` 根目錄，因為去重、校準、flaky 追蹤本來就要跨輪比對。`<date>` 用 `YYYY-MM-DD`（例：`output/sessions/2026-08-01_academybugs/`）。
+檔案分兩類：**一輪探索自己的產物**收在 `output/<project>/sessions/<date>_<slug>/` 底下，一輪一夾、彼此不干擾；**跨輪累積的登錄簿**留在 `output/<project>/` 根，因為去重、校準、flaky 追蹤本來就要跨輪比對。每個產品一個 `output/<project>/`，project 照 `references/config-resolution.md` 解析，不同產品的登錄簿不混在同一份檔案。`<date>` 用 `YYYY-MM-DD`（例：`output/<project>/sessions/2026-08-01_academybugs/`）。
 
-## 一輪一夾：`output/sessions/<date>_<slug>/`
+## 一輪一夾：`output/<project>/sessions/<date>_<slug>/`
 
 | 檔案 | 產生 / 維護的 skill | 用途 |
 |---|---|---|
@@ -14,27 +14,34 @@
 | runs/<date>.yaml | duty-oncall | 一次值班的計量（tokens/cost_usd/cost_by_stage_usd/duration/model/findings/gate/issues/confirmed）→ ROI。token 與成本取自 `output/token-ledger`，靠 `ledger_run` 欄位對回逐階段明細 |
 | runs/reruns-<date>.yaml | re-run-gate | 逐支測試的重跑紀錄（次數/逐次結果/裁決）→ flaky 趨勢 |
 
-## 跨輪累積：`output/` 根目錄
+## 跨輪累積：`output/<project>/`
 
 | 檔案 | 產生 / 維護的 skill | 用途 |
 |---|---|---|
-| output/issues-index.yaml | triage 建立；bug-hunter 合併本地觀察；issue-quality-gate 讀 | 以 project + fingerprint 去重；不替代 tracker 授權（範本 `references/state/issues-index.example.yaml`）|
-| output/calibration.yaml | hunter 寫 predicted；呼叫端／gate 回填 verifier；明確人判才填 human | 以 project + session + finding_id 定位預測（範本 `references/state/calibration.example.yaml`）|
-| output/known-false-positives.yaml | issue-quality-gate 維護、bug-hunter 讀 | 已知誤報（範本 `references/state/known-false-positives.example.yaml`）|
-| output/flaky-registry.yaml | flaky-manager 寫；quality-gate / pipeline-observability / re-run-gate 讀 | flaky 名單與 quarantine 狀態、到期日（範本 `references/state/flaky-registry.example.yaml`）|
-| output/traceability.yaml | traceability 寫；test-planning / release-signoff / pipeline-observability 讀 | 需求 ↔ 測試 ↔ finding 覆蓋對照與 gap（範本 `references/state/traceability.example.yaml`）|
-| output/pipeline-gate.yaml | infra/quality-gate 寫；release-signoff / pipeline-observability / status-report 讀 | **一個 build** 能不能放行 + override 留痕（範本 `references/state/pipeline-gate.example.yaml`）|
-| output/signoffs/<version>.yaml | release-signoff | **整個 release** 能不能簽出去 + 簽核留痕（範本 `references/state/signoff.example.yaml`）|
-| output/plans/<slug>.md | test-planning | 本輪測試範圍 + 風險排序 + out-of-scope 理由 |
-| output/api-coverage-matrix/<slug>.csv（可選 .xlsx / .html） | api-coverage-matrix | 逐端點、逐方法的優先序案例矩陣，含覆蓋狀態；三種格式共用同一份事實來源 |
-| output/triage-reports/<date>_<run>.md | pipeline-triage | 一片紅的根因群 → owner → issue 對照報告 |
-| output/reports/health-<date>.md | pipeline-observability | 測試健康指標、趨勢與行動路由 |
-| output/reports/status-<date>.md | status-report | standup / 測試報告 / release-readiness 摘要 |
+| output/<project>/issues-index.yaml | triage 建立；bug-hunter 合併本地觀察；issue-quality-gate 讀 | 以 project + fingerprint 去重；不替代 tracker 授權（範本 `references/state/issues-index.example.yaml`）|
+| output/<project>/calibration.yaml | hunter 寫 predicted；呼叫端／gate 回填 verifier；明確人判才填 human | 以 project + session + finding_id 定位預測（範本 `references/state/calibration.example.yaml`）|
+| output/<project>/known-false-positives.yaml | issue-quality-gate 維護、bug-hunter 讀 | 已知誤報（範本 `references/state/known-false-positives.example.yaml`）|
+| output/<project>/flaky-registry.yaml | flaky-manager 寫；quality-gate / pipeline-observability / re-run-gate 讀 | flaky 名單與 quarantine 狀態、到期日（範本 `references/state/flaky-registry.example.yaml`）|
+| output/<project>/traceability.yaml | traceability 寫；test-planning / release-signoff / pipeline-observability 讀 | 需求 ↔ 測試 ↔ finding 覆蓋對照與 gap（範本 `references/state/traceability.example.yaml`）|
+| output/<project>/pipeline-gate.yaml | infra/quality-gate 寫；release-signoff / pipeline-observability / status-report 讀 | **一個 build** 能不能放行 + override 留痕（範本 `references/state/pipeline-gate.example.yaml`）|
+| output/<project>/signoffs/<version>.yaml | release-signoff | **整個 release** 能不能簽出去 + 簽核留痕（範本 `references/state/signoff.example.yaml`）|
+| output/<project>/plans/<slug>.md | test-planning | 本輪測試範圍 + 風險排序 + out-of-scope 理由 |
+| output/<project>/api-coverage-matrix/<slug>.csv（可選 .xlsx / .html） | api-coverage-matrix | 逐端點、逐方法的優先序案例矩陣，含覆蓋狀態；三種格式共用同一份事實來源 |
+| output/<project>/triage-reports/<date>_<run>.md | pipeline-triage | 一片紅的根因群 → owner → issue 對照報告 |
+| output/<project>/reports/health-<date>.md | pipeline-observability | 測試健康指標、趨勢與行動路由 |
+| output/<project>/reports/status-<date>.md | status-report | standup / 測試報告 / release-readiness 摘要 |
+| output/<project>/evidence/<YYYYMMDD>-<slug>/ | evidence-package、api-evidence | 畫面側：截圖 / console / network / trace；API 側：requests.jsonl / repro.sh / raw/。兩者共用同一夾，manifest 只寫一份 |
+| output/<project>/evidence/<YYYYMMDD>-<slug>/blind/ | hunter 或 verifier 呼叫端 | 去除推理與結論的 manifest.yaml 及原始證據副本，只供盲驗輸入 |
+| output/<project>/evidence/<YYYYMMDD>-<slug>-verifier/ | bug-verifier 呼叫留證 skill | 與 hunter 分開的獨立證據；重驗另加序號，不能覆寫前次產物 |
+
+## 跨產品：`output/` 根目錄
+
+不屬於任何一個產品的產物留在 `output/` 根：token 帳本、Playwright MCP 的 `evidence/_traces/`、`tests/` 的 Playwright 報告（`reports/playwright/`、`runs/playwright-*`）。
+
+| 檔案 | 產生 / 維護的 skill | 用途 |
+|---|---|---|
 | output/token-ledger/<session_id>.yaml | `scripts/token-ledger.py`（Stop / SessionEnd hook 自動寫） | 單一 session 逐次 skill 呼叫的 token 與成本：`calls[]`（run / stage / skill / action / models / input / output / cache_write_5m / cache_write_1h / cache_read / cost_usd）＋ `by_run`（逐次 run 的逐階段成本，靠編排者打的 mark 分段）/ `by_skill` / `by_action` / `total` |
 | output/token-ledger/rollup.yaml | 同上，每次寫入後重算 | 跨 session 累積：依 skill 與依動作（hunt / verify / rerun / file / fix …）的呼叫次數、token、美金成本 → 餵 `sdet-economics` 的 ROI |
-| output/evidence/<YYYYMMDD>-<slug>/ | evidence-package、api-evidence | 畫面側：截圖 / console / network / trace；API 側：requests.jsonl / repro.sh / raw/。兩者共用同一夾，manifest 只寫一份 |
-| output/evidence/<YYYYMMDD>-<slug>/blind/ | hunter 或 verifier 呼叫端 | 去除推理與結論的 manifest.yaml 及原始證據副本，只供盲驗輸入 |
-| output/evidence/<YYYYMMDD>-<slug>-verifier/ | bug-verifier 呼叫留證 skill | 與 hunter 分開的獨立證據；重驗另加序號，不能覆寫前次產物 |
 
 ## Agents 共用欄位
 
@@ -66,9 +73,9 @@
 ## 三層閘門，三個檔（別混用）
 | 層級 | 問題 | skill | 檔案 |
 |---|---|---|---|
-| issue | 這張單能不能開？ | `issue-quality-gate` | `output/sessions/<date>_<slug>/gate.yaml` |
-| build | 這個 build 能不能放行？ | `infra/quality-gate` | `output/pipeline-gate.yaml` |
-| release | 這一版能不能簽出去？ | `release-signoff` | `output/signoffs/<version>.yaml` |
+| issue | 這張單能不能開？ | `issue-quality-gate` | `output/<project>/sessions/<date>_<slug>/gate.yaml` |
+| build | 這個 build 能不能放行？ | `infra/quality-gate` | `output/<project>/pipeline-gate.yaml` |
+| release | 這一版能不能簽出去？ | `release-signoff` | `output/<project>/signoffs/<version>.yaml` |
 
 上層**吃**下層的檔案當證據，不重跑下層。共用檔名會讓兩邊互相覆寫，而且覆寫當下不會有人發現。
 
@@ -82,4 +89,4 @@
 - 跨輪登錄簿（issues-index、calibration、known-false-positives、flaky-registry）**不得**搬進 session 資料夾。
   它們的價值就在跨輪累積，切進單輪就失去去重與校準的能力。
 - **2026-08-01 之前的舊產物不搬**：`output/verdicts/`、`output/gate.yaml`、`output/runs/` 底下的檔案留在原位當 legacy，
-  對不回是哪一輪產的。讀到它們照讀，**但不要再往那些路徑寫**；新的一輪一律走 `output/sessions/<date>_<slug>/`。
+  對不回是哪一輪產的。讀到它們照讀，**但不要再往那些路徑寫**；新的一輪一律走 `output/<project>/sessions/<date>_<slug>/`。

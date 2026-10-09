@@ -40,7 +40,7 @@ setup-sdet 保留直接入口，讓既有文章與熟悉設定流程的使用者
 | `product-context.md` | base URL（各環境）、登入方式（storageState / `env:VAR`）、Playwright config/testDir/reporter 路徑、trace 來源、API（base URL、認證方式、契約來源、API testDir、速率限制、不得碰的端點）| `explore`、`evidence-package`、`bug-hunter` 等所有要開瀏覽器的 skill；API 段由 `api-evidence`、`api-test-author`、`test-oracle` 讀 |
 | `ci-backend-github-actions.md` | 怎麼用 `gh` 讀 CI run、拿 artifact/annotation | `pipeline-read`、`pipeline-triage` |
 | `issue-tracker-github.md` | 有 GitHub issue repo 時：repo、triage label、canonical→實際 label 對應 | `triage`、`issue-quality-gate` |
-| `issue-tracker-local-md.md` | 還沒有 GitHub issue repo 時的本地備援：開單改記 `output/reports/issues/*.md` | `triage`、`issue-quality-gate` |
+| `issue-tracker-local-md.md` | 還沒有 GitHub issue repo 時的本地備援：開單改記 `output/<project>/reports/issues/*.md` | `triage`、`issue-quality-gate` |
 | `sdet-config.yaml` | confidence / dedupe / budget / models（cheap/strong）/ risk 權重等門檻 | `bug-verifier`、`issue-quality-gate`、`route-by-risk` |
 
 `projects/governance.yaml` 不在上表。這份是跨專案共用的授權分級表，放在 `projects/` 根目錄，由需要副作用的 skill（`triage`、`bug-fixer`、`test-heal`…）沿途參照，不是這支 skill 的訪談輸出。

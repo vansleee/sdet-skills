@@ -15,7 +15,7 @@ description: 把過閘門的 product-bug finding 寫成可重現報告，依專�
 - 依解析後的後端檢查登入與 repository；GitHub 不可用就回報，不自行切換本地。全域 governance 缺失時只準備草稿。
 
 ## 步驟
-1. 依範本寫成 `output/sessions/<session>/reports/<finding_id>.md`；每條宣稱指向證據。列出 project、目標 repository／本地路徑、title 與摘要供檢視。
+1. 依範本寫成 `output/<project>/sessions/<session>/reports/<finding_id>.md`；每條宣稱指向證據。列出 project、目標 repository／本地路徑、title 與摘要供檢視。
 2. 依 governance 檢查 `create_issue`；舊單補證改查 `comment_issue`，修改標籤／內容另查 `update_issue`。既有授權足夠就沿用；缺授權才確認，forbidden 不執行。
 3. 送出前重讀同 project 的 index。發現重複就交 gate 記 `not_duplicate: fail`、`result: block` 與舊單連結，停止新單流程；補舊單另查授權。無重複才依後端指令開單，GitHub 明確帶 `--repo <設定中的 repository>`、設定中的 labels 與 `--body-file <報告路徑>`；本地依設定寫正式 Issue 檔。
 4. 成功後依 `references/bug-fingerprint.md` 寫回同 project 的 index，保留指紋、完整 Issue 連結／路徑、occurrences、confidence 與 evidence。若送出結果不明，先查 tracker 確認，不盲目重送。
@@ -55,4 +55,4 @@ product-bug，信心 <low|med|high>（判類依據）
 ## 驗收（跑完自己對一次）
 - 報告每條宣稱都指得到證據檔嗎？重現步驟齊全嗎？
 - 是否先確認對應動作的授權，且送出前重新查重？
-- 指紋寫進 `output/issues-index.yaml` 了嗎？回報的是完整 URL 或本地檔案路徑嗎？
+- 指紋寫進 `output/<project>/issues-index.yaml` 了嗎？回報的是完整 URL 或本地檔案路徑嗎？

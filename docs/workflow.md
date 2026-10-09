@@ -36,7 +36,7 @@
 - **測試孤兒不等於該刪。** 對不到需求有兩種可能：測試多餘，或 `projects/<project>/knowledge/` 漏寫了這條需求。直覺會選第一種（刪比較快），但第二種很常見，尤其在 `projects/<project>/knowledge/` 還在長的專案。所以流程刻意規定先問「是不是需求沒寫」，再談 `test-prune`，而 `test-prune` 本身也只給建議。
 - **finding 孤兒是好消息。** 找到規格沒寫的行為，正是自主探索的價值所在。把它標成孤兒不是為了扣分，是為了把它變成「補 `projects/<project>/knowledge/`」的待辦，讓探索的收穫累積成下一輪的判準。
 - **`req_id` 不可回收。** 換號會讓既有對應安靜地斷掉，而斷掉時沒有任何錯誤訊息。需求下線就標 `retired`、保留 id。
-- **規則放 reference，資料放狀態檔。** 對應規則會隨專案演進（從檔名推測 → tag → annotation），把它寫進 `output/traceability.yaml` 會讓演算法和資料混在一起，改規則就得改資料。
+- **規則放 reference，資料放狀態檔。** 對應規則會隨專案演進（從檔名推測 → tag → annotation），把它寫進 `output/<project>/traceability.yaml` 會讓演算法和資料混在一起，改規則就得改資料。
 - **這條回饋邊讓規劃變準。** gap 清單回到 `test-planning`，讓「上次漏掉的」有機會進入這次候選，而不是永遠留在報表上當紅字。
 
 ## status-report
@@ -44,7 +44,7 @@
 把散在各狀態檔的事實，講成一段人看得懂的話。
 
 ### 設計理念
-- **只彙整，不重算。** 這是本 skill 的存在前提。flaky rate 的真相在 `output/flaky-registry.yaml`、放行的真相在 `output/pipeline-gate.yaml`、覆蓋的真相在 `output/traceability.yaml`。報告若自己重算一次，團隊就會有兩個版本的數字，然後在會議上花時間爭論哪個對，而兩個都是對的，只是算法不同。單一真相比精確更重要。
+- **只彙整，不重算。** 這是本 skill 的存在前提。flaky rate 的真相在 `output/<project>/flaky-registry.yaml`、放行的真相在 `output/<project>/pipeline-gate.yaml`、覆蓋的真相在 `output/<project>/traceability.yaml`。報告若自己重算一次，團隊就會有兩個版本的數字，然後在會議上花時間爭論哪個對，而兩個都是對的，只是算法不同。單一真相比精確更重要。
 - **缺資料寫「無資料」，不填 0。** 報告是最容易發生「用合理數字填空」的地方，因為空白看起來不專業。但把「本期沒跑 traceability」寫成「覆蓋 100%」，是把沒量到偽裝成沒問題。這條紀律和 `route-by-risk`、`pipeline-observability` 是同一條。
 - **每個結論附出處。** 報告會被追問（「這個 bug 確定嗎」「這數字哪來的」）。掛上狀態檔路徑或 URL，追問就變成點一下連結，而不是重跑一次分析。
 - **隔離中的測試必須講。** 它不好看，所以最容易被省略；但「這期有 3 支測試是關掉的」正是讀者判斷風險時最需要的一句話。省略它，報告就從摘要變成公關稿。
@@ -57,9 +57,9 @@
 
 ### 設計理念
 
-- **三層閘門，上層吃下層的產物。** `issue-quality-gate`（一張單）→ `infra/quality-gate`（一個 build）→ 本 skill（整個 release）。每層問的問題不同，且上層不重跑下層。若本層自己再跑一次測試，會得到和 `output/pipeline-gate.yaml` 不同的結果，接著沒有人知道該相信哪一個，而人通常會相信比較綠的那個。
+- **三層閘門，上層吃下層的產物。** `issue-quality-gate`（一張單）→ `infra/quality-gate`（一個 build）→ 本 skill（整個 release）。每層問的問題不同，且上層不重跑下層。若本層自己再跑一次測試，會得到和 `output/<project>/pipeline-gate.yaml` 不同的結果，接著沒有人知道該相信哪一個，而人通常會相信比較綠的那個。
 - **下層的 OVERRIDE 不會在上層自動變綠。** 這是刻意設計的防漏：`quality-gate` 允許人硬推（現實需要出口），但硬推的理由必須一路浮到 release 層被再看一次。否則「build 層硬推 → release 層看到 PASS → 簽出去」就成了一條把 override 洗白的路徑。
-- **`inconclusive` 不得當 pass。** 拿不到 `output/traceability.yaml`、artifact 過期、指令失敗。這些最容易被當成「沒發現問題」。但閘門的價值全在它擋住的那幾次，而那幾次往往正是證據殘缺的那幾次。
+- **`inconclusive` 不得當 pass。** 拿不到 `output/<project>/traceability.yaml`、artifact 過期、指令失敗。這些最容易被當成「沒發現問題」。但閘門的價值全在它擋住的那幾次，而那幾次往往正是證據殘缺的那幾次。
 - **只評估，不執行；簽核人是人。** 本 skill 不打 tag、不 deploy、不 merge。`signed_by` 由人填，報告開頭明標「AI 彙整，決定屬於人」。理由不是技術限制，而是一個能自己判「可以出」又能自己出的 agent，錯誤成本沒有任何緩衝。
 - **`conditional-go` 的條件必須可檢查。** 現實中很多 release 是「知道有風險但仍要出」。堵死這條路只會逼人繞過整個流程。所以給出口，但條件要寫成可驗證的句子：「上線後 24h 內錯誤率 > 1% 即回滾，由 X 監控」而不是「小心一點」。前者是承諾，後者是心情。
 - **`no-go` 必附補完清單。** 一句「不能出」把問題丟回給團隊；一份「缺這兩項、誰補、約兩天」讓否決變成可執行的計畫。閘門要能擋，也要能指路。
