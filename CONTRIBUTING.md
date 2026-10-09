@@ -1,6 +1,6 @@
 # 維護 sdet-skills
 
-先讀 [AGENTS.md](AGENTS.md) 與 [架構文件](architecture/sdet-skills-architecture.md)。現有 skill 路徑是外掛清單與文章引用的入口；改名或搬移前，先列出受影響的引用與相容方案。
+先讀 [AGENTS.md](AGENTS.md) 與 [架構文件](docs/architecture.md)。現有 skill 路徑是外掛清單與文章引用的入口；改名或搬移前，先列出受影響的引用與相容方案。
 
 ## 準備本地環境
 

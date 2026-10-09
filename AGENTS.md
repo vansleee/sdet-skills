@@ -3,7 +3,7 @@
 Agentic SDET 技能組：GitHub Actions · Playwright (TypeScript) · GitHub Issues。
 一套可重用的 skill，讓 agent 探索找 bug、驗證回報、修產品、顧測試與整條 CI 生產線。
 
-**架構、bucket 分層、心智模型的完整說明在 `architecture/sdet-skills-architecture.md`，這份只寫動手時要遵守的規則。**
+**架構、bucket 分層、心智模型的完整說明在 `docs/architecture.md`，這份只寫動手時要遵守的規則。**
 
 ## 鐵則
 - **產品知識與專案設定是「輸入」，skill 讀它、不內嵌**，否則 reuse 就死了。四層分工（`skills/` 能力、`knowledge/` 事實、`skills/workflow/` 流程、`config/` 設定）見架構文件的「心智模型」。

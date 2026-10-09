@@ -113,7 +113,7 @@ setup-sdet 會一次問一個主題（受測產品、登入、CI、issue tracker
 **meta/** ask-sdet(user)（共同入口） · setup-sdet(user)（專案設定）
 **writing/**（通用文字與技術文件工具） unslop(user) · technical-writing(user)
 
-標 `(user)` 的只在你叫它的時候才動，其餘由模型視情況自己呼叫；`(ref)` 是給其他 skill 讀的參考文件，不是流程。各 bucket 負責什麼、為什麼這樣切，見 [`architecture/sdet-skills-architecture.md`](architecture/sdet-skills-architecture.md)。
+標 `(user)` 的只在你叫它的時候才動，其餘由模型視情況自己呼叫；`(ref)` 是給其他 skill 讀的參考文件，不是流程。各 bucket 負責什麼、為什麼這樣切，見 [`docs/architecture.md`](docs/architecture.md)。
 
 technical-writing 與 unslop 都放在 `skills/writing/`；skill 名稱與指令不變。
 
@@ -158,9 +158,8 @@ verifier 確認問題可重現，gate 判斷能否開單，triage 才建立 Issu
 | `references/` | test-design / tours / heuristics / confidence / bug-fingerprint / test-health-metrics（**演算法放這裡**）|
 | `state-templates/` | 狀態檔範本，複製到 `output/` 成同名真檔使用 |
 | `tests/` | Playwright 測試與 `maintain/` 的實測基準（見 [`tests/README.md`](tests/README.md)）|
-| `architecture/` | 架構、bucket 邊界與設計原則 |
 | `scripts/` | 安裝輔助、manifest 與文件檢查、證據與成本工具 |
-| `docs/` | 每支 skill 的設計理念，加上 `state-files.md` 這份跨 skill 資料流 |
+| `docs/` | 架構（`architecture.md`）、詞彙表（`glossary.md`）、跨 skill 資料流（`state-files.md`），以及每支 skill 的設計理念 |
 | `output/` | 所有執行期產物，不進版控 |
 
 `tests/` 底下 `e2e/` 是正常測試、`broken/` 是穩定紅的反例、`flaky/` 是時紅時綠的。後兩者刻意留著，用來校準 `failure-analysis` 分不分得出「測試的錯」與「產品的錯」；`retries: 0` 也是刻意的，重試會把 flaky 蓋掉。

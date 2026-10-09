@@ -4,7 +4,8 @@
 
 ## 架構與共用契約
 
-- [架構與 bucket 邊界](../architecture/sdet-skills-architecture.md)
+- [架構與 bucket 邊界](architecture.md)
+- [共享詞彙](glossary.md)
 - [狀態檔與資料流](state-files.md)
 - [Agent 交接](../references/agent-handoff.md)
 - [Agent 授權](../references/agent-governance.md)

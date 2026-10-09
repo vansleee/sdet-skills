@@ -158,7 +158,7 @@ export TOOLSHOP_TEST_PASS=...
 - **`retries: 0`。** 重試會把 flaky 蓋掉，而這裡就是要看見它。
   正式產品線要不要開重試是另一個題目，判準交給 `re-run-gate`。
 - **`trace` / `screenshot` / `video` 只在失敗時保留。** 綠燈不留證，省時間也省空間。
-- **產物寫到 repo 根的 `output/`**，不留在 `tests/`（見 `CLAUDE.md`）。
+- **產物寫到 repo 根的 `output/`**，不留在 `tests/`（見 `AGENTS.md`）。
 - **`tools/probe-selectors.ts` 不是測試**，是寫測試前先探 `data-test` 用的。
   先探再寫，不要用猜的。
 

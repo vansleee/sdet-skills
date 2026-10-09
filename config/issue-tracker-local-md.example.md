@@ -1,10 +1,6 @@
-# Issue tracker：本地 Markdown 檔案（**備援，目前未生效**）
+# Issue tracker：本地 Markdown 檔案（備援）
 
-> 2026-07-30 起，`config/issue-tracker-github.md` 已填好 repo（`vansleee/sdet-skills`）並啟用 Issues，
-> `triage` 以 GitHub 為準。這份留著當離線/無 gh 權限時的備援，以及既有 `output/reports/issues/*.md` 的格式說明。
-> **兩份同時存在時，以 GitHub 那份為準**。別讓 triage 每輪再判一次。
-
-以下為本地後端的規則（備援時適用）。原本的情境：還沒有指定 GitHub issue repo。`triage` 開單這一步改為在本機留痕，不呼叫任何外部 API。等未來要接 GitHub Issues 時，填好 `config/issue-tracker-github.md` 即可自動切換，不必改 `triage` 本身。它讀的是「這個專案目前有哪份 `config/issue-tracker-*.md`」，不是寫死哪一種後端。
+還沒有指定 GitHub issue repo，或離線、沒有 gh 權限時用這份。`triage` 開單這一步改為在本機留痕，不呼叫任何外部 API。之後要接 GitHub Issues 時，填好 `config/issue-tracker-github.md` 即可自動切換，不必改 `triage` 本身。它讀的是「這個專案目前有哪份 `config/issue-tracker-*.md`」，不是寫死哪一種後端。
 
 ## 對應規則（取代 `gh issue create` 那一步）
 

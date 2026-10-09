@@ -22,7 +22,7 @@ export default defineConfig({
   timeout: 60_000,
   expect: { timeout: 10_000 },
 
-  // 所有執行期產物集中在 repo 根的 output/（見 CLAUDE.md）
+  // 所有執行期產物集中在 repo 根的 output/（見 AGENTS.md）
   outputDir: '../output/runs/playwright-artifacts',
   reporter: [
     ['list'],

@@ -103,7 +103,7 @@ manifest 應與檔案一致，文風檢查應通過，runner 應能列出測試�
 | 定探索範圍並找 bug | [exploration-charter](../skills/explore/exploration-charter/SKILL.md)、[bug-hunter](../skills/agents/bug-hunter/SKILL.md) |
 | 獨立重現與建單判斷 | [bug-verifier](../skills/agents/bug-verifier/SKILL.md)、[issue-quality-gate](../skills/agents/issue-quality-gate/SKILL.md) |
 | 分辨產品錯誤、測試錯誤與 flaky | [測試教材與歷史實測](../tests/README.md) |
-| 看整條 CI 與放行判準 | [文件索引](README.md)、[架構文件](../architecture/sdet-skills-architecture.md) |
+| 看整條 CI 與放行判準 | [文件索引](README.md)、[架構文件](architecture.md) |
 
 ## 書稿與執行產物
 
